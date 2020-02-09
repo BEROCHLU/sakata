@@ -1,0 +1,18 @@
+{
+  "name": "sakata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bd-example.js",
+  "scripts": {
+    "sakata": "node braindevice.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "brain.js": "^2.0.0-alpha.12",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "xlsx": "^0.15.5"
+  }
+}
