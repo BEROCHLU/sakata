@@ -4,6 +4,9 @@ const brain = require('brain.js');
 const _ = require('lodash');
 const XLSX = require('xlsx');
 const moment = require('moment');
+const {
+    performance
+} = require('perf_hooks');
 
 let arrTrainX = [];
 let arrTrainT = [];
@@ -14,8 +17,8 @@ let arrFXY = [];
 let arrT1570 = [];
 
 const DESIRED_ERROR = 0.0001;
-let days; //学習データ数
 const PERIOD = 64;
+let days; //学習データ数
 
 const workbook = XLSX.readFile('nt1570.csv');
 const worksheet = workbook.Sheets['Sheet1'];
@@ -49,7 +52,7 @@ for (let i = 0; i < ARR_LEN; i++) {
         const _f2 = (arrT1570[i] / arrT1570[i - 1]) * 100;
         arrChangeT1570.push(_f2);
     }
-} // _.zip?
+}
 
 days = ARR_LEN - 1;
 
@@ -69,9 +72,9 @@ for (let i = 0; i < days; i++) {
     const _x0 = arrChangeUPRO[i] / UPRO_div;
     const _x1 = arrChangeFXY[i] / FXY_div;
 
-    arrTrainX.push([_x0, _x1]); //training data
+    arrTrainX.push([_x0, _x1]); //training data without bias
     arrTrainT.push([arrChangeT1570[i] / T1570_div]); //teacher data
-} // _.zip?
+}
 
 const arrTrainData = _.zipWith(arrTrainX, arrTrainT, (x, t) => {
     return {
@@ -97,9 +100,13 @@ const trainOpt = {
 
 console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
 // create a simple feed forward neural network with backpropagation
-const net = new brain.NeuralNetwork(config)
+const net = new brain.NeuralNetwork(config);
+
+const timeStart = performance.now();
 // start training
-net.train(arrTrainData, trainOpt);
+const netrain = net.train(arrTrainData, trainOpt);
+const timeEnd = performance.now();
+const timeSec = (timeEnd - timeStart) / 1000;
 
 const arrOut = _.map(arrTrainX, arr => {
     return net.run(arr)[0];
@@ -134,3 +141,5 @@ const valanceMid = (valanceMin + valanceMax) / 2;
 
 console.log(`Average error: ${averageError}%`);
 console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
+console.log(`epoch: ${netrain.iterations} days: ${days}`);
+console.log(`Time: ${timeSec.toFixed(2)}sec`);
