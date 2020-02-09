@@ -13,7 +13,7 @@ let arrUPRO = [];
 let arrFXY = [];
 let arrT1570 = [];
 
-const DESIRED_ERROR = 0.00016;
+const DESIRED_ERROR = 0.0001;
 let days; //学習データ数
 const PERIOD = 64;
 
@@ -68,19 +68,12 @@ const T1570_div = _.max(arrChangeT1570) * (1 + DESIRED_ERROR); //スキップ後
 for (let i = 0; i < days; i++) {
     const _x0 = arrChangeUPRO[i] / UPRO_div;
     const _x1 = arrChangeFXY[i] / FXY_div;
-    //const _x2 = -1; //配列最後にバイアス
-
-    //const _arrX = [_x0, _x1];
-    //const _arrT = [arrChangeT1570[i] / T1570_div];
 
     arrTrainX.push([_x0, _x1]); //training data
     arrTrainT.push([arrChangeT1570[i] / T1570_div]); //teacher data
 } // _.zip?
 
-//const arrPredict = _.map(arrTrainX, x => {
-//    return [x[0], x[1]];
-//});
-let arrTrainData = _.zipWith(arrTrainX, arrTrainT, (x, t) => {
+const arrTrainData = _.zipWith(arrTrainX, arrTrainT, (x, t) => {
     return {
         input: x,
         output: t
@@ -96,41 +89,19 @@ const config = {
 }
 
 const trainOpt = {
-    iterations: 200000,
+    iterations: 1500000,
     errorThresh: DESIRED_ERROR, // the acceptable error percentage from training data --> number between 0 and 1
     log: true, // true to use console.log, when a function is supplied it is used --> Either true or a function
-    logPeriod: 10000
+    logPeriod: 100000
 }
 
-let arrTrain = [{
-        input: [0, 0],
-        output: [0]
-    },
-    {
-        input: [0, 1],
-        output: [1]
-    },
-    {
-        input: [1, 0],
-        output: [1]
-    },
-    {
-        input: [1, 1],
-        output: [0]
-    },
-];
+console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
 // create a simple feed forward neural network with backpropagation
 const net = new brain.NeuralNetwork(config)
+// start training
 net.train(arrTrainData, trainOpt);
 
-let arrTrainXX = [
-    [0, 0],
-    [0, 1],
-    [1, 0],
-    [1, 1]
-];
-
-let arrOut = _.map(arrTrainX, arr => {
+const arrOut = _.map(arrTrainX, arr => {
     return net.run(arr)[0];
 });
 
@@ -158,5 +129,8 @@ for (let i = 0; i < days; i++) {
     valanceMax = (valanceMax < valance) ? valance : valanceMax;
 }
 
+const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
 const valanceMid = (valanceMin + valanceMax) / 2;
+
+console.log(`Average error: ${averageError}%`);
 console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
