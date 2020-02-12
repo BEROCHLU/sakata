@@ -7,6 +7,7 @@ const moment = require('moment');
 const {
     performance
 } = require('perf_hooks');
+const path = require('path');
 
 let arrTrainX = [];
 let arrTrainT = [];
@@ -16,11 +17,12 @@ let arrUPRO = [];
 let arrFXY = [];
 let arrT1570 = [];
 
-const DESIRED_ERROR = 0.0001;
+const DESIRED_ERROR = 0.00015;
 const PERIOD = 64;
 let days; //学習データ数
 
-const workbook = XLSX.readFile('nt1570.csv');
+const CSV_PATH = path.join('T:\\ProgramFilesT\\pleiades\\workspace\\node225', 'nt1570.csv');
+const workbook = XLSX.readFile(CSV_PATH);
 const worksheet = workbook.Sheets['Sheet1'];
 const arrHashExcel = XLSX.utils.sheet_to_json(worksheet);
 
@@ -94,7 +96,7 @@ const config = {
 const trainOpt = {
     iterations: 1500000,
     errorThresh: DESIRED_ERROR, // the acceptable error percentage from training data --> number between 0 and 1
-    log: true, // true to use console.log, when a function is supplied it is used --> Either true or a function
+    log: false, // true to use console.log, when a function is supplied it is used --> Either true or a function
     logPeriod: 100000
 }
 
