@@ -8,6 +8,7 @@ const {
     performance
 } = require('perf_hooks');
 const path = require('path');
+const fs = require('fs');
 
 let arrTrainX = [];
 let arrTrainT = [];
@@ -17,8 +18,8 @@ let arrUPRO = [];
 let arrFXY = [];
 let arrT1570 = [];
 
-const DESIRED_ERROR = 0.00015;
-const PERIOD = 64;
+const DESIRED_ERROR = 0.000193;
+const PERIOD = 53;
 let days; //学習データ数
 
 const CSV_PATH = path.join('T:\\ProgramFilesT\\pleiades\\workspace\\node225', 'nt1570.csv');
@@ -84,7 +85,7 @@ const arrTrainData = _.zipWith(arrTrainX, arrTrainT, (x, t) => {
         output: t
     }
 });
-
+fs.writeFileSync('py225.json', JSON.stringify(arrTrainData), 'utf8');
 // provide optional config object (or undefined). Defaults shown.
 const config = {
     binaryThresh: 0.5,
@@ -94,9 +95,9 @@ const config = {
 }
 
 const trainOpt = {
-    iterations: 1500000,
+    iterations: 3600000,
     errorThresh: DESIRED_ERROR, // the acceptable error percentage from training data --> number between 0 and 1
-    log: false, // true to use console.log, when a function is supplied it is used --> Either true or a function
+    log: true, // true to use console.log, when a function is supplied it is used --> Either true or a function
     logPeriod: 100000
 }
 
@@ -144,4 +145,4 @@ const valanceMid = (valanceMin + valanceMax) / 2;
 console.log(`Average error: ${averageError}%`);
 console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
 console.log(`epoch: ${netrain.iterations} days: ${days}`);
-console.log(`Time: ${timeSec.toFixed(2)}sec`);
+console.log(`Time: ${timeSec.toFixed(2)}sec.`);
