@@ -79,13 +79,14 @@ for (let i = 0; i < days; i++) {
     arrTrainT.push([arrChangeT1570[i] / T1570_div]); //teacher data
 }
 
-const arrTrainData = _.zipWith(arrTrainX, arrTrainT, (x, t) => {
+const arrTrainData = _.zipWith(arrTrainX, arrTrainT, arrDate, (x, t, d) => {
     return {
         input: x,
-        output: t
+        output: t,
+        date: d
     }
 });
-fs.writeFileSync('py225.json', JSON.stringify(arrTrainData), 'utf8');
+fs.writeFileSync('./json/py225.json', JSON.stringify(arrTrainData), 'utf8');
 // provide optional config object (or undefined). Defaults shown.
 const config = {
     binaryThresh: 0.5,

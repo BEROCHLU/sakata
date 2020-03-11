@@ -2,7 +2,7 @@
   "name": "sakata",
   "version": "1.0.0",
   "description": "",
-  "main": "bd-example.js",
+  "main": "braindevice.js",
   "scripts": {
     "sakata": "node braindevice.js"
   },
