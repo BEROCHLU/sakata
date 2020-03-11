@@ -5,7 +5,7 @@ import time
 import random
 import matplotlib.pyplot as plt
 
-DESIRED_ERROR = 0.0033
+DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
 THRESHOLD = 1000000
@@ -134,9 +134,10 @@ if __name__ == "__main__":
                 for j in range(IN_NODE):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         #for days
-        arrErr.append(fError)
-        if epoch % 100000 == 0:
+        
+        if epoch % 100 == 0:
             #print(f"{epoch}: {fError}")
+            arrErr.append(fError)
             pass
         if THRESHOLD < epoch:
             print("force quit")
@@ -145,5 +146,5 @@ if __name__ == "__main__":
     time_ed = time.time()
     printResult()
     # show
-    #plt.plot(arrErr)
-    #plt.show()
+    plt.plot(arrErr)
+    plt.show()
