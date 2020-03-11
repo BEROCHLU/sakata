@@ -1,12 +1,14 @@
 import json
 import math
+import time
+#import numpy as np
 import random
 import matplotlib.pyplot as plt
 
-DESIRED_ERROR = 0.008
+DESIRED_ERROR = 0.0033
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 50000
+THRESHOLD = 1000000
 
 
 def sigmoid(x):
@@ -15,9 +17,9 @@ def sigmoid(x):
     else:
         return 1 / (1 + math.exp(-x))
 
-
-dsigmoid = lambda x: x * (1 - x)
-dmax = lambda x: x if (0 < x) == 1 else 0
+#sigmoid = lambda a: 1 / (1 + np.exp(-a))
+dsigmoid = lambda a: a * (1 - a)
+dmax = lambda a: a if (0 < a) == 1 else 0
 
 IN_NODE = HID_NODE = None
 hid = out = None
@@ -62,8 +64,9 @@ def printResult():
         str_date = arrHsh[i]["date"]
         print(f"{str_date} teacher: {rd_teacher} out: {rd_out} valance: {round(s, 3)}")
 
-    rd_err = round(fError, 4)
+    rd_err = round(fError, 5)
     print(f" epoch: {epoch} final err: {rd_err} days: {days}")
+    print(f"time: {round((time_ed - time_st), 2)}")
 
 def arrowAddBias(hsh):
     arrInput = hsh["input"]
@@ -102,6 +105,8 @@ if __name__ == "__main__":
         for j in range(HID_NODE):
             w[i].append(random.random())
 
+    time_st = time.time()
+
     while DESIRED_ERROR < fError:
         epoch += 1
         fError = 0
@@ -130,12 +135,14 @@ if __name__ == "__main__":
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         #for days
         arrErr.append(fError)
-        if epoch % 10000 == 0:
-            print(f"{epoch}: {fError}")
+        if epoch % 100000 == 0:
+            #print(f"{epoch}: {fError}")
+            pass
         if THRESHOLD < epoch:
             print("force quit")
             break
     # while
+    time_ed = time.time()
     printResult()
     # show
     #plt.plot(arrErr)
