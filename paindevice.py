@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 10000
+THRESHOLD = 1000000
 
 
 def sigmoid(a: float) -> float:
