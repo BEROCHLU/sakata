@@ -19,6 +19,7 @@ def sigmoid(a: float) -> float:
     else:
         return 1 / (1 + math.exp(-a))
 
+
 dsigmoid = lambda a: a * (1 - a)
 dmax = lambda a: a if (0 < a) == 1 else 0
 
@@ -35,6 +36,7 @@ v = []
 w = []
 
 isPlot = True
+
 
 def findHidOut(n: int):
     for i in range(HID_NODE):
@@ -141,7 +143,7 @@ if __name__ == "__main__":
                 # print(f"{epoch}: {fError}")
                 arrErr.append(fError)
                 pass
-        
+
         if THRESHOLD < epoch:
             print("force quit")
             break
