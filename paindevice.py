@@ -10,15 +10,14 @@ import matplotlib.pyplot as plt
 DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 1000000
+THRESHOLD = 10000
 
 
-def sigmoid(x: float) -> float:
-    if x < 0:
-        return 1 - 1 / (1 + math.exp(x))
+def sigmoid(a: float) -> float:
+    if a < 0:
+        return 1 - 1 / (1 + math.exp(a))
     else:
-        return 1 / (1 + math.exp(-x))
-
+        return 1 / (1 + math.exp(-a))
 
 dsigmoid = lambda a: a * (1 - a)
 dmax = lambda a: a if (0 < a) == 1 else 0
@@ -28,16 +27,16 @@ hid = out = None
 delta_hid = delta_out = None
 
 epoch = days = 0
-fError = 0.01
+fError = 0.05
 
-x = None
-t = None
+x = t = None
 
 v = []
 w = []
 
+isPlot = True
 
-def findHidOut(n: int) -> int:
+def findHidOut(n: int):
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -67,8 +66,8 @@ def printResult():
         print(f"{str_date} teacher: {rd_teacher} out: {rd_out} valance: {round(s, 3)}")
 
     rd_err = round(fError, 5)
-    print(f" epoch: {epoch} final err: {rd_err} days: {days}")
-    print(f"time: {round((time_ed - time_st), 2)}")
+    print(f"epoch: {epoch} final err: {rd_err} days: {days}")
+    print(f"time: {round((time_ed - time_st), 2)} sec.")
 
 
 def addBias(hsh: dict) -> dict:
@@ -137,17 +136,19 @@ if __name__ == "__main__":
                 for j in range(IN_NODE):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
-
-        if epoch % 100 == 0:
-            # print(f"{epoch}: {fError}")
-            arrErr.append(fError)
-            pass
+        if isPlot:
+            if epoch % 100 == 0:
+                # print(f"{epoch}: {fError}")
+                arrErr.append(fError)
+                pass
+        
         if THRESHOLD < epoch:
             print("force quit")
             break
     # while
     time_ed = time.time()
     printResult()
-    # show
-    plt.plot(arrErr)
-    plt.show()
+    # show plot
+    if isPlot:
+        plt.plot(arrErr)
+        plt.show()
