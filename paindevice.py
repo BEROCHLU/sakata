@@ -19,6 +19,7 @@ def sigmoid(x: float) -> float:
     else:
         return 1 / (1 + math.exp(-x))
 
+
 dsigmoid = lambda a: a * (1 - a)
 dmax = lambda a: a if (0 < a) == 1 else 0
 
@@ -69,18 +70,19 @@ def printResult():
     print(f" epoch: {epoch} final err: {rd_err} days: {days}")
     print(f"time: {round((time_ed - time_st), 2)}")
 
-def arrowAddBias(hsh: dict) -> dict:
+
+def addBias(hsh: dict) -> dict:
     arrInput = hsh["input"]
-    #arrInput.append(random.random() * -1)  # add bias
+    # arrInput.append(random.random() * -1)  # add bias
     arrInput.append(-1)  # add bias
     return arrInput
 
 
 if __name__ == "__main__":
-    f = open("./json/py225.json", "r")  #xor | cell30 | py225
+    f = open("./json/py225.json", "r")  # xor | cell30 | py225
     arrHsh = json.load(f)
 
-    x = list(map(arrowAddBias, arrHsh))
+    x = list(map(addBias, arrHsh))
     t = list(map(lambda hsh: hsh["output"], arrHsh))
 
     IN_NODE = len(x[0])  # get input length include bias
@@ -134,10 +136,10 @@ if __name__ == "__main__":
             for i in range(HID_NODE):
                 for j in range(IN_NODE):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
-        #for days
-        
+        # for days
+
         if epoch % 100 == 0:
-            #print(f"{epoch}: {fError}")
+            # print(f"{epoch}: {fError}")
             arrErr.append(fError)
             pass
         if THRESHOLD < epoch:

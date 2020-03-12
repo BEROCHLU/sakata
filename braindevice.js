@@ -86,7 +86,6 @@ const arrTrainData = _.zipWith(arrTrainX, arrTrainT, arrDate, (x, t, d) => {
         date: d
     }
 });
-fs.writeFileSync('./json/py225.json', JSON.stringify(arrTrainData), 'utf8');
 // provide optional config object (or undefined). Defaults shown.
 const config = {
     binaryThresh: 0.5,
