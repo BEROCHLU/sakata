@@ -4,7 +4,6 @@
 import json
 import math
 import time
-#import numpy as np
 import random
 import matplotlib.pyplot as plt
 
@@ -14,13 +13,12 @@ ETA = 0.5
 THRESHOLD = 1000000
 
 
-def sigmoid(x):
+def sigmoid(x: float) -> float:
     if x < 0:
         return 1 - 1 / (1 + math.exp(x))
     else:
         return 1 / (1 + math.exp(-x))
 
-#sigmoid = lambda a: 1 / (1 + np.exp(-a))
 dsigmoid = lambda a: a * (1 - a)
 dmax = lambda a: a if (0 < a) == 1 else 0
 
@@ -38,7 +36,7 @@ v = []
 w = []
 
 
-def findHidOut(n):
+def findHidOut(n: int) -> int:
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -71,7 +69,7 @@ def printResult():
     print(f" epoch: {epoch} final err: {rd_err} days: {days}")
     print(f"time: {round((time_ed - time_st), 2)}")
 
-def arrowAddBias(hsh):
+def arrowAddBias(hsh: dict) -> dict:
     arrInput = hsh["input"]
     #arrInput.append(random.random() * -1)  # add bias
     arrInput.append(-1)  # add bias
