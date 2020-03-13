@@ -6,11 +6,12 @@ import math
 import time
 import random
 import matplotlib.pyplot as plt
+import datetime
 
 DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 1000000
+THRESHOLD = 1000
 
 
 def sigmoid(a: float) -> float:
@@ -108,6 +109,9 @@ if __name__ == "__main__":
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
             w[i].append(random.random())
+
+    date_now = datetime.datetime.now()
+    print(date_now)
 
     time_st = time.time()
 
