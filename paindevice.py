@@ -58,6 +58,8 @@ def findHidOut(n: int):
 def printResult():
     arrNet = []
     s = 0
+    s_max = -256
+    s_min = 256
     for i in range(days):
         findHidOut(i)
         rd_teacher = round(t[i][0], 3)
@@ -68,8 +70,19 @@ def printResult():
         str_date = arrHsh[i]["date"]
         print(f"{str_date} teacher: {rd_teacher} out: {rd_out} valance: {round(s, 3)}")
 
+        if s_max < s:
+            s_max = s
+        if s < s_min:
+            s_min = s
+
     rd_err = round(fError, 5)
+    s_max = round(s_max, 2)
+    s_min = round(s_min, 2)
+    s_mean = (s_max + s_min) / 2
+    s_mean = round(s_mean, 2)
+
     print(f"epoch: {epoch} final err: {rd_err} days: {days}")
+    print(f"max: {s_max} min: {s_min} mean: {s_mean}")
     print(f"time: {round((time_ed - time_st), 2)} sec.")
 
 
