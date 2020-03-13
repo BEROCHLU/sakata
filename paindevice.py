@@ -11,7 +11,7 @@ import datetime
 DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 10000
+THRESHOLD = 1000000
 
 
 def sigmoid(a: float) -> float:
@@ -34,7 +34,7 @@ fError = 0.05
 x, t = None, None
 v, w = [], []
 
-isPlot = False
+isPlot = True
 
 
 def findHidOut(n: int):
