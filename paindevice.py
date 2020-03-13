@@ -11,7 +11,7 @@ import datetime
 DESIRED_ERROR = 0.005
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 1000
+THRESHOLD = 10000
 
 
 def sigmoid(a: float) -> float:
@@ -24,19 +24,17 @@ def sigmoid(a: float) -> float:
 dsigmoid = lambda a: a * (1 - a)
 dmax = lambda a: a if (0 < a) == 1 else 0
 
-IN_NODE = HID_NODE = None
-hid = out = None
-delta_hid = delta_out = None
+IN_NODE, HID_NODE = None, None
+hid, out = None, None
+delta_hid, delta_out = None, None
 
-epoch = days = 0
+epoch, days = 0, 0
 fError = 0.05
 
-x = t = None
+x, t = None, None
+v, w = [], []
 
-v = []
-w = []
-
-isPlot = True
+isPlot = False
 
 
 def findHidOut(n: int):
@@ -76,10 +74,10 @@ def printResult():
             s_min = s
 
     rd_err = round(fError, 5)
-    s_max = round(s_max, 2)
-    s_min = round(s_min, 2)
+    s_max = round(s_max, 3)
+    s_min = round(s_min, 3)
     s_mean = (s_max + s_min) / 2
-    s_mean = round(s_mean, 2)
+    s_mean = round(s_mean, 3)
 
     print(f"epoch: {epoch} final err: {rd_err} days: {days}")
     print(f"max: {s_max} min: {s_min} mean: {s_mean}")
@@ -161,7 +159,7 @@ if __name__ == "__main__":
                 arrErr.append(fError)
                 pass
 
-        if THRESHOLD < epoch:
+        if THRESHOLD <= epoch:
             print("force quit")
             break
     # while
