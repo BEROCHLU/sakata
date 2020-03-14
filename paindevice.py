@@ -78,10 +78,18 @@ def printResult():
     s_min = round(s_min, 3)
     s_mean = (s_max + s_min) / 2
     s_mean = round(s_mean, 3)
+    f_time = time_ed - time_st
+
+    if 60 <= f_time:
+        n_minute = int(f_time / 60)
+        f_sec = round(f_time % 60)
+    else:
+        n_minute = 0
+        f_sec = round(f_time, 2)
 
     print(f"epoch: {epoch} final err: {rd_err} days: {days}")
     print(f"max: {s_max} min: {s_min} mean: {s_mean}")
-    print(f"time: {round((time_ed - time_st), 2)} sec.")
+    print(f"time: {n_minute} min {f_sec} sec.")
 
 
 def addBias(hsh: dict) -> dict:
@@ -122,7 +130,7 @@ if __name__ == "__main__":
             w[i].append(random.uniform(0.5, 1.0)) #random() | uniform(0.5, 1.0)
 
     date_now = datetime.datetime.now()
-    print(date_now)
+    print(date_now.strftime('%F %T'))
 
     time_st = time.time()
 
