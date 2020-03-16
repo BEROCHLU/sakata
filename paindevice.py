@@ -124,10 +124,10 @@ if __name__ == "__main__":
 
     for i in range(HID_NODE):
         for j in range(IN_NODE):
-            v[i].append(random.uniform(0.5, 1.0)) #random() | uniform(0.5, 1.0)
+            v[i].append(random.random()) #random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
-            w[i].append(random.uniform(0.5, 1.0)) #random() | uniform(0.5, 1.0)
+            w[i].append(random.random()) #random() | uniform(0.5, 1.0)
 
     date_now = datetime.datetime.now()
     print(date_now.strftime('%F %T'))
