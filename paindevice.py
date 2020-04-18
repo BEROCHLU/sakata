@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 import datetime
 
 DESIRED_ERROR = 0.005
+THRESHOLD = 1000000
 OUT_NODE = 1
 ETA = 0.5
-THRESHOLD = 1000000
 
 
 def sigmoid(a: float) -> float:
