@@ -15,7 +15,7 @@ let arrFXY = [];
 let arrT1570 = [];
 
 const DESIRED_ERROR = 0.005;
-const PERIOD = 53;
+const PERIOD = 55;
 let days; //学習データ数
 
 const CSV_PATH = path.join('T:\\ProgramFilesT\\pleiades\\workspace\\node225', 'nt1570.csv');
