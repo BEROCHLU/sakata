@@ -19,7 +19,7 @@ let arrFXY = [];
 let arrT1570 = [];
 
 const DESIRED_ERROR = 0.000193;
-const PERIOD = 53;
+const PERIOD = 55;
 let days; //学習データ数
 
 const CSV_PATH = path.join('T:\\ProgramFilesT\\pleiades\\workspace\\node225', 'nt1570.csv');
@@ -98,7 +98,7 @@ const trainOpt = {
     iterations: 3600000,
     errorThresh: DESIRED_ERROR, // the acceptable error percentage from training data --> number between 0 and 1
     log: true, // true to use console.log, when a function is supplied it is used --> Either true or a function
-    logPeriod: 100000
+    logPeriod: 500000
 }
 
 console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
