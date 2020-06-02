@@ -8,8 +8,9 @@ PERIOD = 55
 
 
 def run():
-    json_path = "./json/n225bp.json"
-    with open(json_path, encoding="utf-8") as f:
+    in_path = "./json/n225in.json"
+    out_path = "./json/n225out.json"
+    with open(in_path, encoding="utf-8") as f:
         arrHsh = json.load(f)
 
     LEN = len(arrHsh)
@@ -31,7 +32,7 @@ def run():
     arrChange_NK = []
 
     for i in range(LEN):
-        if 0 < i:
+        if 0 < i:  # 変化率なので初日除外
             f0 = (arrDOW[i] / arrDOW[i - 1]) * 100
             arrChange_DOW.append(f0)
             f1 = (arrFX[i] / arrFX[i - 1]) * 100
@@ -53,7 +54,7 @@ def run():
 
     arrTrainX = []
     arrTrainT = []
-
+    # 最大値で正規化
     for i in range(PERIOD):
         x0 = arrChange_DOW[i] / DIV_DOW
         x1 = arrChange_FX[i] / DIV_FX
@@ -67,9 +68,8 @@ def run():
         a = {"input": x, "output": t, "date": d}
         arrTrainData.append(a)
 
-    with open("./test.json", "w") as f:
+    with open(out_path, "w") as f:
         json.dump(arrTrainData, f)
-    # print(json.dumps(arrTrainData))
 
 
 if __name__ == "__main__":
