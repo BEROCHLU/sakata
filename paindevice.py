@@ -100,7 +100,7 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    f = open("./json/py225.json", "r")  # xor | cell30 | py225
+    f = open("./json/n225out.json", "r")  # xor | cell30 | py225 | n225out
     arrHsh = json.load(f)
 
     x = list(map(addBias, arrHsh))
