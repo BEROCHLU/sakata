@@ -1,7 +1,7 @@
 'use strict';
 
+const fs = require('fs');
 const _ = require('lodash');
-const XLSX = require('xlsx');
 const math = require('mathjs');
 const moment = require('moment');
 const {
@@ -41,8 +41,6 @@ let w = []; //w[OUT_NODE][HID_NODE]
 
 let timeStart;
 let timeEnd;
-
-const IS_NIKKEI_TEACH = true;
 
 //乱数生成
 //const frandFix = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
@@ -105,37 +103,25 @@ const printResult = (arrDate, TEACH_DIV) => {
     const timeSec = (timeEnd - timeStart) / 1000;
 
     const valanceMid = (valanceMin + valanceMax) / 2;
-    const valanceNom = (valance - valanceMin) * 100/ (valanceMax - valanceMin);
+    const valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
     console.log(`epoch: ${epoch} days: ${days}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)} t: ${IS_NIKKEI_TEACH}`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
     console.log(`Nom: ${valanceNom.toFixed(2)}`);
 }
 /**
  * Main
  */
 {
-    const workbook = XLSX.readFile('nt1570.csv');
-    const worksheet = workbook.Sheets['Sheet1'];
-    const arrHashExcel = XLSX.utils.sheet_to_json(worksheet);
+    const strJson = fs.readFileSync('./json/n225in.json', 'utf8');
+    const arrHsh = JSON.parse(strJson);
 
-    let arrDate = [];
-    let arrUPRO = [];
-    let arrFXY = [];
-    let arrT1570 = [];
-
-    _.forEach(arrHashExcel, HashExcel => {
-        const nExcelValue = HashExcel.date - 2; //Excelでは1900年が閏年判定されるので2月29日まである。-2
-        const mDate = moment(['1900', '0', '1']).add(nExcelValue, 'days').format('YYYY-MM-DD');
-
-        arrDate.push(mDate);
-
-        arrUPRO.push(HashExcel.upro);
-        arrFXY.push(HashExcel.fxy);
-        arrT1570.push(HashExcel.t1570);
-    });
+    let arrDate = _.map(arrHsh, 'date');
+    let arrUPRO = _.map(arrHsh, 'upro');
+    let arrFXY = _.map(arrHsh, 'fxy');
+    let arrT1570 = _.map(arrHsh, 't1570');
 
     const ARR_LEN = arrDate.length;
     arrDate = _.drop(arrDate); //前日比の変化率なので初日を除外
@@ -172,12 +158,12 @@ const printResult = (arrDate, TEACH_DIV) => {
     const T1570_div = _.max(arrChangeT1570) * (1 + DESIRED_ERROR); //スキップ後の最大値に期待値誤差を加えて除数とする
 
     for (let i = 0; i < days; i++) {
-        const _x0 = IS_NIKKEI_TEACH ? (arrChangeUPRO[i] / UPRO_div) : (arrChangeT1570[i] / T1570_div);
+        const _x0 = arrChangeUPRO[i] / UPRO_div;
         const _x1 = arrChangeFXY[i] / FXY_div;
         const _x2 = -1; //配列最後にバイアス
 
         const _arrX = [_x0, _x1, _x2];
-        const _arrT = IS_NIKKEI_TEACH ? ([arrChangeT1570[i] / T1570_div]) : ([arrChangeUPRO[i] / UPRO_div]);
+        const _arrT = [arrChangeT1570[i] / T1570_div];
 
         x.push(_arrX);
         t.push(_arrT);
@@ -256,12 +242,9 @@ const printResult = (arrDate, TEACH_DIV) => {
             break;
         }
     } //while
+
     //計測終了
     timeEnd = performance.now();
+    printResult(arrDate, T1570_div);
 
-    if (IS_NIKKEI_TEACH) {
-        printResult(arrDate, T1570_div);
-    } else {
-        printResult(arrDate, UPRO_div);
-    }
 }
