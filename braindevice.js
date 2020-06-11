@@ -1,41 +1,26 @@
 'use strict';
 
-const brain = require('brain.js');
+const fs = require('fs');
 const _ = require('lodash');
-const XLSX = require('xlsx');
-const moment = require('moment');
+const brain = require('brain.js');
 const {
     performance
 } = require('perf_hooks');
-const path = require('path');
-const fs = require('fs');
 
 let arrTrainX = [];
 let arrTrainT = [];
-
-let arrDate = [];
-let arrUPRO = [];
-let arrFXY = [];
-let arrT1570 = [];
 
 const DESIRED_ERROR = 0.000193;
 const PERIOD = 55;
 let days; //学習データ数
 
-const CSV_PATH = path.join('T:\\ProgramFilesT\\pleiades\\workspace\\node225', 'nt1570.csv');
-const workbook = XLSX.readFile(CSV_PATH);
-const worksheet = workbook.Sheets['Sheet1'];
-const arrHashExcel = XLSX.utils.sheet_to_json(worksheet);
+const strJson = fs.readFileSync('./json/n225in.json', 'utf8');
+const arrHsh = JSON.parse(strJson);
 
-_.forEach(arrHashExcel, HashExcel => {
-    const nExcelValue = HashExcel.date - 2; //Excelでは1900年が閏年判定されるので2月29日まである。-2
-    const mDate = moment(['1900', '0', '1']).add(nExcelValue, 'days').format('YYYY-MM-DD');
-
-    arrDate.push(mDate);
-    arrUPRO.push(HashExcel.upro);
-    arrFXY.push(HashExcel.fxy);
-    arrT1570.push(HashExcel.t1570);
-});
+let arrDate = _.map(arrHsh, 'date');
+let arrUPRO = _.map(arrHsh, 'upro');
+let arrFXY = _.map(arrHsh, 'fxy');
+let arrT1570 = _.map(arrHsh, 't1570');
 
 const ARR_LEN = arrDate.length;
 arrDate = _.drop(arrDate); //前日比の変化率なので初日を除外
@@ -101,7 +86,8 @@ const trainOpt = {
     logPeriod: 500000
 }
 
-console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
+const strDate = new Date();
+console.log(strDate.toLocaleString());
 // create a simple feed forward neural network with backpropagation
 const net = new brain.NeuralNetwork(config);
 
