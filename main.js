@@ -3,11 +3,9 @@
 const fs = require('fs');
 const _ = require('lodash');
 const math = require('mathjs');
-const moment = require('moment');
 const {
     performance
 } = require('perf_hooks');
-//const crypto = require('crypto');
 
 const IN_NODE = 3; //入力ノード数（バイアス含む）
 const HID_NODE = 4; //隠れノード数
@@ -190,7 +188,8 @@ const printResult = (arrDate, TEACH_DIV) => {
 
     //計測開始
     timeStart = performance.now();
-    console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
+    const strDate = new Date();
+    console.log(strDate.toLocaleString());
 
     while (DESIRED_ERROR < fError) {
         epoch++;
