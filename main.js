@@ -48,11 +48,9 @@ const frandFix = () => Math.random(); //  0 <= x < 1.0
  * 隠れ層、出力層の計算
  */
 const findHiddenOutput = (n) => {
-    const MU = 1; //accelerate
-
     for (let i = 0; i < HID_NODE; i++) {
         if (ACTIVE === 0) {
-            hid[i] = sigmoid(math.dot(x[n], v[i])) * MU;
+            hid[i] = sigmoid(math.dot(x[n], v[i]));
         } else {
             hid[i] = Math.max(0, math.dot(x[n], v[i]));
         }
