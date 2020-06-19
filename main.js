@@ -7,8 +7,8 @@ const {
     performance
 } = require('perf_hooks');
 
-const IN_NODE = 3; //入力ノード数（バイアス含む）
-const HID_NODE = 4; //隠れノード数
+let IN_NODE; //入力ノード数（バイアス含む）
+let HID_NODE; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
@@ -128,6 +128,8 @@ const printResult = (arrHsh, DIV_T) => {
     });
     t = arrHsh.map(hsh => hsh.output);
 
+    IN_NODE = x[0].length  // get input length include bias
+    HID_NODE = IN_NODE + 1;
     DATA_LEN = x.length;
 
     //中間層の結合荷重を初期化
