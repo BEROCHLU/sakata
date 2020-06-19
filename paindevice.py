@@ -34,7 +34,7 @@ fError = 0.05
 x, t = None, None
 v, w = [], []
 
-isPlot = False
+isPlot = True
 
 
 def findHidOut(n: int):
