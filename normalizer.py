@@ -7,29 +7,23 @@ DESIRED_ERROR = 0.005
 PERIOD = 55
 
 
-def run():
+if __name__ == "__main__":
     in_path = "./json/n225in.json"
     out_path = "./json/n225out.json"
     with open(in_path, encoding="utf-8") as f:
         arrHsh = json.load(f)
 
-    LEN = len(arrHsh)
-    arrDOW = []
-    arrFX = []
-    arrNK = []
-    arrDate = []
-
-    for hsh in arrHsh:
-        arrDate.append(hsh["date"])
-        arrDOW.append(hsh["upro"])
-        arrFX.append(hsh["fxy"])
-        arrNK.append(hsh["t1570"])
-
-    arrDate.pop(0)  # 初日除外
+    arrDate = list(map(lambda hsh: hsh["date"], arrHsh))
+    arrDOW = list(map(lambda hsh: hsh["upro"], arrHsh))
+    arrFX = list(map(lambda hsh: hsh["fxy"], arrHsh))
+    arrNK = list(map(lambda hsh: hsh["t1570"], arrHsh))
 
     arrChange_DOW = []
     arrChange_FX = []
     arrChange_NK = []
+
+    arrDate.pop(0)  # 初日除外
+    LEN = len(arrHsh)
 
     for i in range(LEN):
         if 0 < i:  # 変化率なので初日除外
@@ -70,7 +64,3 @@ def run():
 
     with open(out_path, "w") as f:
         json.dump(arrTrainData, f)
-
-
-if __name__ == "__main__":
-    run()
