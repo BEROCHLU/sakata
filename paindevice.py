@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 DESIRED_ERROR = 0.005
-THRESHOLD = 1000000
+THRESHOLD = 10000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -94,7 +94,6 @@ def printResult():
 
 def addBias(hsh: dict) -> dict:
     arrInput = hsh["input"]
-    # arrInput.append(random.random() * -1)  # add bias
     arrInput.append(-1)  # add bias
     return arrInput
 

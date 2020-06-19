@@ -10,6 +10,8 @@ PERIOD = 55
 if __name__ == "__main__":
     in_path = "./json/n225in.json"
     out_path = "./json/n225out.json"
+    out_path2 = "./json/setting.json"
+
     with open(in_path, encoding="utf-8") as f:
         arrHsh = json.load(f)
 
@@ -64,3 +66,6 @@ if __name__ == "__main__":
 
     with open(out_path, "w") as f:
         json.dump(arrTrainData, f)
+    with open(out_path2, "w") as f:
+        hsh = {"DESIRED_ERROR": DESIRED_ERROR, "DIV_T": DIV_NK}
+        json.dump(hsh, f)
