@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 DESIRED_ERROR = 0.005
-THRESHOLD = 10000
+THRESHOLD = 1000000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -34,7 +34,7 @@ fError = 0.05
 x, t = None, None
 v, w = [], []
 
-isPlot = True
+isPlot = False
 
 
 def findHidOut(n: int):
@@ -53,20 +53,27 @@ def findHidOut(n: int):
         out[i] = sigmoid(dot_o)
 
 
-def printResult():
+def printResult(DIV_T: float):
     arrNet = []
     s = 0
     s_max = -256
     s_min = 256
     for i in range(days):
         findHidOut(i)
-        rd_teacher = round(t[i][0], 3)
-        rd_out = round(out[0], 3)
+
+        undo_out = round(out[0] * DIV_T, 2)
+        undo_teacher = round(t[i][0] * DIV_T, 2)
+
+        pad_out = str(undo_out).rjust(6)
+        pad_teacher = str(undo_teacher).rjust(6)
+        
         net = 100 * (t[i][0] - out[0]) / t[i][0]
         s += net
         arrNet.append(net)
         str_date = arrHsh[i]["date"]
-        print(f"{str_date} teacher: {rd_teacher} out: {rd_out} valance: {round(s, 3)}")
+        print(
+            f"{str_date} {pad_out} True: {pad_teacher} valance: {round(s, 2)}"
+        )
 
         if s_max < s:
             s_max = s
@@ -74,10 +81,10 @@ def printResult():
             s_min = s
 
     rd_err = round(fError, 5)
-    s_max = round(s_max, 3)
-    s_min = round(s_min, 3)
+    s_max = round(s_max, 2)
+    s_min = round(s_min, 2)
     s_mean = (s_max + s_min) / 2
-    s_mean = round(s_mean, 3)
+    s_mean = round(s_mean, 2)
     f_time = time_ed - time_st
 
     if 60 <= f_time:
@@ -101,6 +108,8 @@ def addBias(hsh: dict) -> dict:
 if __name__ == "__main__":
     f = open("./json/n225out.json", "r")  # xor | cell30 | py225 | n225out
     arrHsh = json.load(f)
+    f2 = open("./json/setting.json", "r")
+    HshSetting = json.load(f2)
 
     x = list(map(addBias, arrHsh))
     t = list(map(lambda hsh: hsh["output"], arrHsh))
@@ -123,17 +132,17 @@ if __name__ == "__main__":
 
     for i in range(HID_NODE):
         for j in range(IN_NODE):
-            v[i].append(random.random()) #random() | uniform(0.5, 1.0)
+            v[i].append(random.random())  # random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
-            w[i].append(random.random()) #random() | uniform(0.5, 1.0)
+            w[i].append(random.random())  # random() | uniform(0.5, 1.0)
 
     date_now = datetime.datetime.now()
-    print(date_now.strftime('%F %T'))
+    print(date_now.strftime("%F %T"))
 
     time_st = time.time()
 
-    while DESIRED_ERROR < fError:
+    while HshSetting["DESIRED_ERROR"] < fError:
         epoch += 1
         fError = 0
 
@@ -171,7 +180,7 @@ if __name__ == "__main__":
             break
     # while
     time_ed = time.time()
-    printResult()
+    printResult(HshSetting["DIV_T"])
     # show plot
     if isPlot:
         plt.plot(arrErr)
