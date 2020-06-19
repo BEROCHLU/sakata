@@ -50,12 +50,16 @@ const calcHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
         if (ACTIVE_MODE === 0) {
             hid[i] = sigmoid(math.dot(x[n], v[i]));
-        } else {
+        } else if (ACTIVE_MODE === 1) {
             hid[i] = Math.max(0, math.dot(x[n], v[i]));
         }
     }
 
-    hid[HID_NODE - 1] = frandFix(); //1 | frandFix() 配列最後にバイアス
+    if (ACTIVE_MODE === 0) {
+        hid[HID_NODE - 1] = frandFix(); //配列最後にバイアス
+    } else if (ACTIVE_MODE === 1) {
+        hid[HID_NODE - 1] = 1; //配列最後にバイアス
+    }
 
     for (let i = 0; i < OUT_NODE; i++) {
         out[i] = sigmoid(math.dot(w[i], hid));
@@ -184,7 +188,7 @@ const printResult = (arrHsh, DIV_T) => {
 
                 if (ACTIVE_MODE === 0) {
                     delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
-                } else {
+                } else if (ACTIVE_MODE === 1) {
                     delta_hid[i] = dfmax(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
                 }
             }
