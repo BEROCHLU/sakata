@@ -12,7 +12,7 @@ const HID_NODE = 4; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const ACTIVE = 0; //0: sigmoid 1: ReLU
+const ACTIVE_MODE = 0; //0: sigmoid, 1: ReLU
 const THRESH = 1000000;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
@@ -30,8 +30,6 @@ let t = [];
 
 let epoch = 0; //学習回数
 let DATA_LEN; //学習データ数
-let DESIRED_ERROR; //期待値誤差
-let DIV_T;
 let fError = Number.MAX_SAFE_INTEGER;
 
 let v = []; //v[HID_NODE][IN_NODE]
@@ -46,11 +44,11 @@ const frandFix = () => Math.random(); //  0 <= x < 1.0
 
 /**
  * 
- * @param {*} n 
+ * @param {number} n 
  */
 const calcHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
-        if (ACTIVE === 0) {
+        if (ACTIVE_MODE === 0) {
             hid[i] = sigmoid(math.dot(x[n], v[i]));
         } else {
             hid[i] = Math.max(0, math.dot(x[n], v[i]));
@@ -64,8 +62,12 @@ const calcHidOut = (n) => {
     }
 }
 
-
-const printResult = (arrHsh) => {
+/**
+ * 
+ * @param {Array<Object>} arrHsh 
+ * @param {number} DIV_T 
+ */
+const printResult = (arrHsh, DIV_T) => {
 
     let arrErate = [];
     let valance = 0;
@@ -88,7 +90,7 @@ const printResult = (arrHsh) => {
         const pad_erate = arrErate[i].toFixed(2).padStart(5);
         const pad_valance = valance.toFixed(2).padStart(5);
 
-        console.log(`${arrHsh[i]['date']} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_valance}`);
+        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_valance}`);
 
         valanceMin = (valance < valanceMin) ? valance : valanceMin;
         valanceMax = (valanceMax < valance) ? valance : valanceMax;
@@ -107,13 +109,16 @@ const printResult = (arrHsh) => {
     console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
     console.log(`Nom: ${valanceNom.toFixed(2)}`);
 }
+
 /**
  * Main
  */
 {
-    const strJson = fs.readFileSync('./json/n225out.json', 'utf8');
+    const strPath = './json/n225out.json';
+    const strPath2 = './json/setting.json';
+    const strJson = fs.readFileSync(strPath, 'utf8');
+    const strJson2 = fs.readFileSync(strPath2, 'utf8');
     const arrHsh = JSON.parse(strJson);
-    const strJson2 = fs.readFileSync('./json/setting.json', 'utf8');
     const hshSetting = JSON.parse(strJson2);
 
     x = arrHsh.map(hsh => {
@@ -124,8 +129,6 @@ const printResult = (arrHsh) => {
     t = arrHsh.map(hsh => hsh.output);
 
     DATA_LEN = x.length;
-    DESIRED_ERROR = hshSetting.DESIRED_ERROR;
-    DIV_T = hshSetting.DIV_T;
 
     //中間層の結合荷重を初期化
     for (let i = 0; i < HID_NODE; i++) {
@@ -151,7 +154,7 @@ const printResult = (arrHsh) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    while (DESIRED_ERROR < fError) {
+    while (hshSetting.DESIRED_ERROR < fError) {
         epoch++;
         fError = 0;
 
@@ -177,7 +180,7 @@ const printResult = (arrHsh) => {
                     delta_hid[i] += delta_out[k] * w[k][i]; //Σδw
                 }
 
-                if (ACTIVE === 0) {
+                if (ACTIVE_MODE === 0) {
                     delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
                 } else {
                     delta_hid[i] = dfmax(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
@@ -203,6 +206,6 @@ const printResult = (arrHsh) => {
 
     //計測終了
     timeEnd = performance.now();
-    printResult(arrHsh);
+    printResult(arrHsh, hshSetting.DIV_T);
 
 }
