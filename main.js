@@ -13,7 +13,7 @@ const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
 const ACTIVE_MODE = 0; //0: sigmoid, 1: ReLU
-const THRESH = 1000000;
+const THRESH = 30000;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分

@@ -3,7 +3,7 @@
 
 import json
 
-DESIRED_ERROR = 0.005
+DESIRED_ERROR = 0.003
 PERIOD = 50
 
 
