@@ -200,7 +200,7 @@ const printResult = (arrHsh, DIV_T) => {
             }
         }
 
-        if (epoch % 500000 === 0) {
+        if (epoch % 10000 === 0) {
             epoch = epoch + '';
             console.log(`${epoch.padStart(5)}: ${_.round(fError, 6)}`);
         }
