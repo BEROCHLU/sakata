@@ -4,7 +4,7 @@
 import json
 
 DESIRED_ERROR = 0.005
-PERIOD = 55
+PERIOD = 50
 
 
 if __name__ == "__main__":
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         arrTrainData.append(a)
 
     with open(out_path, "w") as f:
-        json.dump(arrTrainData, f)
+        json.dump(arrTrainData, f, indent=4)
     with open(out_path2, "w") as f:
         hsh = {"DESIRED_ERROR": DESIRED_ERROR, "DIV_T": DIV_NK}
         json.dump(hsh, f)
