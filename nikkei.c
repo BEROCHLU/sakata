@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define SIZE            1024    //available max line in csv file
-#define DESIRED_ERROR   0.003  //not recommend change
+#define DESIRED_ERROR   0.003   //not recommend change
 #define IN_NODE         3       //includes bias
 #define HID_NODE        4
 #define OUT_NODE        1
@@ -22,7 +22,6 @@
 
 void updateHidOut(int);
 void printResult(void);
-void printVW(void);
 float fRandFix(void);
 
 int q = 0, days;
@@ -31,9 +30,8 @@ char date_S[SIZE][DATE_SIZE];
 float DOWdiv = 0, FXdiv = 0, N225div = 0;
 float x[SIZE][IN_NODE], t[SIZE][OUT_NODE];
 float v[HID_NODE][IN_NODE], w[OUT_NODE][HID_NODE], hid[HID_NODE], out[OUT_NODE];
-int isNotShow = 0;
 
-int main(int argc, char *argv[])
+int main(void)
 {
     int i, j, k, p;
     int nShift;
@@ -50,7 +48,7 @@ int main(int argc, char *argv[])
     clock_t start, end;
     time_t timer;
 
-    if ((fp = fopen("N225BP.csv", "r")) == NULL) {
+    if ((fp = fopen("./csv/n225in.csv", "r")) == NULL) {
         printf("The file doesn't exist!\n"); exit(0);
     }
 
@@ -68,11 +66,6 @@ int main(int argc, char *argv[])
     days = i - 1;//前日比の変化率なので値が1つ減る
 
     fclose(fp);
-
-    if (1 < argc) //argcの個数で切り分けることで引数あるなしの処理を分けられる
-        isNotShow = (strcmp(argv[1], "mm") == 0) ? 1 : 0;
-    else
-        isNotShow = 0;
 
     nShift = days - PERIOD; //skip days
 
@@ -98,7 +91,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < days; i++) {
         x[i][0] = DOW_S[i] / DOWdiv;    //正規化
         x[i][1] = FX_S[i] / FXdiv;      //正規化
-        x[i][2] = (-1);                 //配列最後にバイアス
+        x[i][2] = fRandFix();           //配列最後にバイアス
         t[i][0] = N225_S[i] / N225div;  //正規化
     }
 
@@ -111,7 +104,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < OUT_NODE; i++) //出力層の結合荷重の初期化
         for (j = 0; j < HID_NODE; j++)
             w[i][j] = fRandFix();
-    //printVW();
+
     time(&timer);
     printf("%s", ctime(&timer));
 
@@ -155,9 +148,8 @@ int main(int argc, char *argv[])
             }
         }
 
-        if (q % 500000 == 0 && isNotShow != 1) {
+        if (q % 500000 == 0)
             printf("%6d: %f\n", q, Error);
-        }
         if (THRESH <= q) {
             printf("force quit\n");
             break;
@@ -168,7 +160,6 @@ int main(int argc, char *argv[])
 
     //学習結果を表示
     printResult();
-
     printf("Time %.2lfsec. err = %.5lf\n", (float)(end - start) / CLOCKS_PER_SEC, Error);
 
     return 0;
@@ -208,8 +199,7 @@ void printResult(void)
     int i;
     float Esum = 0, Erate[SIZE], valance = 0;
     float valanceMin = DBL_MAX, valanceMax = -DBL_MAX;
-
-    //float valanceNom=0;
+    float valanceNom = 0;
 
     for (i = 0; i < days; i++) {
         updateHidOut(i);
@@ -217,8 +207,7 @@ void printResult(void)
         Erate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
         valance += Erate[i];
 
-        if (isNotShow != 1)
-            printf("%-11s %6.2lf True %6.2lf Error %5.2lf%% %5.2lf", date_S[i], out[0] * N225div, t[i][0] * N225div, Erate[i], valance);
+        printf("%-11s %6.2lf True %6.2lf Error %5.2lf%% %5.2lf", date_S[i], out[0] * N225div, t[i][0] * N225div, Erate[i], valance);
 
         Erate[i] = fabs(Erate[i]);
         Esum += Erate[i];
@@ -227,35 +216,13 @@ void printResult(void)
         if (valanceMax < valance) valanceMax = valance;
     }
 
-    //valanceNom = (valance - valanceMin) * 100/ (valanceMax - valanceMin);
-
-    if (isNotShow == 1)
-        printf("%s %5.2lf", date_S[days - 1], valance);
+    valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
 
     printf("\nAverage error = %.2lf%%\n", (Esum / days));
     printf("Min = %.2lf Max = %.2lf Mid = %.2lf\n", valanceMin, valanceMax, (valanceMin + valanceMax) / 2);
     printf("epoch = %d days = %d\n", q, days);
+    printf("Nom = %f\n", valanceNom);
 }
-
-void printVW(void)
-{
-    int i, j;
-
-    for (i = 0; i < HID_NODE; i++) {/* 中間層の結合荷重 */
-        printf("v = ");
-        for (j = 0; j < IN_NODE; j++)
-            printf("%5lf ", v[i][j]);
-        printf("\n");
-    }
-
-    for (i = 0; i < OUT_NODE; i++) {/* 出力層の結合荷重 */
-        printf("w = ");
-        for (j = 0; j < HID_NODE; j++)
-            printf("%5lf ", w[i][j]);
-        printf("\n");
-    }
-}
-
 //fix same seed issue of random number
 float fRandFix(void)
 {
@@ -268,4 +235,3 @@ float fRandFix(void)
 
     return drand;
 }
-

@@ -1,6 +1,6 @@
 node_modules/
 __pycache__/
-.vscode/
 old/
 yarn.lock
 *.code-workspace
+*.exe
