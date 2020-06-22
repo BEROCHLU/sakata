@@ -12,12 +12,10 @@ let HID_NODE; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const ACTIVE_MODE = 0; //0: sigmoid, 1: ReLU
 const THRESH = 30000;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
-const dfmax = x => (0 < x) ? 1 : 0; //ReLU関数微分
 
 let hid = []; //隠れノード
 let out = []; //出力ノード
@@ -48,18 +46,10 @@ const frandFix = () => Math.random(); //  0 <= x < 1.0
  */
 const calcHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
-        if (ACTIVE_MODE === 0) {
-            hid[i] = sigmoid(math.dot(x[n], v[i]));
-        } else if (ACTIVE_MODE === 1) {
-            hid[i] = Math.max(0, math.dot(x[n], v[i]));
-        }
+        hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
 
-    if (ACTIVE_MODE === 0) {
-        hid[HID_NODE - 1] = frandFix(); //配列最後にバイアス
-    } else if (ACTIVE_MODE === 1) {
-        hid[HID_NODE - 1] = 1; //配列最後にバイアス
-    }
+    hid[HID_NODE - 1] = frandFix(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
         out[i] = sigmoid(math.dot(w[i], hid));
@@ -132,7 +122,7 @@ const printResult = (arrHsh, DIV_T) => {
     });
     t = arrHsh.map(hsh => hsh.output);
 
-    IN_NODE = x[0].length  // get input length include bias
+    IN_NODE = x[0].length // get input length include bias
     HID_NODE = IN_NODE + 1;
     DATA_LEN = x.length;
 
@@ -186,11 +176,7 @@ const printResult = (arrHsh, DIV_T) => {
                     delta_hid[i] += delta_out[k] * w[k][i]; //Σδw
                 }
 
-                if (ACTIVE_MODE === 0) {
-                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
-                } else if (ACTIVE_MODE === 1) {
-                    delta_hid[i] = dfmax(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
-                }
+                delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
             }
 
             for (let i = 0; i < HID_NODE; i++) { // Δv
