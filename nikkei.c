@@ -38,7 +38,7 @@ int main(void)
     float DOW[SIZE] = { 0 };
     float FX[SIZE] = { 0 };
     float N225[SIZE] = { 0 };
-    float Error = DBL_MAX;
+    float Error = FLT_MAX;
     float delta_out[OUT_NODE], delta_hid[HID_NODE];
     float DOW_S[SIZE] = { 0 };
     float FX_S[SIZE] = { 0 };
@@ -198,7 +198,7 @@ void printResult(void)
 {
     int i;
     float Esum = 0, Erate[SIZE], valance = 0;
-    float valanceMin = DBL_MAX, valanceMax = -DBL_MAX;
+    float valanceMin = FLT_MAX, valanceMax = -FLT_MAX;
     float valanceNom = 0;
 
     for (i = 0; i < days; i++) {
