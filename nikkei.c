@@ -221,17 +221,20 @@ void printResult(void)
     printf("\nAverage error = %.2lf%%\n", (Esum / days));
     printf("Min = %.2lf Max = %.2lf Mid = %.2lf\n", valanceMin, valanceMax, (valanceMin + valanceMax) / 2);
     printf("epoch = %d days = %d\n", q, days);
-    printf("Nom = %f\n", valanceNom);
+    printf("Nom = %.2lf\n", valanceNom);
 }
 //fix same seed issue of random number
 float fRandFix(void)
 {
     int i;
-    float drand;
+    float fRand;
 
     //乱数を複数回生成して最後の値を使用する(線形合同法)
-    for (i = 0; i < 101; i++)
-        drand = rand() % 10000 / 10001.0;
+    for (i = 0; i < 255; i++)
+        fRand = rand();
 
-    return drand;
+    //fRand = fRand / (RAND_MAX + 1.0);
+    fRand = rand() % 5000 / 10000.0 + 0.5;
+
+    return fRand;
 }

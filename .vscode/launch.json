@@ -18,6 +18,25 @@
             "skipFiles": [
                 "<node_internals>/**"
             ]
+        },
+        {
+            "name": "gcc.exe - active file build & debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\MinGW64\\mingw64\\bin\\gdb.exe",
+            "setupCommands": [{
+                "description": "gdb の再フォーマットを有効にする",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }],
+            "preLaunchTask": "aho"
         }
     ]
 }
