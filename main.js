@@ -100,8 +100,8 @@ const printResult = (arrHsh, DIV_T) => {
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
     console.log(`epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
     console.log(`Nom: ${valanceNom.toFixed(2)}`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
 }
 
 /**
