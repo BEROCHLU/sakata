@@ -16,7 +16,7 @@
 #define dfmax(x)        ((x) > 0 ? 1.0 : 0)
 #define dtanh(x)        (1.0 - tanh(x) * tanh(x))
 #define PERIOD          50  //expected learning period
-#define THRESH          30000
+#define THRESH          1000000
 #define ACTIVE          0   //0: sigmoid 1: ReLU
 #define DATE_SIZE       12
 
