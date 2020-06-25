@@ -5,7 +5,8 @@
   "main": "braindevice.js",
   "scripts": {
     "sakata": "node braindevice.js",
-    "main": "node main.js"
+    "main": "node main.js",
+    "nodeclipse": "node T:/ProgramFilesT/pleiades/workspace/node225/main.js"
   },
   "keywords": [],
   "author": "",
