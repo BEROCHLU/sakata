@@ -230,11 +230,11 @@ float fRandFix(void)
     float fRand;
 
     //乱数を複数回生成して最後の値を使用する(線形合同法)
-    for (i = 0; i < 255; i++)
+    for (i = 0; i < 101; i++)
         fRand = rand();
 
-    //fRand = fRand / (RAND_MAX + 1.0);
-    fRand = rand() % 5000 / 10000.0 + 0.5;
+    fRand = fRand / (RAND_MAX + 1.0);
+    //fRand = rand() % 5000 / 10000.0 + 0.5;
 
     return fRand;
 }
