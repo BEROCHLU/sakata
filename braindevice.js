@@ -10,8 +10,8 @@ const {
 let arrTrainX = [];
 let arrTrainT = [];
 
-const DESIRED_ERROR = 0.000193;
-const PERIOD = 55;
+const DESIRED_ERROR = 0.0002;
+const PERIOD = 50;
 let days; //学習データ数
 
 const strJson = fs.readFileSync('./json/n225in.json', 'utf8');

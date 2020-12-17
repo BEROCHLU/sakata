@@ -14,5 +14,8 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "mathjs": "6.6.5"
+  },
+  "devDependencies": {
+    "brain.js": "^2.0.0-beta.2"
   }
 }

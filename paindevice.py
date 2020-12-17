@@ -8,7 +8,7 @@ import random
 import matplotlib.pyplot as plt
 import datetime
 
-THRESHOLD = 1000000
+THRESHOLD = 500000
 OUT_NODE = 1
 ETA = 0.5
 

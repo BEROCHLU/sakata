@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define SIZE            1024    //available max line in csv file
-#define DESIRED_ERROR   0.003   //not recommend change
+#define DESIRED_ERROR   0.002   //not recommend change
 #define IN_NODE         3       //includes bias
 #define HID_NODE        4
 #define OUT_NODE        1
