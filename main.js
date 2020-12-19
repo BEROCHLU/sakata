@@ -12,7 +12,7 @@ let HID_NODE; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const THRESH = 1000000;
+const THRESH = 300000;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分

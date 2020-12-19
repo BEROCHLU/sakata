@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define SIZE            1024    //available max line in csv file
-#define DESIRED_ERROR   0.002   //not recommend change
+#define DESIRED_ERROR   0.001   //not recommend change
 #define IN_NODE         3       //includes bias
 #define HID_NODE        4
 #define OUT_NODE        1
@@ -16,7 +16,7 @@
 #define dfmax(x)        ((x) > 0 ? 1.0 : 0)
 //#define dtanh(x)        (1.0 - tanh(x) * tanh(x))
 #define PERIOD          50  //expected learning period
-#define THRESH          1000000
+#define THRESH          300000
 #define ACTIVE          0   //0: sigmoid 1: ReLU
 #define DATE_SIZE       12
 
@@ -148,8 +148,8 @@ int main(void)
             }
         }
 
-        if (q % 500000 == 0)
-            printf("%6d: %f\n", q, Error);
+        if (q % 100000 == 0)
+            //printf("%6d: %f\n", q, Error);
         if (THRESH <= q) {
             printf("force quit\n");
             break;
