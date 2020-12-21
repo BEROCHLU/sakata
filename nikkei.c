@@ -236,5 +236,5 @@ float fRandFix(void)
     fRand = fRand / (RAND_MAX + 1.0);
     //fRand = rand() % 5000 / 10000.0 + 0.5;
 
-    return fRand;
+    return 0.5;
 }

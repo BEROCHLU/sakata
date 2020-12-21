@@ -38,7 +38,7 @@ let timeEnd;
 
 //乱数生成
 //const frandFix = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
-const frandFix = () => Math.random(); //  0 <= x < 1.0
+const frandFix = () => 0.5; //  0 <= x < 1.0, Math.random()
 
 /**
  * 
@@ -150,7 +150,7 @@ const printResult = (arrHsh, DIV_T) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    while (hshSetting.DESIRED_ERROR < fError) {
+    while (epoch < THRESH) {
         epoch++;
         fError = 0;
 
@@ -184,15 +184,6 @@ const printResult = (arrHsh, DIV_T) => {
                     v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                 }
             }
-        }
-
-        if (epoch % 500000 === 0) {
-            epoch = epoch + '';
-            console.log(`${epoch.padStart(5)}: ${_.round(fError, 6)}`);
-        }
-        if (THRESH <= epoch) {
-            console.log(`force quit`);
-            break;
         }
     } //while
 
