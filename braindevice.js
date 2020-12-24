@@ -85,8 +85,10 @@ for (let i = 0; i < DATA_LEN; i++) {
 
 const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
 const valanceMid = (valanceMin + valanceMax) / 2;
+const valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
 
 console.log(`Average error: ${averageError}%`);
 console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
 console.log(`epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
+console.log(`Nom: ${valanceNom.toFixed(2)}`);
 console.log(`Time: ${timeSec.toFixed(2)}sec.`);
