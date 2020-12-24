@@ -10,8 +10,8 @@ const {
 let arrTrainX = [];
 let arrTrainT = [];
 
-const DESIRED_ERROR = 0.0002;
-const PERIOD = 50;
+const DESIRED_ERROR = 0.001;
+const PERIOD = 55;
 let days; //学習データ数
 
 const strJson = fs.readFileSync('./json/n225in.json', 'utf8');
@@ -80,10 +80,10 @@ const config = {
 }
 
 const trainOpt = {
-    iterations: 3600000,
-    errorThresh: DESIRED_ERROR, // the acceptable error percentage from training data --> number between 0 and 1
-    log: true, // true to use console.log, when a function is supplied it is used --> Either true or a function
-    logPeriod: 500000
+    iterations: 300000,
+    errorThresh: 0.00001, // the acceptable error percentage from training data --> number between 0 and 1
+    log: false, // true to use console.log, when a function is supplied it is used --> Either true or a function
+    logPeriod: 100000
 }
 
 const strDate = new Date();
