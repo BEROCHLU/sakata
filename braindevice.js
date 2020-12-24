@@ -7,62 +7,18 @@ const {
     performance
 } = require('perf_hooks');
 
-let arrTrainX = [];
-let arrTrainT = [];
+const strPath = './json/n225out.json';
+const strPathSetting = './json/setting.json';
 
-const DESIRED_ERROR = 0.001;
-const PERIOD = 55;
-let days; //学習データ数
+const strJsonOut = fs.readFileSync(strPath, 'utf8');
+const strJsonSetting = fs.readFileSync(strPathSetting, 'utf8');
 
-const strJson = fs.readFileSync('./json/n225in.json', 'utf8');
-const arrHsh = JSON.parse(strJson);
+const arrHshOut = JSON.parse(strJsonOut);
+const hshSetting = JSON.parse(strJsonSetting);
 
-let arrDate = _.map(arrHsh, 'date');
-let arrUPRO = _.map(arrHsh, 'upro');
-let arrFXY = _.map(arrHsh, 'fxy');
-let arrT1570 = _.map(arrHsh, 't1570');
-
-const ARR_LEN = arrDate.length;
-arrDate = _.drop(arrDate); //前日比の変化率なので初日を除外
-
-let arrChangeUPRO = [];
-let arrChangeFXY = [];
-let arrChangeT1570 = [];
-
-for (let i = 0; i < ARR_LEN; i++) {
-    if (0 < i) {
-        const _f0 = (arrUPRO[i] / arrUPRO[i - 1]) * 100;
-        arrChangeUPRO.push(_f0);
-
-        const _f1 = (arrFXY[i] / arrFXY[i - 1]) * 100;
-        arrChangeFXY.push(_f1);
-
-        const _f2 = (arrT1570[i] / arrT1570[i - 1]) * 100;
-        arrChangeT1570.push(_f2);
-    }
-}
-
-days = ARR_LEN - 1;
-
-const SKIP = days - PERIOD; //スキップする日数
-days = PERIOD;
-
-arrDate = _.drop(arrDate, SKIP);
-arrChangeUPRO = _.drop(arrChangeUPRO, SKIP);
-arrChangeFXY = _.drop(arrChangeFXY, SKIP);
-arrChangeT1570 = _.drop(arrChangeT1570, SKIP);
-
-const UPRO_div = _.max(arrChangeUPRO) * (1 + DESIRED_ERROR); //スキップ後に最大値取得
-const FXY_div = _.max(arrChangeFXY) * (1 + DESIRED_ERROR); //スキップ後に最大値取得
-const T1570_div = _.max(arrChangeT1570) * (1 + DESIRED_ERROR); //スキップ後の最大値に期待値誤差を加えて除数とする
-//学習データ正規化
-for (let i = 0; i < days; i++) {
-    const _x0 = arrChangeUPRO[i] / UPRO_div;
-    const _x1 = arrChangeFXY[i] / FXY_div;
-
-    arrTrainX.push([_x0, _x1]); //training data without bias
-    arrTrainT.push([arrChangeT1570[i] / T1570_div]); //teacher data
-}
+const arrTrainX = _.map(arrHshOut, hsh => hsh.input);
+const arrTrainT = _.map(arrHshOut, hsh => hsh.output);
+const arrDate = _.map(arrHshOut, hsh => hsh.date);
 
 const arrTrainData = _.zipWith(arrTrainX, arrTrainT, arrDate, (x, t, d) => {
     return {
@@ -106,13 +62,15 @@ let valance = 0;
 let valanceMin = Number.MAX_SAFE_INTEGER;
 let valanceMax = Number.MIN_SAFE_INTEGER;
 
-for (let i = 0; i < days; i++) {
+const DATA_LEN = arrTrainX.length;
+
+for (let i = 0; i < DATA_LEN; i++) {
     arrErate[i] = (arrTrainT[i][0] - arrOut[i]) / arrTrainT[i][0] * 100;
 
     valance += arrErate[i];
 
-    const undo_out = arrOut[i] * T1570_div;
-    const undo_teacher = arrTrainT[i][0] * T1570_div;
+    const undo_out = arrOut[i] * hshSetting.DIV_T;
+    const undo_teacher = arrTrainT[i][0] * hshSetting.DIV_T;
 
     const pad_out = undo_out.toFixed(2).padStart(6);
     const pad_teacher = undo_teacher.toFixed(2).padStart(6);
@@ -130,5 +88,5 @@ const valanceMid = (valanceMin + valanceMax) / 2;
 
 console.log(`Average error: ${averageError}%`);
 console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
-console.log(`epoch: ${netrain.iterations} days: ${days}`);
+console.log(`epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
 console.log(`Time: ${timeSec.toFixed(2)}sec.`);
