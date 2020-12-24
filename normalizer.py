@@ -4,7 +4,7 @@
 import json
 
 DESIRED_ERROR = 0.001
-PERIOD = 50
+PERIOD = 55
 
 
 if __name__ == "__main__":

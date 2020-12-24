@@ -8,7 +8,9 @@
             "args": [
                 "-g",
                 "${file}",
-                "-lm"
+                "-lm",
+                "&",
+                "a.exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

@@ -15,7 +15,7 @@
 #define dsigmoid(x)     ((x) * (1.0 - (x)))
 #define dfmax(x)        ((x) > 0 ? 1.0 : 0)
 //#define dtanh(x)        (1.0 - tanh(x) * tanh(x))
-#define PERIOD          50  //expected learning period
+#define PERIOD          55  //expected learning period
 #define THRESH          300000
 #define ACTIVE          0   //0: sigmoid 1: ReLU
 #define DATE_SIZE       12
@@ -110,7 +110,7 @@ int main(void)
 
     start = clock();
 
-    while (DESIRED_ERROR < Error) {
+    while (q < THRESH) {
         q++; Error = 0;
 
         for (p = 0; p < days; p++) {
@@ -146,13 +146,6 @@ int main(void)
                     v[i][j] += ETA * delta_hid[i] * x[p][j];    //Δu=ηH(1-H)XΣδw
                 }
             }
-        }
-
-        if (q % 100000 == 0)
-            //printf("%6d: %f\n", q, Error);
-        if (THRESH <= q) {
-            printf("force quit\n");
-            break;
         }
     } //while
 
