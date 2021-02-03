@@ -2,5 +2,4 @@ node_modules/
 __pycache__/
 old/
 yarn.lock
-*.code-workspace
 *.exe
