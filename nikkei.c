@@ -16,7 +16,7 @@
 #define dfmax(x)        ((x) > 0 ? 1.0 : 0)
 //#define dtanh(x)        (1.0 - tanh(x) * tanh(x))
 #define PERIOD          55  //expected learning period
-#define THRESH          300000
+#define THRESH          500000
 #define ACTIVE          0   //0: sigmoid 1: ReLU
 #define DATE_SIZE       12
 
@@ -153,7 +153,7 @@ int main(void)
 
     //学習結果を表示
     printResult();
-    printf("Time %.2lfsec. err = %.5lf\n", (float)(end - start) / CLOCKS_PER_SEC, Error);
+    printf("Time %.2lfsec. err = %.5lf\n\n", (float)(end - start) / CLOCKS_PER_SEC, Error);
 
     return 0;
 }
