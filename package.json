@@ -1,0 +1,22 @@
+{
+  "name": "sakata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "braindevice.js",
+  "scripts": {
+    "sakata": "node braindevice.js",
+    "main": "node main.js",
+    "nodeclipse": "node T:/ProgramFilesT/pleiades/workspace/node225/main.js",
+    "o2": "gcc -O2 nikkei.c -lm && a.exe >> log.txt & call notepad log.txt"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "mathjs": "6.6.5"
+  },
+  "devDependencies": {
+    "brain.js": "^2.0.0-beta.2"
+  }
+}
