@@ -7,7 +7,7 @@
     "sakata": "node braindevice.js",
     "main": "node main.js",
     "nodeclipse": "node T:/ProgramFilesT/pleiades/workspace/node225/main.js",
-    "o2": "gcc -O2 nikkei.c -lm && a.exe >> log.txt"
+    "o2": "gcc -O2 nikkei.c -lm && a.exe >> log.txt & call notepad log.txt"
   },
   "keywords": [],
   "author": "",
