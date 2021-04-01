@@ -4,3 +4,4 @@ old/
 yarn.lock
 a.exe
 log.txt
+*.bat
