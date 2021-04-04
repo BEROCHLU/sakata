@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import datetime
 import json
 import math
-import time
 import random
-import matplotlib.pyplot as plt
-import datetime
+import time
 
-THRESHOLD = 300000
+import matplotlib.pyplot as plt
+import pandas as pd
+
+THRESHOLD = 50000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -33,7 +35,7 @@ fError = 0.05
 x, t = None, None
 v, w = [], []
 
-isPlot = True
+isPlot = False
 
 
 def findHidOut(n: int):
@@ -170,11 +172,6 @@ if __name__ == "__main__":
             if epoch % 100 == 0:
                 # print(f"{epoch}: {fError}")
                 arrErr.append(fError)
-                pass
-
-        if THRESHOLD <= epoch:
-            print("force quit")
-            break
     # while
     time_ed = time.time()
     printResult(HshSetting["DIV_T"])

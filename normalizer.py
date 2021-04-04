@@ -8,7 +8,7 @@ PERIOD = 55
 
 
 if __name__ == "__main__":
-    in_path = "./json/n225in.json"
+    in_path = "./json/hdatexyt.json"
     out_path = "./json/n225out.json"
     out_path2 = "./json/setting.json"
 
@@ -16,9 +16,9 @@ if __name__ == "__main__":
         arrHsh = json.load(f)
 
     arrDate = list(map(lambda hsh: hsh["date"], arrHsh))
-    arrDOW = list(map(lambda hsh: hsh["upro"], arrHsh))
-    arrFX = list(map(lambda hsh: hsh["fxy"], arrHsh))
-    arrNK = list(map(lambda hsh: hsh["t1570"], arrHsh))
+    arrDOW = list(map(lambda hsh: hsh["close_x"], arrHsh))
+    arrFX = list(map(lambda hsh: hsh["close_y"], arrHsh))
+    arrNK = list(map(lambda hsh: hsh["open_t"], arrHsh))
 
     arrChange_DOW = []
     arrChange_FX = []
