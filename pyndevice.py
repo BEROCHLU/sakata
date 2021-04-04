@@ -10,7 +10,7 @@ import time
 import matplotlib.pyplot as plt
 import pandas as pd
 
-THRESHOLD = 50000
+THRESHOLD = 500000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -35,7 +35,7 @@ fError = 0.05
 x, t = None, None
 v, w = [], []
 
-isPlot = False
+isPlot = True
 
 
 def findHidOut(n: int):
