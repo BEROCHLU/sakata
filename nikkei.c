@@ -221,7 +221,6 @@ float fRandFix(void)
 {
     int i;
     float fRand;
-
     //乱数を複数回生成して最後の値を使用する(線形合同法)
     for (i = 0; i < 101; i++)
         fRand = rand();

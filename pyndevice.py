@@ -43,7 +43,7 @@ def findHidOut(n: int):
             dot_h += x[n][j] * v[i][j]
         hid[i] = sigmoid(dot_h)
 
-    hid[HID_NODE - 1] = random.random()
+    hid[HID_NODE - 1] = 0.5  # random.random()
 
     for i in range(OUT_NODE):
         dot_o = 0
@@ -65,14 +65,12 @@ def printResult(DIV_T: float):
 
         pad_out = str(undo_out).rjust(6)
         pad_teacher = str(undo_teacher).rjust(6)
-        
+
         net = 100 * (t[i][0] - out[0]) / t[i][0]
         s += net
         arrNet.append(net)
         str_date = arrHsh[i]["date"]
-        print(
-            f"{str_date} {pad_out} True: {pad_teacher} valance: {round(s, 2)}"
-        )
+        print(f"{str_date} {pad_out} True: {pad_teacher} valance: {round(s, 2)}")
 
         if s_max < s:
             s_max = s
@@ -131,17 +129,17 @@ if __name__ == "__main__":
 
     for i in range(HID_NODE):
         for j in range(IN_NODE):
-            v[i].append(random.random())  # random() | uniform(0.5, 1.0)
+            v[i].append(0.5)  # random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
-            w[i].append(random.random())  # random() | uniform(0.5, 1.0)
+            w[i].append(0.5)  # random() | uniform(0.5, 1.0)
 
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
     time_st = time.time()
 
-    while HshSetting["DESIRED_ERROR"] < fError:
+    while epoch < THRESHOLD:
         epoch += 1
         fError = 0
 
