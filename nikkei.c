@@ -48,7 +48,7 @@ int main(void)
     clock_t start, end;
     time_t timer;
 
-    if ((fp = fopen("./csv/n225in.csv", "r")) == NULL) {
+    if ((fp = fopen("./csv/datexyt.csv", "r")) == NULL) {
         printf("The file doesn't exist!\n"); exit(0);
     }
 

@@ -2,6 +2,7 @@ node_modules/
 __pycache__/
 old/
 yarn.lock
+yarn-error.log
 a.exe
 log.txt
 *.bat
