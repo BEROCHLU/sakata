@@ -40,11 +40,8 @@ let timeEnd;
 //const frandFix = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
 const frandFix = () => 0.5; //  0 <= x < 1.0, Math.random()
 
-/**
- * 
- * @param {number} n 
- */
-const calcHidOut = (n) => {
+
+const updateHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
         hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
@@ -56,21 +53,17 @@ const calcHidOut = (n) => {
     }
 }
 
-/**
- * 
- * @param {Array<Object>} arrHsh 
- * @param {number} DIV_T 
- */
+
 const printResult = (arrHsh, DIV_T) => {
 
     let arrErate = [];
-    let valance = 0;
+    let valance = 0; //accumulate
     let valanceMin = Number.MAX_SAFE_INTEGER;
     let valanceMax = Number.MIN_SAFE_INTEGER;
 
     for (let i = 0; i < DATA_LEN; i++) {
 
-        calcHidOut(i);
+        updateHidOut(i);
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
@@ -104,9 +97,7 @@ const printResult = (arrHsh, DIV_T) => {
     console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
 }
 
-/**
- * Main
- */
+//main
 {
     const strPath = './json/n225out.json';
     const strPath2 = './json/setting.json';
@@ -155,7 +146,7 @@ const printResult = (arrHsh, DIV_T) => {
         fError = 0;
 
         for (let n = 0; n < DATA_LEN; n++) {
-            calcHidOut(n);
+            updateHidOut(n);
 
             for (let k = 0; k < OUT_NODE; k++) {
                 fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する

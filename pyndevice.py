@@ -6,6 +6,7 @@ import json
 import math
 import random
 import time
+import sys
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -23,14 +24,13 @@ def sigmoid(a: float) -> float:
 
 
 dsigmoid = lambda a: a * (1 - a)
-dmax = lambda a: a if (0 < a) == 1 else 0
 
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
 
 epoch, days = 0, 0
-fError = 0.05
+fError = sys.maxsize
 
 x, t = None, None
 v, w = [], []
@@ -57,8 +57,8 @@ def findHidOut(n: int):
 def printResult(DIV_T: float):
     arrNet = []
     s = 0
-    s_max = -256
-    s_min = 256
+    s_max = -sys.maxsize
+    s_min = sys.maxsize
     for i in range(days):
         findHidOut(i)
 
