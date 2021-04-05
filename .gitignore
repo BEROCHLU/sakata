@@ -3,6 +3,7 @@ __pycache__/
 old/
 yarn.lock
 yarn-error.log
-a.exe
-log.txt
+*.exe
+*.txt
 *.bat
+pyproject.toml
