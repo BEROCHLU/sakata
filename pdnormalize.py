@@ -1,6 +1,8 @@
 import json
+
 import pandas as pd
 
+# global
 old_ite = -1
 
 
@@ -17,7 +19,7 @@ if __name__ == "__main__":
     df_change = pd.DataFrame()
     lst_dc = []
 
-    df_hdatexyt = pd.read_csv("./hdatexyt.csv")
+    df_hdatexyt = pd.read_csv("./csv/hdatexyt.csv")
     skip_index = len(df_hdatexyt) - PERIOD
     lst_skip = [i for i in range(skip_index)]
 
@@ -42,11 +44,11 @@ if __name__ == "__main__":
         dc = {"input": [x, y], "output": [t], "date": d}
         lst_dc.append(dc)
 
-    with open("../json/n225out.json", "w") as f:
+    with open("./json/n225out.json", "w") as f:
         json.dump(lst_dc, f, indent=4)
 
-    DIV_NK = df_change["open_t"].max() * (1 + DESIRED_ERROR)
+    DIV_T = df_change["open_t"].max() * (1 + DESIRED_ERROR)
 
-    with open("../json/setting.json", "w") as f:
-        hsh = {"DIV_T": DIV_NK}
+    with open("./json/setting.json", "w") as f:
+        hsh = {"DIV_T": DIV_T}
         json.dump(hsh, f)
