@@ -57,9 +57,9 @@ const updateHidOut = (n) => {
 const printResult = (arrHsh, DIV_T) => {
 
     let arrErate = [];
-    let valance = 0; //accumulate
-    let valanceMin = Number.MAX_SAFE_INTEGER;
-    let valanceMax = Number.MIN_SAFE_INTEGER;
+    let accumulate;
+    let accumulateMin = Number.MAX_SAFE_INTEGER;
+    let accumulateMax = Number.MIN_SAFE_INTEGER;
 
     for (let i = 0; i < DATA_LEN; i++) {
 
@@ -67,7 +67,11 @@ const printResult = (arrHsh, DIV_T) => {
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
-        valance += arrErate[i];
+        accumulate = _.reduce(arrErate, (result, current) => {
+            accumulateMin = (result < accumulateMin) ? result : accumulateMin; //蓄積中の最小値
+            accumulateMax = (accumulateMax < result) ? result : accumulateMax; //蓄積中の最大値
+            return result + current;
+        });
 
         const undo_out = out[0] * DIV_T;
         const undo_teacher = t[i][0] * DIV_T;
@@ -75,25 +79,21 @@ const printResult = (arrHsh, DIV_T) => {
         const pad_out = undo_out.toFixed(2).padStart(6);
         const pad_teacher = undo_teacher.toFixed(2).padStart(6);
         const pad_erate = arrErate[i].toFixed(2).padStart(5);
-        const pad_valance = valance.toFixed(2).padStart(5);
+        const pad_accumulate = accumulate.toFixed(2).padStart(5);
 
-        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_valance}`);
-
-        valanceMin = (valance < valanceMin) ? valance : valanceMin;
-        valanceMax = (valanceMax < valance) ? valance : valanceMax;
-
+        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_accumulate}`);
     }
 
     const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
     const timeSec = (timeEnd - timeStart) / 1000;
 
-    const valanceMid = (valanceMin + valanceMax) / 2;
-    const valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
+    const accumulateMid = (accumulateMin + accumulateMax) / 2;
+    const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
 
     console.log(`Average error: ${averageError}%`);
-    console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
+    console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)}`);
     console.log(`epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Nom: ${valanceNom.toFixed(2)}`);
+    console.log(`Nom: ${accumulateNom.toFixed(2)}`);
     console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
 }
 

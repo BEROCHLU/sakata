@@ -5,8 +5,9 @@
   "main": "braindevice.js",
   "scripts": {
     "sakata": "node braindevice.js",
-    "main": "python pdnormalize.py && node main.js >> nlog.txt",
-    "O2 append": "gcc -O2 nikkei.c -lm && a.exe >> log.txt & call notepad log.txt"
+    "start": "python pdnormalize.py && node main.js >> nlog.txt",
+    "O2 append": "gcc -O2 nikkei.c -lm && a.exe >> log.txt & call notepad log.txt",
+    "main": "node main.js"
   },
   "keywords": [],
   "author": "",
