@@ -13,23 +13,14 @@ from functools import reduce
 import matplotlib.pyplot as plt
 import pandas as pd
 
-THRESHOLD = 500000
-OUT_NODE = 1
-ETA = 0.5
-
-
-def sigmoid(a: float) -> float:
-    if a < 0:
-        return 1 - 1 / (1 + math.exp(a))
-    else:
-        return 1 / (1 + math.exp(-a))
-
-
 # lambda
 dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
+THRESHOLD = 500000
+OUT_NODE = 1
+ETA = 0.5
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
@@ -38,6 +29,13 @@ fError = sys.maxsize
 x, t = None, None
 v, w = [], []
 isPlot = True
+
+
+def sigmoid(a: float) -> float:
+    if a < 0:
+        return math.exp(a) / (1 + math.exp(a))
+    else:
+        return 1 / (1 + math.exp(-a))
 
 
 def updateHidOut(n: int):
