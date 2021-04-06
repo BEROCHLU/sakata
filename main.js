@@ -181,5 +181,4 @@ const printResult = (arrHsh, DIV_T) => {
     //計測終了
     timeEnd = performance.now();
     printResult(arrHsh, hshSetting.DIV_T);
-
 }

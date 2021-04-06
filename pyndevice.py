@@ -7,11 +7,13 @@ import math
 import random
 import time
 import sys
+from functools import reduce
+from operator import add
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-THRESHOLD = 500000
+THRESHOLD = 10000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -35,7 +37,7 @@ fError = sys.maxsize
 x, t = None, None
 v, w = [], []
 
-isPlot = True
+isPlot = False
 
 
 def findHidOut(n: int):
@@ -55,35 +57,34 @@ def findHidOut(n: int):
 
 
 def printResult(DIV_T: float):
-    arrNet = []
-    s = 0
-    s_max = -sys.maxsize
-    s_min = sys.maxsize
+    arrErate = []
+    acc_min = sys.maxsize
+    acc_max = -sys.maxsize
+    
     for i in range(days):
+
         findHidOut(i)
+
+        arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
+
+        accumulate = reduce(add, arrErate)
 
         undo_out = round(out[0] * DIV_T, 2)
         undo_teacher = round(t[i][0] * DIV_T, 2)
 
         pad_out = str(undo_out).rjust(6)
         pad_teacher = str(undo_teacher).rjust(6)
+        pad_erate = str(round(arrErate[i], 2)).rjust(5)
+        pad_acc = str(round(accumulate, 2)).rjust(5)
 
-        net = 100 * (t[i][0] - out[0]) / t[i][0]
-        s += net
-        arrNet.append(net)
-        str_date = arrHsh[i]["date"]
-        print(f"{str_date} {pad_out} True: {pad_teacher} valance: {round(s, 2)}")
+        acc_max = accumulate if acc_max < accumulate else acc_max
+        acc_min = accumulate if accumulate < acc_min else acc_min
 
-        if s_max < s:
-            s_max = s
-        if s < s_min:
-            s_min = s
+        print(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}")
 
-    rd_err = round(fError, 5)
-    s_max = round(s_max, 2)
-    s_min = round(s_min, 2)
-    s_mean = (s_max + s_min) / 2
-    s_mean = round(s_mean, 2)
+    acc_mid = (acc_max + acc_min) / 2
+    acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
+
     f_time = time_ed - time_st
 
     if 60 <= f_time:
@@ -93,9 +94,10 @@ def printResult(DIV_T: float):
         n_minute = 0
         f_sec = round(f_time, 2)
 
-    print(f"epoch: {epoch} final err: {rd_err} days: {days}")
-    print(f"max: {s_max} min: {s_min} mean: {s_mean}")
-    print(f"time: {n_minute} min {f_sec} sec.")
+    print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
+    print(f"Epoch: {epoch} Days: {days}")
+    print(f"Nom: {round(acc_nom, 2)}")
+    print(f"Time: {n_minute} min {f_sec} sec. FinalErr: {round(fError, 5)}")
 
 
 def addBias(hsh: dict) -> dict:
