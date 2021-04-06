@@ -37,16 +37,16 @@ let timeStart;
 let timeEnd;
 
 //乱数生成
-//const frandFix = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
-const frandFix = () => 0.5; //  0 <= x < 1.0, Math.random()
-
+//const frandWeight = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
+const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
+const frandBias = () => -1;
 
 const updateHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
         hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
 
-    hid[HID_NODE - 1] = frandFix(); //配列最後にバイアス
+    hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
         out[i] = sigmoid(math.dot(w[i], hid));
@@ -108,7 +108,7 @@ const printResult = (arrHsh, DIV_T) => {
 
     x = arrHsh.map(hsh => {
         let arrBuf = hsh.input;
-        arrBuf.push(frandFix()); //add input bias
+        arrBuf.push(frandBias()); //add input layer bias
         return arrBuf;
     });
     t = arrHsh.map(hsh => hsh.output);
@@ -123,7 +123,7 @@ const printResult = (arrHsh, DIV_T) => {
     }
     for (let i = 0; i < HID_NODE; i++) {
         for (let j = 0; j < IN_NODE; j++) {
-            v[i].push(frandFix());
+            v[i].push(frandWeight());
         }
     }
     //出力層の結合荷重の初期化
@@ -132,7 +132,7 @@ const printResult = (arrHsh, DIV_T) => {
     }
     for (let i = 0; i < OUT_NODE; i++) {
         for (let j = 0; j < HID_NODE; j++) {
-            w[i].push(frandFix());
+            w[i].push(frandWeight());
         }
     }
 

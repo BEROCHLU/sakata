@@ -22,7 +22,8 @@
 
 void updateHidOut(int);
 void printResult(void);
-float fRandFix(void);
+float frandWeight(void);
+float frandBias(void);
 
 int q = 0, days;
 char date[SIZE][DATE_SIZE];
@@ -31,8 +32,7 @@ float DOWdiv = 0, FXdiv = 0, N225div = 0;
 float x[SIZE][IN_NODE], t[SIZE][OUT_NODE];
 float v[HID_NODE][IN_NODE], w[OUT_NODE][HID_NODE], hid[HID_NODE], out[OUT_NODE];
 
-int main(void)
-{
+int main(void){
     int i, j, k, p;
     int nShift;
     float DOW[SIZE] = { 0 };
@@ -91,7 +91,7 @@ int main(void)
     for (i = 0; i < days; i++) {
         x[i][0] = DOW_S[i] / DOWdiv;    //正規化
         x[i][1] = FX_S[i] / FXdiv;      //正規化
-        x[i][2] = fRandFix();           //配列最後にバイアス
+        x[i][2] = frandBias();           //配列最後にバイアス
         t[i][0] = N225_S[i] / N225div;  //正規化
     }
 
@@ -99,11 +99,11 @@ int main(void)
 
     for (i = 0; i < HID_NODE; i++)      //中間層の結合荷重を初期化
         for (j = 0; j < IN_NODE; j++)
-            v[i][j] = fRandFix();
+            v[i][j] = frandWeight();
 
     for (i = 0; i < OUT_NODE; i++) //出力層の結合荷重の初期化
         for (j = 0; j < HID_NODE; j++)
-            w[i][j] = fRandFix();
+            w[i][j] = frandWeight();
 
     time(&timer);
     printf("%s", ctime(&timer));
@@ -159,15 +159,14 @@ int main(void)
 }
 
 
-void updateHidOut(int p)
-{
+void updateHidOut(int n){
     int i, j; float y, d;
 
     for (i = 0; i < HID_NODE; i++) {
         y = 0;
 
         for (j = 0; j < IN_NODE; j++)
-            y += v[i][j] * x[p][j];
+            y += v[i][j] * x[n][j];
 
         if (ACTIVE == 0)
             hid[i] = sigmoid(y);
@@ -175,7 +174,7 @@ void updateHidOut(int p)
             hid[i] = fmax(0, y);
     }
 
-    hid[HID_NODE - 1] = fRandFix();//配列最後にバイアス
+    hid[HID_NODE - 1] = frandBias();//配列最後にバイアス
 
     for (i = 0; i < OUT_NODE; i++) {
         d = 0;
@@ -187,8 +186,7 @@ void updateHidOut(int p)
     }
 }
 
-void printResult(void)
-{
+void printResult(void){
     int i;
     float Esum = 0, Erate[SIZE], valance = 0;
     float valanceMin = FLT_MAX, valanceMax = -FLT_MAX;
@@ -217,16 +215,16 @@ void printResult(void)
     printf("Nom = %.2lf\n", valanceNom);
 }
 //fix same seed issue of random number
-float fRandFix(void)
-{
-    int i;
-    float fRand;
+float frandWeight(void){
+    int i; float fRand;
     //乱数を複数回生成して最後の値を使用する(線形合同法)
-    for (i = 0; i < 101; i++)
+    for (i = 0; i < 8; i++)
         fRand = rand();
-
-    fRand = fRand / (RAND_MAX + 1.0);
     //fRand = rand() % 5000 / 10000.0 + 0.5;
-
+    fRand = fRand / (RAND_MAX + 1.0);
     return 0.5;
+}
+
+float frandBias(void){
+    return -1;
 }

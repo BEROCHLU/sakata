@@ -5,15 +5,14 @@ import datetime
 import json
 import math
 import random
-import time
 import sys
+import time
 from functools import reduce
-from operator import add
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-THRESHOLD = 10000
+THRESHOLD = 500000
 OUT_NODE = 1
 ETA = 0.5
 
@@ -25,29 +24,29 @@ def sigmoid(a: float) -> float:
         return 1 / (1 + math.exp(-a))
 
 
+# lambda
 dsigmoid = lambda a: a * (1 - a)
-
+frandWeight = lambda: 0.5
+frandBias = lambda: -1
+# global
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
-
 epoch, days = 0, 0
 fError = sys.maxsize
-
 x, t = None, None
 v, w = [], []
+isPlot = True
 
-isPlot = False
 
-
-def findHidOut(n: int):
+def updateHidOut(n: int):
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
             dot_h += x[n][j] * v[i][j]
         hid[i] = sigmoid(dot_h)
 
-    hid[HID_NODE - 1] = 0.5  # random.random()
+    hid[HID_NODE - 1] = frandBias()  # random.random()
 
     for i in range(OUT_NODE):
         dot_o = 0
@@ -60,14 +59,14 @@ def printResult(DIV_T: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
-    
+
     for i in range(days):
 
-        findHidOut(i)
+        updateHidOut(i)
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
-        accumulate = reduce(add, arrErate)
+        accumulate = reduce((lambda result, current: result + current), arrErate)
 
         undo_out = round(out[0] * DIV_T, 2)
         undo_teacher = round(t[i][0] * DIV_T, 2)
@@ -102,7 +101,7 @@ def printResult(DIV_T: float):
 
 def addBias(hsh: dict) -> dict:
     arrInput = hsh["input"]
-    arrInput.append(-1)  # add bias
+    arrInput.append(frandBias())  # add bias
     return arrInput
 
 
@@ -133,10 +132,10 @@ if __name__ == "__main__":
 
     for i in range(HID_NODE):
         for j in range(IN_NODE):
-            v[i].append(0.5)  # random() | uniform(0.5, 1.0)
+            v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
-            w[i].append(0.5)  # random() | uniform(0.5, 1.0)
+            w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
 
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
@@ -148,7 +147,7 @@ if __name__ == "__main__":
         fError = 0
 
         for n in range(days):
-            findHidOut(n)
+            updateHidOut(n)
 
             for k in range(OUT_NODE):
                 fError += 0.5 * (t[n][k] - out[k]) ** 2
