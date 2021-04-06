@@ -7,7 +7,7 @@ old_ite = -1
 
 
 def f1(ite):
-    global old_ite
+    global old_ite  # グローバル変数を更新するため宣言が必要
     f_change = ite / old_ite * 100
     old_ite = ite
     return f_change
@@ -15,7 +15,7 @@ def f1(ite):
 
 if __name__ == "__main__":
     DESIRED_ERROR = 0.001
-    PERIOD = 55
+    PERIOD = 55  # PERIOD以下であった場合のエラー処理
     df_change = pd.DataFrame()
     lst_dc = []
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     df_change["open_t"] = df_hdatexyt["open_t"].map(f1)  # 前日比%
 
     df_change.drop(index=lst_skip, inplace=True)
-    df_change.reset_index(drop=True, inplace=True)  # dropしたのでindex振り直し
+    df_change.reset_index(drop=True, inplace=True)  # dropしたのでindex振り直し いるか？
 
     df_normalize = df_change.drop(columns="date")  # dataframe全体に正規化を適用するのでdateを一時的に外す
     df_normalize = df_normalize / (df_normalize.max() * (1 + DESIRED_ERROR))
