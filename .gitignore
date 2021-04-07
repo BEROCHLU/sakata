@@ -1,9 +1,9 @@
 node_modules/
 __pycache__/
 old/
+text/
 yarn.lock
 yarn-error.log
 *.exe
-*.txt
 *.bat
 pyproject.toml

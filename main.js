@@ -92,14 +92,14 @@ const printResult = (arrHsh, DIV_T) => {
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)}`);
-    console.log(`epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
+    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
     console.log(`Nom: ${accumulateNom.toFixed(2)}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec. err: ${fError.toFixed(5)}`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec. FinalErr: ${fError.toFixed(5)}\n`);
 }
 
 //main
 {
-    const strPath = './json/n225out.json';
+    const strPath = './json/seikika.json';
     const strPath2 = './json/setting.json';
     const strJson = fs.readFileSync(strPath, 'utf8');
     const strJson2 = fs.readFileSync(strPath2, 'utf8');

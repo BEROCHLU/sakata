@@ -2,13 +2,13 @@
   "name": "sakata",
   "version": "1.0.0",
   "description": "",
-  "main": "braindevice.js",
+  "main": "main.js",
   "scripts": {
-    "sakata": "node braindevice.js",
-    "main+log": "python pdnormalize.py && node main.js >> nlog.txt",
-    "O2+log": "gcc -O2 nikkei.c -lm && a.exe >> log.txt & call notepad log.txt",
     "main": "node main.js",
-    "pyn+log": "python pdnormalize.py && python pyndevice.py >> plog.txt"
+    "sakata": "node braindevice.js",
+    "main+log": "python pdnormalize.py && node main.js >> ./text/nlog.txt",
+    "O2+log": "gcc -O2 nikkei.c -lm && a.exe >> ./text/clog.txt & call notepad ./text/clog.txt",
+    "pyn+log": "python pdnormalize.py && python pyndevice.py >> ./text/plog.txt"
   },
   "keywords": [],
   "author": "",

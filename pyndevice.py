@@ -99,7 +99,7 @@ def printResult(DIV_T: float):
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
     print(f"Epoch: {epoch} Days: {days}")
     print(f"Nom: {round(acc_nom, 2)}")
-    print(f"Time: {n_minute} min {f_sec} sec. FinalErr: {round(fError, 5)}")
+    print(f"Time: {n_minute} min {f_sec} sec. FinalErr: {round(fError, 5)}\n")
 
 
 def addBias(hsh: dict) -> dict:
@@ -109,7 +109,7 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    f = open("./json/n225out.json", "r")  # xor | cell30 | py225 | n225out
+    f = open("./json/seikika.json", "r")  # xor | cell30
     arrHsh = json.load(f)
     f2 = open("./json/setting.json", "r")
     HshSetting = json.load(f2)

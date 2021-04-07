@@ -44,7 +44,7 @@ if __name__ == "__main__":
         dc = {"input": [x, y], "output": [t], "date": d}
         lst_dc.append(dc)
 
-    with open("./json/n225out.json", "w") as f:
+    with open("./json/seikika.json", "w") as f:
         json.dump(lst_dc, f, indent=4)
 
     DIV_T = df_change["open_t"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
