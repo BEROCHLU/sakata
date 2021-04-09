@@ -110,9 +110,9 @@ def addBias(hsh: dict) -> dict:
 
 if __name__ == "__main__":
     f = open("./json/seikika.json", "r")  # xor | cell30
-    arrHsh = json.load(f)
-    f2 = open("./json/setting.json", "r")
-    HshSetting = json.load(f2)
+    dc_raw = json.load(f)
+    arrHsh = dc_raw["listdc"]
+    DIV_T = dc_raw["div"]
 
     x = list(map(addBias, arrHsh))
     t = list(map(lambda hsh: hsh["output"], arrHsh))
@@ -178,7 +178,7 @@ if __name__ == "__main__":
                 arrErr.append(fError)
     # while
     time_ed = time.time()
-    printResult(HshSetting["DIV_T"])
+    printResult(DIV_T)
     # show plot
     if isPlot:
         plt.plot(arrErr)

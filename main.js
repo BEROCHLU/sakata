@@ -99,12 +99,10 @@ const printResult = (arrHsh, DIV_T) => {
 
 //main
 {
-    const strPath = './json/seikika.json';
-    const strPath2 = './json/setting.json';
-    const strJson = fs.readFileSync(strPath, 'utf8');
-    const strJson2 = fs.readFileSync(strPath2, 'utf8');
-    const arrHsh = JSON.parse(strJson);
-    const hshSetting = JSON.parse(strJson2);
+    const strJson = fs.readFileSync('./json/seikika.json', 'utf8');
+    const hshData = JSON.parse(strJson);
+    const arrHsh = hshData["listdc"]
+    const DIV_T = hshData["div"]
 
     x = arrHsh.map(hsh => {
         let arrBuf = hsh.input;
@@ -180,5 +178,5 @@ const printResult = (arrHsh, DIV_T) => {
 
     //計測終了
     timeEnd = performance.now();
-    printResult(arrHsh, hshSetting.DIV_T);
+    printResult(arrHsh, DIV_T);
 }
