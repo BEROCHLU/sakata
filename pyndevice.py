@@ -95,7 +95,7 @@ def printResult(DIV_T: float):
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
 
-    print(f"Average error: {round(fMean, 2)}")
+    print(f"Average error: {round(fMean, 2)}%")
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
     print(f"Epoch: {epoch} Days: {days}")
     print(f"Nom: {round(acc_nom, 2)}")
