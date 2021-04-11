@@ -2,6 +2,7 @@ node_modules/
 __pycache__/
 old/
 text/
+batchjson/
 yarn.lock
 yarn-error.log
 *.exe
