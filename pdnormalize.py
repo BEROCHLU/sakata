@@ -20,16 +20,13 @@ if __name__ == "__main__":
     lst_dc = []
 
     df_hdatexyt = pd.read_csv("./csv/hdatexyt.csv")
-    skip_index = len(df_hdatexyt) - PERIOD
-    lst_skip = [i for i in range(skip_index)]  # skipする日数リスト
 
     df_change["date"] = df_hdatexyt["date"]
     df_change["close_x"] = df_hdatexyt["close_x"].map(f1)  # 前日比%
     df_change["close_y"] = df_hdatexyt["close_y"].map(f1)  # 前日比%
     df_change["open_t"] = df_hdatexyt["open_t"].map(f1)  # 前日比%
 
-    df_change.drop(index=lst_skip, inplace=True)
-    df_change.reset_index(drop=True, inplace=True)  # dropしたのでindex振り直し いるか？
+    df_change = df_change.tail(PERIOD)  # tailからPERIODまで抽出
 
     df_normalize = df_change.drop(columns="date")  # dataframe全体に正規化を適用するのでdateを一時的に外す
     df_normalize = df_normalize / (df_normalize.max() * (1 + DESIRED_ERROR))
