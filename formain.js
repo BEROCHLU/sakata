@@ -102,7 +102,7 @@ const printResult = (arrHsh, DIV_T) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    const arrIte = _.range(15, 30);
+    const arrIte = _.range(0, 30);
 
     _.forEach(arrIte, (ite) => {
         //グローバル変数初期化
@@ -116,10 +116,12 @@ const printResult = (arrHsh, DIV_T) => {
         v = [];
         w = [];
 
-        const strJson = fs.readFileSync(`./batchjson/seikika${ite}.json`, 'utf8');
+        let strIndex = ite.toString(10).padStart(2, '0'); //create zero padding file index
+
+        const strJson = fs.readFileSync(`./batchjson/seikika${strIndex}.json`, 'utf8');
         const hshData = JSON.parse(strJson);
-        const arrHsh = hshData["listdc"]
-        const DIV_T = hshData["div"]
+        const arrHsh = hshData["listdc"];
+        const DIV_T = hshData["div"];
 
         x = arrHsh.map(hsh => {
             let arrBuf = hsh.input;
@@ -188,7 +190,7 @@ const printResult = (arrHsh, DIV_T) => {
             }
         } //while
         printResult(arrHsh, DIV_T);
-    });// _.forEach
+    }); // _.forEach
     //計測終了
     timeEnd = performance.now();
     const timeSec = (timeEnd - timeStart) / 1000;
