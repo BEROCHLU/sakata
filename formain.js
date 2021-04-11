@@ -36,6 +36,8 @@ let w; //w[OUT_NODE][HID_NODE]
 let timeStart;
 let timeEnd;
 
+const BATCH_PATH = './batchjson';
+
 //乱数生成
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
@@ -102,9 +104,9 @@ const printResult = (arrHsh, DIV_T) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    const arrIte = _.range(0, 30);
+    const arrStrFile = fs.readdirSync(BATCH_PATH);
 
-    _.forEach(arrIte, (ite) => {
+    _.forEach(arrStrFile, (strFile) => {
         //グローバル変数初期化
         hid = [];
         out = [];
@@ -116,9 +118,9 @@ const printResult = (arrHsh, DIV_T) => {
         v = [];
         w = [];
 
-        let strIndex = ite.toString(10).padStart(2, '0'); //create zero padding file index
+        //let strIndex = ite.toString(10).padStart(2, '0'); //create zero padding file index
 
-        const strJson = fs.readFileSync(`./batchjson/seikika${strIndex}.json`, 'utf8');
+        const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
         const arrHsh = hshData["listdc"];
         const DIV_T = hshData["div"];
