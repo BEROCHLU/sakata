@@ -118,8 +118,6 @@ const printResult = (arrHsh, DIV_T) => {
         v = [];
         w = [];
 
-        //let strIndex = ite.toString(10).padStart(2, '0'); //create zero padding file index
-
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
         const arrHsh = hshData["listdc"];
@@ -195,6 +193,6 @@ const printResult = (arrHsh, DIV_T) => {
     }); // _.forEach
     //計測終了
     timeEnd = performance.now();
-    const timeSec = (timeEnd - timeStart) / 1000;
-    console.log(`Time: ${timeSec.toFixed(2)}\n`);
+    const nSec = (timeEnd - timeStart) / 1000;
+    console.log(`Time: ${Math.floor(nSec / 60)} min ${Math.floor(nSec % 60)} sec.\n`);
 }

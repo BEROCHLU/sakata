@@ -7,7 +7,6 @@ import sys
 import time
 from functools import reduce
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # lambda
@@ -15,17 +14,12 @@ dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
-THRESHOLD = 500000
 OUT_NODE = 1
-ETA = 0.5
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
-epoch, days = 0, 0
-fError = sys.maxsize
 x, t = None, None
 v, w = [], []
-isPlot = True
 
 
 def sigmoid(a: float) -> float:
@@ -42,7 +36,7 @@ def updateHidOut(n: int):
             dot_h += x[n][j] * v[i][j]
         hid[i] = sigmoid(dot_h)
 
-    hid[HID_NODE - 1] = frandBias()  # random.random()
+    hid[HID_NODE - 1] = frandBias()
 
     for i in range(OUT_NODE):
         dot_o = 0
@@ -51,7 +45,7 @@ def updateHidOut(n: int):
         out[i] = sigmoid(dot_o)
 
 
-def printResult(DIV_T: float):
+def printResult(DIV_T: float, epoch: int, days: int, fError: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
@@ -80,9 +74,6 @@ def printResult(DIV_T: float):
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
 
-    nSec = int(timeEnd - timeStart)
-    nMinute = int(nSec / 60) if 60 <= nSec else 0
-
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
 
@@ -90,7 +81,7 @@ def printResult(DIV_T: float):
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
     print(f"Epoch: {epoch} Days: {days}")
     print(f"Nom: {round(acc_nom, 2)}")
-    print(f"Time: {nMinute} min {nSec % 60} sec. FinalErr: {round(fError, 5)}\n")
+    print(f"FinalErr: {round(fError, 5)}\n")
 
 
 def addBias(hsh: dict) -> dict:
@@ -100,77 +91,78 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    f = open("./json/seikika.json", "r")  # xor | cell30
-    dc_raw = json.load(f)
-    arrHsh = dc_raw["listdc"]
-    DIV_T = dc_raw["div"]
+    [epoch, days, fError] = [0, 0, 0.0]
+    ETA = 0.5
+    THRESHOLD = 500000
 
-    x = list(map(addBias, arrHsh))
-    t = list(map(lambda hsh: hsh["output"], arrHsh))
-
-    IN_NODE = len(x[0])  # get input length include bias
-    HID_NODE = IN_NODE + 1
-    days = len(x)
-
-    hid = [0] * HID_NODE
-    out = [0] * OUT_NODE
-    delta_hid = [0] * HID_NODE
-    delta_out = [0] * OUT_NODE
-
-    arrErr = []
-
-    for i in range(HID_NODE):
-        v.append([])
-    for i in range(OUT_NODE):
-        w.append([])
-
-    for i in range(HID_NODE):
-        for j in range(IN_NODE):
-            v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
-    for i in range(OUT_NODE):
-        for j in range(HID_NODE):
-            w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
-
+    timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
-    timeStart = time.time()
+    for i in range(10):
+        f = open("./json/seikika.json", "r")
+        dc_raw = json.load(f)
+        arrHsh = dc_raw["listdc"]
+        DIV_T = dc_raw["div"]
 
-    while epoch < THRESHOLD:
-        epoch += 1
-        fError = 0
+        x = list(map(addBias, arrHsh))
+        t = list(map(lambda hsh: hsh["output"], arrHsh))
 
-        for n in range(days):
-            updateHidOut(n)
+        IN_NODE = len(x[0])  # get input length include bias
+        HID_NODE = IN_NODE + 1
+        days = len(x)
 
-            for k in range(OUT_NODE):
-                fError += 0.5 * (t[n][k] - out[k]) ** 2
-                delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
+        hid = [0] * HID_NODE
+        out = [0] * OUT_NODE
+        delta_hid = [0] * HID_NODE
+        delta_out = [0] * OUT_NODE
+        epoch = 0
+        x, t = None, None
+        v, w = [], []
 
-            for k in range(OUT_NODE):
-                for j in range(HID_NODE):
-                    w[k][j] += ETA * delta_out[k] * hid[j]
+        for i in range(HID_NODE):
+            v.append([])
+        for i in range(OUT_NODE):
+            w.append([])
 
-            for i in range(HID_NODE):
-                delta_hid[i] = 0
+        for i in range(HID_NODE):
+            for j in range(IN_NODE):
+                v[i].append(frandWeight())
+        for i in range(OUT_NODE):
+            for j in range(HID_NODE):
+                w[i].append(frandWeight())
+
+        while epoch < THRESHOLD:
+            epoch += 1
+            fError = 0
+
+            for n in range(days):
+                updateHidOut(n)
 
                 for k in range(OUT_NODE):
-                    delta_hid[i] += delta_out[k] * w[k][i]
+                    fError += 0.5 * (t[n][k] - out[k]) ** 2
+                    delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
 
-                delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
+                for k in range(OUT_NODE):
+                    for j in range(HID_NODE):
+                        w[k][j] += ETA * delta_out[k] * hid[j]
 
-            for i in range(HID_NODE):
-                for j in range(IN_NODE):
-                    v[i][j] += ETA * delta_hid[i] * x[n][j]
-        # for days
-        if isPlot:
-            if epoch % 100 == 0:
-                # print(f"{epoch}: {fError}")
-                arrErr.append(fError)
-    # while
+                for i in range(HID_NODE):
+                    delta_hid[i] = 0
+
+                    for k in range(OUT_NODE):
+                        delta_hid[i] += delta_out[k] * w[k][i]
+
+                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
+
+                for i in range(HID_NODE):
+                    for j in range(IN_NODE):
+                        v[i][j] += ETA * delta_hid[i] * x[n][j]
+            # for days
+        # while
+        printResult(DIV_T, epoch, days, fError)
+    # for
     timeEnd = time.time()
-    printResult(DIV_T)
-    # show plot
-    if isPlot:
-        plt.plot(arrErr)
-        plt.show()
+    nSec = int(timeEnd - timeStart)
+    nMinute = int(nSec / 60) if 60 <= nSec else 0
+    print(f"Time: {nMinute} min {nSec % 60} sec.\n")
