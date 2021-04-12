@@ -7,6 +7,7 @@ import sys
 import time
 from functools import reduce
 
+import matplotlib.pyplot as plt
 import pandas as pd
 
 # lambda
@@ -18,8 +19,8 @@ OUT_NODE = 1
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
-x, t = None, None
-v, w = [], []
+[x, t, v, w] = [None, None, None, None]
+arrPlotAcc = []
 
 
 def sigmoid(a: float) -> float:
@@ -73,6 +74,7 @@ def printResult(DIV_T: float, epoch: int, days: int, fError: float):
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
+    arrPlotAcc.append(acc_nom) # plot
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
@@ -91,16 +93,17 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    fError = 0.0
     ETA = 0.5
     THRESHOLD = 500000
+    fError = None
 
     timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
-    for i in range(10):
-        f = open("./json/seikika.json", "r")
+    for i in range(0, 3):
+        pad_z = str(i).zfill(2)
+        f = open(f"./batch/seikika{pad_z}.json", "r")
         dc_raw = json.load(f)
         arrHsh = dc_raw["listdc"]
         DIV_T = dc_raw["div"]
@@ -160,8 +163,12 @@ if __name__ == "__main__":
             # for days
         # while
         printResult(DIV_T, epoch, days, fError)
-    # for
+    # for json
+    # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
+
+    plt.plot(arrPlotAcc)
+    plt.show()

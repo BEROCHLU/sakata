@@ -98,6 +98,10 @@ if __name__ == "__main__":
     arrPlotError = []
     isPlot = True
 
+    timeStart = time.time()
+    date_now = datetime.datetime.now()
+    print(date_now.strftime("%F %T"))
+
     f = open("./json/seikika.json", "r")  # xor | cell30
     dc_raw = json.load(f)
     arrHsh = dc_raw["listdc"]
@@ -128,11 +132,6 @@ if __name__ == "__main__":
     for i in range(OUT_NODE):
         for j in range(HID_NODE):
             w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
-
-    date_now = datetime.datetime.now()
-    print(date_now.strftime("%F %T"))
-
-    timeStart = time.time()
 
     while epoch < THRESHOLD:
         epoch += 1
