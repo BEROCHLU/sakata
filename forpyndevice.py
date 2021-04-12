@@ -91,7 +91,7 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    [epoch, days, fError] = [0, 0, 0.0]
+    fError = 0.0
     ETA = 0.5
     THRESHOLD = 500000
 
@@ -117,7 +117,6 @@ if __name__ == "__main__":
         delta_hid = [0] * HID_NODE
         delta_out = [0] * OUT_NODE
         epoch = 0
-        x, t = None, None
         v, w = [], []
 
         for i in range(HID_NODE):

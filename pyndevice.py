@@ -15,17 +15,11 @@ dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
-THRESHOLD = 500000
 OUT_NODE = 1
-ETA = 0.5
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
-epoch, days = 0, 0
-fError = sys.maxsize
-x, t = None, None
-v, w = [], []
-isPlot = True
+[x, t, v, w] = [None, None, None, None]
 
 
 def sigmoid(a: float) -> float:
@@ -51,7 +45,7 @@ def updateHidOut(n: int):
         out[i] = sigmoid(dot_o)
 
 
-def printResult(DIV_T: float):
+def printResult(DIV_T: float, epoch: int, days: int, fError: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
@@ -80,9 +74,6 @@ def printResult(DIV_T: float):
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
 
-    nSec = int(timeEnd - timeStart)
-    nMinute = int(nSec / 60) if 60 <= nSec else 0
-
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
 
@@ -90,7 +81,7 @@ def printResult(DIV_T: float):
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
     print(f"Epoch: {epoch} Days: {days}")
     print(f"Nom: {round(acc_nom, 2)}")
-    print(f"Time: {nMinute} min {nSec % 60} sec. FinalErr: {round(fError, 5)}\n")
+    print(f"FinalErr: {round(fError, 5)}\n")
 
 
 def addBias(hsh: dict) -> dict:
@@ -100,6 +91,13 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
+    ETA = 0.5
+    THRESHOLD = 500000
+    fError = None
+
+    arrPlotError = []
+    isPlot = True
+
     f = open("./json/seikika.json", "r")  # xor | cell30
     dc_raw = json.load(f)
     arrHsh = dc_raw["listdc"]
@@ -116,8 +114,8 @@ if __name__ == "__main__":
     out = [0] * OUT_NODE
     delta_hid = [0] * HID_NODE
     delta_out = [0] * OUT_NODE
-
-    arrErr = []
+    epoch = 0
+    v, w = [], []
 
     for i in range(HID_NODE):
         v.append([])
@@ -138,7 +136,7 @@ if __name__ == "__main__":
 
     while epoch < THRESHOLD:
         epoch += 1
-        fError = 0
+        fError = 0.0
 
         for n in range(days):
             updateHidOut(n)
@@ -163,14 +161,16 @@ if __name__ == "__main__":
                 for j in range(IN_NODE):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
-        if isPlot:
-            if epoch % 100 == 0:
-                # print(f"{epoch}: {fError}")
-                arrErr.append(fError)
+        if isPlot and (epoch % 100) == 0:
+            arrPlotError.append(fError)
     # while
+    printResult(DIV_T, epoch, days, fError)
+    # measure time
     timeEnd = time.time()
-    printResult(DIV_T)
+    nSec = int(timeEnd - timeStart)
+    nMinute = int(nSec / 60) if 60 <= nSec else 0
+    print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
     if isPlot:
-        plt.plot(arrErr)
+        plt.plot(arrPlotError)
         plt.show()
