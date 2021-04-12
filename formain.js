@@ -36,7 +36,7 @@ let w; //w[OUT_NODE][HID_NODE]
 let timeStart;
 let timeEnd;
 
-const BATCH_PATH = './batchjson';
+const BATCH_PATH = './batch';
 
 //乱数生成
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
