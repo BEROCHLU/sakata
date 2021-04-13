@@ -6,6 +6,7 @@ import statistics
 import sys
 import time
 from functools import reduce
+from glob import glob
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -101,9 +102,13 @@ if __name__ == "__main__":
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
-    for i in range(0, 5):
-        pad_z = str(i).zfill(2)
-        f = open(f"./batch/seikika{pad_z}.json", "r")
+    DIR_PATH = "batch"
+    lst_strPath = glob(f"{DIR_PATH}/*.json")
+
+    for (i, strPath) in enumerate(lst_strPath):
+        if not (0 <= i and i <= sys.maxsize):  # pass loop index
+            continue
+        f = open(strPath, "r")
         dc_raw = json.load(f)
         arrHsh = dc_raw["listdc"]
         DIV_T = dc_raw["div"]
