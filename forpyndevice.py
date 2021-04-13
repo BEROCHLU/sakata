@@ -21,6 +21,7 @@ hid, out = None, None
 delta_hid, delta_out = None, None
 [x, t, v, w] = [None, None, None, None]
 arrPlotAcc = []
+arrPlotError = []
 
 
 def sigmoid(a: float) -> float:
@@ -69,12 +70,11 @@ def printResult(DIV_T: float, epoch: int, days: int, fError: float):
 
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
-
+        arrPlotAcc.append(accumulate)  # plot
         print(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}")
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
-    arrPlotAcc.append(acc_nom) # plot
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
@@ -83,7 +83,7 @@ def printResult(DIV_T: float, epoch: int, days: int, fError: float):
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
     print(f"Epoch: {epoch} Days: {days}")
     print(f"Nom: {round(acc_nom, 2)}")
-    print(f"FinalErr: {round(fError, 5)}\n")
+    print(f"FinalErr: {round(fError, 5)}")
 
 
 def addBias(hsh: dict) -> dict:
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
-    for i in range(0, 3):
+    for i in range(0, 5):
         pad_z = str(i).zfill(2)
         f = open(f"./batch/seikika{pad_z}.json", "r")
         dc_raw = json.load(f)
@@ -161,6 +161,8 @@ if __name__ == "__main__":
                     for j in range(IN_NODE):
                         v[i][j] += ETA * delta_hid[i] * x[n][j]
             # for days
+            if (epoch % 100) == 0:
+                arrPlotError.append(fError)
         # while
         printResult(DIV_T, epoch, days, fError)
     # for json
@@ -169,6 +171,9 @@ if __name__ == "__main__":
     nSec = int(timeEnd - timeStart)
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
-
+    # show plot
+    plt.subplot(2, 1, 1)
+    plt.plot(arrPlotError)
+    plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
     plt.show()

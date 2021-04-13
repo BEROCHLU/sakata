@@ -20,6 +20,8 @@ IN_NODE, HID_NODE = None, None
 hid, out = None, None
 delta_hid, delta_out = None, None
 [x, t, v, w] = [None, None, None, None]
+arrPlotAcc = []
+arrPlotError = []
 
 
 def sigmoid(a: float) -> float:
@@ -68,7 +70,7 @@ def printResult(DIV_T: float, epoch: int, days: int, fError: float):
 
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
-
+        arrPlotAcc.append(accumulate)  # plot
         print(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}")
 
     acc_mid = (acc_max + acc_min) / 2
@@ -94,9 +96,6 @@ if __name__ == "__main__":
     ETA = 0.5
     THRESHOLD = 500000
     fError = None
-
-    arrPlotError = []
-    isPlot = True
 
     timeStart = time.time()
     date_now = datetime.datetime.now()
@@ -160,7 +159,7 @@ if __name__ == "__main__":
                 for j in range(IN_NODE):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
-        if isPlot and (epoch % 100) == 0:
+        if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
     printResult(DIV_T, epoch, days, fError)
@@ -170,6 +169,8 @@ if __name__ == "__main__":
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
-    if isPlot:
-        plt.plot(arrPlotError)
-        plt.show()
+    plt.subplot(2, 1, 1)
+    plt.plot(arrPlotError)
+    plt.subplot(2, 1, 2)
+    plt.plot(arrPlotAcc)
+    plt.show()
