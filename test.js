@@ -35,18 +35,20 @@ const frandBias = () => -1;
 
 const updateHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
-        hid[i] = sigmoid(math.dot(x[n], v[i]));
+        const fDot = math.dot(x[n], v[i]);
+        hid[i] = sigmoid(fDot);
     }
 
     hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
-        out[i] = sigmoid(math.dot(w[i], hid));
+        const fDot = math.dot(w[i], hid);
+        out[i] = sigmoid(fDot);
     }
 }
 
 
-const printResult = (arrHsh, DIV_T, fError, epoch) => {
+const printResult = (arrHsh, DIV_T, fError, epoch, t) => {
 
     let arrErate = [];
     let accumulate;
@@ -102,7 +104,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
         //グローバル変数初期化
         hid = [];
         out = [];
-        [x, t] = [undefined, undefined];
+        x = undefined;
         v = [];
         w = [];
         //ローカル変数初期化
@@ -110,6 +112,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
         let delta_hid = [];
         let epoch = 0; //学習回数
         let fError = Number.MAX_SAFE_INTEGER;
+        let t = undefined;
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
@@ -182,7 +185,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
                 }
             }
         } //while
-        printResult(arrHsh, DIV_T, fError, epoch);
+        printResult(arrHsh, DIV_T, fError, epoch, t);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();
