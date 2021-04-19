@@ -11,6 +11,7 @@ let IN_NODE; //入力ノード数（バイアス含む）
 let HID_NODE; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
+let DATA_LEN; //学習データ数
 const ETA = 0.5; //学習係数
 const THRESH = 500000;
 
@@ -20,21 +21,11 @@ const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 let hid; //隠れノード
 let out; //出力ノード
 
-let delta_out;
-let delta_hid;
-
 let x;
 let t;
 
-let epoch; //学習回数
-let DATA_LEN; //学習データ数
-let fError;
-
 let v; //v[HID_NODE][IN_NODE]
 let w; //w[OUT_NODE][HID_NODE]
-
-let timeStart;
-let timeEnd;
 
 const BATCH_PATH = './batch';
 
@@ -55,7 +46,7 @@ const updateHidOut = (n) => {
 }
 
 
-const printResult = (arrHsh, DIV_T) => {
+const printResult = (arrHsh, DIV_T, fError, epoch) => {
 
     let arrErate = [];
     let accumulate;
@@ -100,7 +91,7 @@ const printResult = (arrHsh, DIV_T) => {
 //main
 {
     //計測開始
-    timeStart = performance.now();
+    const timeStart = performance.now();
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
@@ -110,13 +101,14 @@ const printResult = (arrHsh, DIV_T) => {
         //グローバル変数初期化
         hid = [];
         out = [];
-        delta_out = [];
-        delta_hid = [];
         [x, t] = [undefined, undefined];
-        epoch = 0;
-        fError = Number.MAX_SAFE_INTEGER;
         v = [];
         w = [];
+        //ローカル変数初期化
+        let delta_out = [];
+        let delta_hid = [];
+        let epoch = 0;//学習回数
+        let fError = Number.MAX_SAFE_INTEGER;
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
@@ -189,10 +181,10 @@ const printResult = (arrHsh, DIV_T) => {
                 }
             }
         } //while
-        printResult(arrHsh, DIV_T);
+        printResult(arrHsh, DIV_T, fError, epoch);
     }); // _.forEach
     //計測終了
-    timeEnd = performance.now();
+    const timeEnd = performance.now();
     const nSec = (timeEnd - timeStart) / 1000;
     console.log(`Time: ${Math.floor(nSec / 60)} min ${Math.floor(nSec % 60)} sec.\n`);
 }

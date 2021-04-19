@@ -12,7 +12,7 @@ let HID_NODE; //隠れノード数
 const OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const THRESH = 500000;
+const THRESH = 50000;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
@@ -82,7 +82,7 @@ const printResult = (arrHsh, DIV_T) => {
         const pad_erate = arrErate[i].toFixed(2).padStart(5);
         const pad_accumulate = accumulate.toFixed(2).padStart(5);
 
-        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_accumulate}`);
+        //console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_accumulate}`);
     }
 
     const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
@@ -97,7 +97,52 @@ const printResult = (arrHsh, DIV_T) => {
     console.log(`FinalErr: ${fError.toFixed(5)}\n`);
 }
 
-const psm = (arrHsh, DIV_T) => {
+const psm = (strFile) => {
+    //グローバル変数初期化
+    hid = [];
+    out = [];
+    delta_out = [];
+    delta_hid = [];
+    [x, t] = [undefined, undefined];
+    epoch = 0;
+    fError = Number.MAX_SAFE_INTEGER;
+    v = [];
+    w = [];
+
+    const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
+    const hshData = JSON.parse(strJson);
+    const arrHsh = hshData["listdc"];
+    const DIV_T = hshData["div"];
+
+    x = arrHsh.map(hsh => {
+        let arrBuf = hsh.input;
+        arrBuf.push(frandBias()); //add input layer bias
+        return arrBuf;
+    });
+    t = arrHsh.map(hsh => hsh.output);
+
+    IN_NODE = x[0].length // get input length include bias
+    HID_NODE = IN_NODE + 1;
+    DATA_LEN = x.length;
+
+    //中間層の結合荷重を初期化
+    for (let i = 0; i < HID_NODE; i++) {
+        v.push([]);
+    }
+    for (let i = 0; i < HID_NODE; i++) {
+        for (let j = 0; j < IN_NODE; j++) {
+            v[i].push(frandWeight());
+        }
+    }
+    //出力層の結合荷重の初期化
+    for (let i = 0; i < OUT_NODE; i++) {
+        w.push([]);
+    }
+    for (let i = 0; i < OUT_NODE; i++) {
+        for (let j = 0; j < HID_NODE; j++) {
+            w[i].push(frandWeight());
+        }
+    }
     while (epoch < THRESH) {
         epoch++;
         fError = 0;
@@ -146,59 +191,14 @@ const psm = (arrHsh, DIV_T) => {
 
     const arrStrFile = fs.readdirSync(BATCH_PATH);
 
-    await Promise.all(_.map(arrStrFile, (strFile) => {
-        //グローバル変数初期化
-        hid = [];
-        out = [];
-        delta_out = [];
-        delta_hid = [];
-        [x, t] = [undefined, undefined];
-        epoch = 0;
-        fError = Number.MAX_SAFE_INTEGER;
-        v = [];
-        w = [];
-
-        const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
-        const hshData = JSON.parse(strJson);
-        const arrHsh = hshData["listdc"];
-        const DIV_T = hshData["div"];
-
-        x = arrHsh.map(hsh => {
-            let arrBuf = hsh.input;
-            arrBuf.push(frandBias()); //add input layer bias
-            return arrBuf;
-        });
-        t = arrHsh.map(hsh => hsh.output);
-
-        IN_NODE = x[0].length // get input length include bias
-        HID_NODE = IN_NODE + 1;
-        DATA_LEN = x.length;
-
-        //中間層の結合荷重を初期化
-        for (let i = 0; i < HID_NODE; i++) {
-            v.push([]);
-        }
-        for (let i = 0; i < HID_NODE; i++) {
-            for (let j = 0; j < IN_NODE; j++) {
-                v[i].push(frandWeight());
-            }
-        }
-        //出力層の結合荷重の初期化
-        for (let i = 0; i < OUT_NODE; i++) {
-            w.push([]);
-        }
-        for (let i = 0; i < OUT_NODE; i++) {
-            for (let j = 0; j < HID_NODE; j++) {
-                w[i].push(frandWeight());
-            }
-        }
-
+    await Promise.all(_.map(arrStrFile, (strFile, ii) => {
         return new Promise((resolve, reject) => {
-            //let n = Math.floor(Math.random() * 1);
-            //n = 3;
-            //n *= 1000
+            //psm(arrHsh, DIV_T);
+            //resolve();
+
             setTimeout(() => {
-                psm(arrHsh, DIV_T);
+                //console.log(ii)
+                psm(strFile);
                 resolve();
             }, 0);
         });
