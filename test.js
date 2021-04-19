@@ -13,31 +13,40 @@ const OUT_NODE = 1; //出力ノード数
 
 let DATA_LEN; //学習データ数
 const ETA = 0.5; //学習係数
-const THRESH = 50000;
+const THRESH = 500000;
 
-const sigmoid = a => 1 / (1 + Math.exp(-a)); //シグモイド関数
-const dsigmoid = a => a * (1 - a); //シグモイド関数微分
+const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
+const dsigmoid = x => x * (1 - x); //シグモイド関数微分
+
+let hid; //隠れノード
+let out; //出力ノード
+
+let x;
+let t;
+
+let v; //v[HID_NODE][IN_NODE]
+let w; //w[OUT_NODE][HID_NODE]
+
+const BATCH_PATH = './batch';
 
 //乱数生成
-const frandWeight = () => 0.5;
+const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
 
-const updateHidOut = (n, obj) => {
+const updateHidOut = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
-        const fdot = math.dot(obj.x[n], obj.v[i]);
-        obj.hid.push(sigmoid(fdot));
+        hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
 
-    obj.hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
+    hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
-        const fdot = sigmoid(math.dot(obj.w[i], obj.hid));
-        obj.out.push(fdot);
+        out[i] = sigmoid(math.dot(w[i], hid));
     }
 }
 
 
-const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
+const printResult = (arrHsh, DIV_T, fError, epoch) => {
 
     let arrErate = [];
     let accumulate;
@@ -48,7 +57,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
 
         updateHidOut(i);
 
-        arrErate[i] = (obj.t[i][0] - obj.out[0]) / obj.t[i][0] * 100;
+        arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
         accumulate = _.reduce(arrErate, (result, current) => {
             accumulateMin = (result < accumulateMin) ? result : accumulateMin; //蓄積中の最小値
@@ -56,8 +65,8 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
             return result + current;
         });
 
-        const undo_out = obj.out[0] * DIV_T;
-        const undo_teacher = obj.t[i][0] * DIV_T;
+        const undo_out = out[0] * DIV_T;
+        const undo_teacher = t[i][0] * DIV_T;
 
         const pad_out = undo_out.toFixed(2).padStart(6);
         const pad_teacher = undo_teacher.toFixed(2).padStart(6);
@@ -86,17 +95,16 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    const BATCH_PATH = './batch';
     const arrStrFile = fs.readdirSync(BATCH_PATH);
 
-    _.forEach(arrStrFile, (strFile) => {
+    _.forEach(arrStrFile, (strFile, ii) => {
+        if (!(0 <= ii && ii <= Number.MAX_SAFE_INTEGER)) return;
         //グローバル変数初期化
-        let obj = new Object();
-        obj.hid = []; //隠れノード
-        obj.out = []; //出力ノード
-        [obj.x, obj.t] = [undefined, undefined];
-        obj.v = []; //v[HID_NODE][IN_NODE]
-        obj.w = []; //w[OUT_NODE][HID_NODE]
+        hid = [];
+        out = [];
+        [x, t] = [undefined, undefined];
+        v = [];
+        w = [];
         //ローカル変数初期化
         let delta_out = [];
         let delta_hid = [];
@@ -108,33 +116,33 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
         const arrHsh = hshData["listdc"];
         const DIV_T = hshData["div"];
 
-        obj.x = arrHsh.map(hsh => {
+        x = arrHsh.map(hsh => {
             let arrBuf = hsh.input;
             arrBuf.push(frandBias()); //add input layer bias
             return arrBuf;
         });
-        obj.t = arrHsh.map(hsh => hsh.output);
+        t = arrHsh.map(hsh => hsh.output);
 
-        IN_NODE = obj.x[0].length // get input length include bias
+        IN_NODE = x[0].length // get input length include bias
         HID_NODE = IN_NODE + 1;
-        DATA_LEN = obj.x.length;
+        DATA_LEN = x.length;
 
         //中間層の結合荷重を初期化
         for (let i = 0; i < HID_NODE; i++) {
-            obj.v.push([]);
+            v.push([]);
         }
         for (let i = 0; i < HID_NODE; i++) {
             for (let j = 0; j < IN_NODE; j++) {
-                obj.v[i].push(frandWeight());
+                v[i].push(frandWeight());
             }
         }
         //出力層の結合荷重の初期化
         for (let i = 0; i < OUT_NODE; i++) {
-            obj.w.push([]);
+            w.push([]);
         }
         for (let i = 0; i < OUT_NODE; i++) {
             for (let j = 0; j < HID_NODE; j++) {
-                obj.w[i].push(frandWeight());
+                w[i].push(frandWeight());
             }
         }
 
@@ -143,17 +151,17 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
             fError = 0;
 
             for (let n = 0; n < DATA_LEN; n++) {
-                updateHidOut(n, obj);
+                updateHidOut(n);
 
                 for (let k = 0; k < OUT_NODE; k++) {
-                    fError += 0.5 * Math.pow((obj.t[n][k] - obj.out[k]), 2); //誤差を日数分加算する
+                    fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する
                     // Δw
-                    delta_out[k] = (obj.t[n][k] - obj.out[k]) * obj.out[k] * (1 - obj.out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
+                    delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
                 }
 
                 for (let k = 0; k < OUT_NODE; k++) { // Δw
                     for (let j = 0; j < HID_NODE; j++) {
-                        obj.w[k][j] += ETA * delta_out[k] * obj.hid[j]; //Δw=ηδH
+                        w[k][j] += ETA * delta_out[k] * hid[j]; //Δw=ηδH
                     }
                 }
 
@@ -161,20 +169,20 @@ const printResult = (arrHsh, DIV_T, fError, epoch, obj) => {
                     delta_hid[i] = 0;
 
                     for (let k = 0; k < OUT_NODE; k++) {
-                        delta_hid[i] += delta_out[k] * obj.w[k][i]; //Σδw
+                        delta_hid[i] += delta_out[k] * w[k][i]; //Σδw
                     }
 
-                    delta_hid[i] = dsigmoid(obj.hid[i]) * delta_hid[i]; //H(1-H)*Σδw
+                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
                 }
 
                 for (let i = 0; i < HID_NODE; i++) { // Δv
                     for (let j = 0; j < IN_NODE; j++) {
-                        obj.v[i][j] += ETA * delta_hid[i] * obj.x[n][j]; //Δu=ηH(1-H)XΣδw
+                        v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                     }
                 }
             }
         } //while
-        printResult(arrHsh, DIV_T, fError, epoch, obj);
+        printResult(arrHsh, DIV_T, fError, epoch);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();
