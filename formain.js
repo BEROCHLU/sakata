@@ -18,14 +18,9 @@ const THRESH = 500000;
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 
-let hid; //隠れノード
-let out; //出力ノード
 
-let x;
-let t;
-
-let v; //v[HID_NODE][IN_NODE]
-let w; //w[OUT_NODE][HID_NODE]
+//v[HID_NODE][IN_NODE]
+//w[OUT_NODE][HID_NODE]
 
 const BATCH_PATH = './batch';
 
@@ -33,20 +28,24 @@ const BATCH_PATH = './batch';
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
 
-const updateHidOut = (n) => {
+const updateHidOut = (n, hid, out, x, v, w) => {
     for (let i = 0; i < HID_NODE; i++) {
-        hid[i] = sigmoid(math.dot(x[n], v[i]));
+        const fDot = math.dot(x[n], v[i]);
+        hid[i] = sigmoid(fDot);
     }
 
     hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
-        out[i] = sigmoid(math.dot(w[i], hid));
+        const fDot = math.dot(w[i], hid);
+        out[i] = sigmoid(fDot);
     }
+
+    return [hid, out];
 }
 
 
-const printResult = (arrHsh, DIV_T, fError, epoch) => {
+const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
 
     let arrErate = [];
     let accumulate;
@@ -55,7 +54,8 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
 
     for (let i = 0; i < DATA_LEN; i++) {
 
-        updateHidOut(i);
+        const ret = updateHidOut(i, hid, out, x, v, w);
+        [hid, out] = [ret[0], ret[1]];
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
@@ -99,17 +99,17 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
 
     _.forEach(arrStrFile, (strFile, ii) => {
         if (!(0 <= ii && ii <= Number.MAX_SAFE_INTEGER)) return;
-        //グローバル変数初期化
-        hid = [];
-        out = [];
-        [x, t] = [undefined, undefined];
-        v = [];
-        w = [];
         //ローカル変数初期化
         let delta_out = [];
         let delta_hid = [];
         let epoch = 0; //学習回数
         let fError = Number.MAX_SAFE_INTEGER;
+        let t = undefined;
+        let hid = []; //隠れノード
+        let out = []; //出力ノード
+        let x = undefined;
+        let v = [];
+        let w = [];
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
@@ -151,7 +151,8 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
             fError = 0;
 
             for (let n = 0; n < DATA_LEN; n++) {
-                updateHidOut(n);
+                const ret = updateHidOut(n, hid, out, x, v, w);
+                [hid, out] = [ret[0], ret[1]];
 
                 for (let k = 0; k < OUT_NODE; k++) {
                     fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する
@@ -182,7 +183,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch) => {
                 }
             }
         } //while
-        printResult(arrHsh, DIV_T, fError, epoch);
+        printResult(arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();
