@@ -4,6 +4,9 @@ const fs = require('fs');
 const _ = require('lodash');
 const math = require('mathjs');
 const {
+    resolve
+} = require('path');
+const {
     performance
 } = require('perf_hooks');
 
@@ -88,18 +91,9 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
     console.log(`FinalErr: ${fError.toFixed(5)}\n`);
 }
 
-//main
-{
-    //計測開始
-    const timeStart = performance.now();
-    const strDate = new Date();
-    console.log(strDate.toLocaleString());
+const pms = (strFile) => {
+    return new Promise((resolve, reject) => {
 
-    const arrStrFile = fs.readdirSync(BATCH_PATH);
-
-    _.forEach(arrStrFile, (strFile, ii) => {
-        if (!(0 <= ii && ii <= Number.MAX_SAFE_INTEGER)) return;
-        //ローカル変数初期化
         let delta_out = [];
         let delta_hid = [];
         let epoch = 0; //学習回数
@@ -184,9 +178,29 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
             }
         } //while
         printResult(arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w);
-    }); // _.forEach
+        resolve();
+    });
+}
+
+//main
+(async () => {
+    //計測開始
+    const timeStart = performance.now();
+    const strDate = new Date();
+    console.log(strDate.toLocaleString());
+
+    const arrStrFile = fs.readdirSync(BATCH_PATH);
+    await Promise.all(_.map(arrStrFile, (strFile, ii) => {
+        return new Promise(resolve => {
+            //let n = Math.floor(Math.random() * 5);
+            setTimeout(() => {
+                pms(strFile);
+                resolve();
+            }, 0);
+        });
+    }));
     //計測終了
     const timeEnd = performance.now();
     const nSec = (timeEnd - timeStart) / 1000;
     console.log(`Time: ${Math.floor(nSec / 60)} min ${Math.floor(nSec % 60)} sec.\n`);
-}
+})();

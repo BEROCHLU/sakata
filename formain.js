@@ -18,10 +18,6 @@ const THRESH = 500000;
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 
-
-//v[HID_NODE][IN_NODE]
-//w[OUT_NODE][HID_NODE]
-
 const BATCH_PATH = './batch';
 
 //乱数生成
@@ -108,8 +104,8 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
         let hid = []; //隠れノード
         let out = []; //出力ノード
         let x = undefined;
-        let v = [];
-        let w = [];
+        let v = []; //v[HID_NODE][IN_NODE]
+        let w = []; //w[OUT_NODE][HID_NODE]
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
