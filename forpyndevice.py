@@ -9,7 +9,6 @@ from functools import reduce
 from glob import glob
 
 import matplotlib.pyplot as plt
-import pandas as pd
 
 # lambda
 dsigmoid = lambda a: a * (1 - a)

@@ -8,7 +8,6 @@ import time
 from functools import reduce
 
 import matplotlib.pyplot as plt
-import pandas as pd
 
 # lambda
 dsigmoid = lambda a: a * (1 - a)
@@ -18,7 +17,6 @@ frandBias = lambda: -1
 OUT_NODE = 1
 IN_NODE, HID_NODE = None, None
 hid, out = None, None
-delta_hid, delta_out = None, None
 [x, t, v, w] = [None, None, None, None]
 arrPlotAcc = []
 arrPlotError = []
