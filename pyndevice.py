@@ -14,9 +14,8 @@ dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
-OUT_NODE = 1
-IN_NODE, HID_NODE = None, None
-[x, t, v, w] = [None, None, None, None]
+[IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
+DAYS = None
 arrPlotAcc = []
 arrPlotError = []
 
@@ -28,7 +27,7 @@ def sigmoid(a: float) -> float:
         return 1 / (1 + math.exp(-a))
 
 
-def updateHidOut(n: int, hid: float, out: float) -> float:
+def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -> float:
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -46,14 +45,14 @@ def updateHidOut(n: int, hid: float, out: float) -> float:
     return [hid, out]
 
 
-def printResult(DIV_T: float, epoch: int, days: int, fError: float, hid: float, out: float):
+def printResult(DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
 
-    for i in range(days):
+    for i in range(DAYS):
 
-        ret = updateHidOut(i, hid, out)
+        ret = updateHidOut(i, hid, out, x, v, w)
         [hid, out] = [ret[0], ret[1]]
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
@@ -81,7 +80,7 @@ def printResult(DIV_T: float, epoch: int, days: int, fError: float, hid: float, 
 
     print(f"Average error: {round(fMean, 2)}%")
     print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
-    print(f"Epoch: {epoch} Days: {days}")
+    print(f"Epoch: {epoch} Days: {DAYS}")
     print(f"Nom: {round(acc_nom, 2)}")
     print(f"FinalErr: {round(fError, 5)}\n")
 
@@ -111,7 +110,7 @@ if __name__ == "__main__":
 
     IN_NODE = len(x[0])  # get input length include bias
     HID_NODE = IN_NODE + 1
-    days = len(x)
+    DAYS = len(x)
 
     hid = [0] * HID_NODE
     out = [0] * OUT_NODE
@@ -136,8 +135,8 @@ if __name__ == "__main__":
         epoch += 1
         fError = 0.0
 
-        for n in range(days):
-            ret = updateHidOut(n, hid, out)
+        for n in range(DAYS):
+            ret = updateHidOut(n, hid, out, x, v, w)
             [hid, out] = [ret[0], ret[1]]
 
             for k in range(OUT_NODE):
@@ -163,7 +162,7 @@ if __name__ == "__main__":
         if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
-    printResult(DIV_T, epoch, days, fError, hid, out)
+    printResult(DIV_T, epoch, fError, t, hid, out, x, v, w)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
