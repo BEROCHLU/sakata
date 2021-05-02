@@ -46,7 +46,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
             dot_o += w[i][j] * hid[j]
         out[i] = sigmoid(dot_o)
 
-    return [hid, out]
+    #return [hid, out]
 
 
 def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
@@ -56,8 +56,8 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
     for i in range(DAYS):
 
-        ret = updateHidOut(i, hid, out, x, v, w)
-        [hid, out] = [ret[0], ret[1]]
+        updateHidOut(i, hid, out, x, v, w)
+        #[hid, out] = [ret[0], ret[1]]
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
