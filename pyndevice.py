@@ -16,7 +16,6 @@ frandBias = lambda: -1
 # global
 OUT_NODE = 1
 IN_NODE, HID_NODE = None, None
-hid, out = None, None
 [x, t, v, w] = [None, None, None, None]
 arrPlotAcc = []
 arrPlotError = []
@@ -29,7 +28,7 @@ def sigmoid(a: float) -> float:
         return 1 / (1 + math.exp(-a))
 
 
-def updateHidOut(n: int):
+def updateHidOut(n: int, hid: float, out: float) -> float:
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -44,15 +43,18 @@ def updateHidOut(n: int):
             dot_o += w[i][j] * hid[j]
         out[i] = sigmoid(dot_o)
 
+    return [hid, out]
 
-def printResult(DIV_T: float, epoch: int, days: int, fError: float):
+
+def printResult(DIV_T: float, epoch: int, days: int, fError: float, hid: float, out: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
 
     for i in range(days):
 
-        updateHidOut(i)
+        ret = updateHidOut(i, hid, out)
+        [hid, out] = [ret[0], ret[1]]
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
@@ -118,9 +120,9 @@ if __name__ == "__main__":
     epoch = 0
     v, w = [], []
 
-    for i in range(HID_NODE):
+    for _ in range(HID_NODE):
         v.append([])
-    for i in range(OUT_NODE):
+    for _ in range(OUT_NODE):
         w.append([])
 
     for i in range(HID_NODE):
@@ -135,7 +137,8 @@ if __name__ == "__main__":
         fError = 0.0
 
         for n in range(days):
-            updateHidOut(n)
+            ret = updateHidOut(n, hid, out)
+            [hid, out] = [ret[0], ret[1]]
 
             for k in range(OUT_NODE):
                 fError += 0.5 * (t[n][k] - out[k]) ** 2
@@ -160,7 +163,7 @@ if __name__ == "__main__":
         if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
-    printResult(DIV_T, epoch, days, fError)
+    printResult(DIV_T, epoch, days, fError, hid, out)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
