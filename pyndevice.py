@@ -93,10 +93,10 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-if __name__ == "__main__":
-    timeStart = time.time()
-    date_now = datetime.datetime.now()
-    print(date_now.strftime("%F %T"))
+def main():
+    global IN_NODE
+    global HID_NODE
+    global DAYS
 
     f = open("./json/seikika.json", "r")  # xor | cell30
     dc_raw = json.load(f)
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     delta_out = [0] * OUT_NODE
     epoch = 0
     v, w = [], []
-    fError = None
+    fError = 0
 
     for _ in range(HID_NODE):
         v.append([])
@@ -162,6 +162,13 @@ if __name__ == "__main__":
             arrPlotError.append(fError)
     # while
     printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+
+
+if __name__ == "__main__":
+    timeStart = time.time()
+    date_now = datetime.datetime.now()
+    print(date_now.strftime("%F %T"))
+    main()
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
