@@ -137,8 +137,8 @@ def main(strPath: str):
         fError = 0.0
 
         for n in range(DAYS):
-            ret = updateHidOut(n, hid, out, x, v, w)
-            [hid, out] = [ret[0], ret[1]]
+            updateHidOut(n, hid, out, x, v, w)
+            #[hid, out] = [ret[0], ret[1]]
 
             for k in range(OUT_NODE):
                 fError += 0.5 * (t[n][k] - out[k]) ** 2
