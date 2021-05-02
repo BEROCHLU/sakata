@@ -16,6 +16,8 @@ frandBias = lambda: -1
 # global
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
+ETA = 0.5
+THRESHOLD = 500000
 arrPlotAcc = []
 arrPlotError = []
 
@@ -34,7 +36,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
             dot_h += x[n][j] * v[i][j]
         hid[i] = sigmoid(dot_h)
 
-    hid[HID_NODE - 1] = frandBias()  # random.random()
+    hid[HID_NODE - 1] = frandBias()
 
     for i in range(OUT_NODE):
         dot_o = 0
@@ -92,10 +94,6 @@ def addBias(hsh: dict) -> dict:
 
 
 if __name__ == "__main__":
-    ETA = 0.5
-    THRESHOLD = 500000
-    fError = None
-
     timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
@@ -118,6 +116,7 @@ if __name__ == "__main__":
     delta_out = [0] * OUT_NODE
     epoch = 0
     v, w = [], []
+    fError = None
 
     for _ in range(HID_NODE):
         v.append([])
