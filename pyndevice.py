@@ -47,7 +47,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
     return [hid, out]
 
 
-def printResult(DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
-    printResult(DIV_T, epoch, fError, t, hid, out, x, v, w)
+    printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
