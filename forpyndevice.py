@@ -5,6 +5,7 @@ import random
 import statistics
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor
 from functools import reduce
 from glob import glob
 
@@ -48,7 +49,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
     return [hid, out]
 
 
-def printResult(DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
     arrErate = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
@@ -94,6 +95,77 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
+def main(strPath: str):
+    global IN_NODE
+    global HID_NODE
+    global DAYS
+
+    f = open(strPath, "r")
+    dc_raw = json.load(f)
+    arrHsh = dc_raw["listdc"]
+    DIV_T = dc_raw["div"]
+
+    x = list(map(addBias, arrHsh))
+    t = list(map(lambda hsh: hsh["output"], arrHsh))
+
+    IN_NODE = len(x[0])  # get input length include bias
+    HID_NODE = IN_NODE + 1
+    DAYS = len(x)
+
+    hid = [0] * HID_NODE
+    out = [0] * OUT_NODE
+    delta_hid = [0] * HID_NODE
+    delta_out = [0] * OUT_NODE
+    epoch = 0
+    v, w = [], []
+    fError = 0
+
+    for _ in range(HID_NODE):
+        v.append([])
+    for _ in range(OUT_NODE):
+        w.append([])
+
+    for i in range(HID_NODE):
+        for j in range(IN_NODE):
+            v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
+    for i in range(OUT_NODE):
+        for j in range(HID_NODE):
+            w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
+
+    while epoch < THRESHOLD:
+        epoch += 1
+        fError = 0.0
+
+        for n in range(DAYS):
+            ret = updateHidOut(n, hid, out, x, v, w)
+            [hid, out] = [ret[0], ret[1]]
+
+            for k in range(OUT_NODE):
+                fError += 0.5 * (t[n][k] - out[k]) ** 2
+                delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
+
+            for k in range(OUT_NODE):
+                for j in range(HID_NODE):
+                    w[k][j] += ETA * delta_out[k] * hid[j]
+
+            for i in range(HID_NODE):
+                delta_hid[i] = 0
+
+                for k in range(OUT_NODE):
+                    delta_hid[i] += delta_out[k] * w[k][i]
+
+                delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
+
+            for i in range(HID_NODE):
+                for j in range(IN_NODE):
+                    v[i][j] += ETA * delta_hid[i] * x[n][j]
+        # for days
+        if (epoch % 100) == 0:
+            arrPlotError.append(fError)
+    # while
+    printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+
+
 if __name__ == "__main__":
     timeStart = time.time()
     date_now = datetime.datetime.now()
@@ -101,74 +173,14 @@ if __name__ == "__main__":
 
     DIR_PATH = "batch"
     lst_strPath = glob(f"{DIR_PATH}/*.json")
-
+    """
     for (i, strPath) in enumerate(lst_strPath):
         if not (0 <= i and i <= sys.maxsize):  # pass loop index
             continue
-        f = open(strPath, "r")
-        dc_raw = json.load(f)
-        arrHsh = dc_raw["listdc"]
-        DIV_T = dc_raw["div"]
-
-        x = list(map(addBias, arrHsh))
-        t = list(map(lambda hsh: hsh["output"], arrHsh))
-
-        IN_NODE = len(x[0])  # get input length include bias
-        HID_NODE = IN_NODE + 1
-        DAYS = len(x)
-
-        hid = [0] * HID_NODE
-        out = [0] * OUT_NODE
-        delta_hid = [0] * HID_NODE
-        delta_out = [0] * OUT_NODE
-        epoch = 0
-        v, w = [], []
-        fError = None
-
-        for i in range(HID_NODE):
-            v.append([])
-        for i in range(OUT_NODE):
-            w.append([])
-
-        for i in range(HID_NODE):
-            for j in range(IN_NODE):
-                v[i].append(frandWeight())
-        for i in range(OUT_NODE):
-            for j in range(HID_NODE):
-                w[i].append(frandWeight())
-
-        while epoch < THRESHOLD:
-            epoch += 1
-            fError = 0
-
-            for n in range(DAYS):
-                updateHidOut(n, hid, out, x, v, w)
-
-                for k in range(OUT_NODE):
-                    fError += 0.5 * (t[n][k] - out[k]) ** 2
-                    delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
-
-                for k in range(OUT_NODE):
-                    for j in range(HID_NODE):
-                        w[k][j] += ETA * delta_out[k] * hid[j]
-
-                for i in range(HID_NODE):
-                    delta_hid[i] = 0
-
-                    for k in range(OUT_NODE):
-                        delta_hid[i] += delta_out[k] * w[k][i]
-
-                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
-
-                for i in range(HID_NODE):
-                    for j in range(IN_NODE):
-                        v[i][j] += ETA * delta_hid[i] * x[n][j]
-            # for days
-            if (epoch % 100) == 0:
-                arrPlotError.append(fError)
-        # while
-        printResult(DIV_T, epoch, fError, t, hid, out, x, v, w)
-    # for json
+        main(strPath)
+    """
+    with ProcessPoolExecutor(max_workers=4) as excuter:
+        excuter.map(main, lst_strPath)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
