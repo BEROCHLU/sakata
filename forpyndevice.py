@@ -162,7 +162,8 @@ def main(strPath: str):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
         if (epoch % 100) == 0:
-            arrPlotError.append(fError)
+            #arrPlotError.append(fError)
+            pass
     # while
     return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
