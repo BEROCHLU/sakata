@@ -19,8 +19,6 @@ frandBias = lambda: -1
 DAYS = None
 ETA = 0.5
 THRESHOLD = 500000
-arrPlotAcc = []
-arrPlotError = []
 
 
 def sigmoid(a: float) -> float:
@@ -166,6 +164,9 @@ def main():
 
 
 if __name__ == "__main__":
+    arrPlotAcc = []
+    arrPlotError = []
+
     timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
