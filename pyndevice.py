@@ -6,6 +6,7 @@ import statistics
 import sys
 import time
 from functools import reduce
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 
@@ -17,7 +18,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 500000
+THRESHOLD = 5000
 arrPlotAcc = []
 arrPlotError = []
 
@@ -47,6 +48,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
 
 def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
     arrErate = []
+    arrPrint = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
 
@@ -69,7 +71,8 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
         arrPlotAcc.append(accumulate)  # plot
-        print(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}")
+        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
+        arrPrint.append(s)
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
@@ -77,11 +80,14 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
 
-    print(f"Average error: {round(fMean, 2)}%")
-    print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
-    print(f"Epoch: {epoch} Days: {DAYS}")
-    print(f"Nom: {round(acc_nom, 2)}")
-    print(f"FinalErr: {round(fError, 5)}\n")
+    s = f"Average error: {round(fMean, 2)}%"
+    arrPrint.append(s)
+    s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
+    arrPrint.append(s)
+    s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
+    arrPrint.append(s)
+
+    return arrPrint
 
 
 def addBias(hsh: dict) -> dict:
@@ -157,14 +163,15 @@ def main():
         if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
-    printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
 
 if __name__ == "__main__":
     timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
-    main()
+    arrPrint = main()
+    pprint(arrPrint)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
@@ -175,4 +182,4 @@ if __name__ == "__main__":
     plt.plot(arrPlotError)
     plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
-    plt.show()
+    #plt.show()

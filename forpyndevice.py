@@ -8,6 +8,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from functools import reduce
 from glob import glob
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 
@@ -51,6 +52,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
 
 def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
     arrErate = []
+    arrPrint = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
 
@@ -74,7 +76,8 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
         
-        print(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}")
+        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
+        arrPrint.append(s)
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
@@ -82,11 +85,13 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
     arrPlotAcc.append(acc_nom)  # plot
-    print(f"Average error: {round(fMean, 2)}%")
-    print(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
-    print(f"Epoch: {epoch} Days: {DAYS}")
-    print(f"Nom: {round(acc_nom, 2)}")
-    print(f"FinalErr: {round(fError, 5)}\n")
+    s = f"Average error: {round(fMean, 2)}%"
+    arrPrint.append(s)
+    s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
+    arrPrint.append(s)
+    s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
+    arrPrint.append(s)
+    return arrPrint
 
 
 def addBias(hsh: dict) -> dict:
@@ -163,7 +168,7 @@ def main(strPath: str):
         if (epoch % 100) == 0:
             arrPlotError.append(fError)
     # while
-    printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
 
 if __name__ == "__main__":
@@ -173,16 +178,22 @@ if __name__ == "__main__":
 
     DIR_PATH = "batch"
     lst_strPath = glob(f"{DIR_PATH}/*.json")
+    arrPrint = []
     """
+    excuter = ProcessPoolExecutor(max_workers=4)
     for (i, strPath) in enumerate(lst_strPath):
-        if not (0 <= i and i <= sys.maxsize):  # pass loop index
+        if not (16 <= i and i <= sys.maxsize):  # pass loop index
             continue
-        main(strPath)
+        excuter.submit(main, strPath)
+        #main(strPath)
+    excuter.shutdown(wait=True)
     """
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        excuter.map(main, lst_strPath)
+        arrPrint = list(excuter.map(main, lst_strPath[14:]))
     
-    excuter.shutdown(wait=True)
+    #excuter.map(main, lst_strPath)
+    
+    pprint(arrPrint)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
