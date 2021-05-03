@@ -18,7 +18,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 5000
+THRESHOLD = 500000
 arrPlotAcc = []
 arrPlotError = []
 
@@ -30,7 +30,7 @@ def sigmoid(a: float) -> float:
         return 1 / (1 + math.exp(-a))
 
 
-def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -> float:
+def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float):
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -46,7 +46,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
         out[i] = sigmoid(dot_o)
 
 
-def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float) -> list:
     arrErate = []
     arrPrint = []
     acc_min = sys.maxsize
@@ -182,4 +182,4 @@ if __name__ == "__main__":
     plt.plot(arrPlotError)
     plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
-    #plt.show()
+    plt.show()

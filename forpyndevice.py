@@ -32,7 +32,7 @@ def sigmoid(a: float) -> float:
         return 1 / (1 + math.exp(-a))
 
 
-def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -> float:
+def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float):
     for i in range(HID_NODE):
         dot_h = 0
         for j in range(IN_NODE):
@@ -47,10 +47,8 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float) -
             dot_o += w[i][j] * hid[j]
         out[i] = sigmoid(dot_o)
 
-    #return [hid, out]
 
-
-def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float):
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float) -> list:
     arrErate = []
     arrPrint = []
     acc_min = sys.maxsize
@@ -59,7 +57,6 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     for i in range(DAYS):
 
         updateHidOut(i, hid, out, x, v, w)
-        #[hid, out] = [ret[0], ret[1]]
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
@@ -75,7 +72,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
-        
+
         s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
         arrPrint.append(s)
 
@@ -91,6 +88,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     arrPrint.append(s)
     s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
     arrPrint.append(s)
+
     return arrPrint
 
 
@@ -143,7 +141,7 @@ def main(strPath: str):
 
         for n in range(DAYS):
             updateHidOut(n, hid, out, x, v, w)
-            #[hid, out] = [ret[0], ret[1]]
+            # [hid, out] = [ret[0], ret[1]]
 
             for k in range(OUT_NODE):
                 fError += 0.5 * (t[n][k] - out[k]) ** 2
@@ -189,10 +187,10 @@ if __name__ == "__main__":
     excuter.shutdown(wait=True)
     """
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[14:]))
-    
-    #excuter.map(main, lst_strPath)
-    
+        arrPrint = list(excuter.map(main, lst_strPath[0:]))
+
+    # excuter.map(main, lst_strPath)
+
     pprint(arrPrint)
     # measure time
     timeEnd = time.time()
