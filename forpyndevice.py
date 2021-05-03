@@ -181,6 +181,8 @@ if __name__ == "__main__":
     """
     with ProcessPoolExecutor(max_workers=4) as excuter:
         excuter.map(main, lst_strPath)
+    
+    excuter.shutdown(wait=True)
     # measure time
     timeEnd = time.time()
     nSec = int(timeEnd - timeStart)
