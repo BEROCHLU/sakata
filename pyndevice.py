@@ -53,7 +53,6 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     acc_max = -sys.maxsize
 
     for i in range(DAYS):
-
         updateHidOut(i, hid, out, x, v, w)
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])

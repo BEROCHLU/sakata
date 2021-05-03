@@ -55,7 +55,6 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     acc_max = -sys.maxsize
 
     for i in range(DAYS):
-
         updateHidOut(i, hid, out, x, v, w)
 
         arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
@@ -141,7 +140,6 @@ def main(strPath: str):
 
         for n in range(DAYS):
             updateHidOut(n, hid, out, x, v, w)
-            # [hid, out] = [ret[0], ret[1]]
 
             for k in range(OUT_NODE):
                 fError += 0.5 * (t[n][k] - out[k]) ** 2
@@ -188,9 +186,7 @@ if __name__ == "__main__":
     """
     with ProcessPoolExecutor(max_workers=4) as excuter:
         arrPrint = list(excuter.map(main, lst_strPath[0:]))
-
     # excuter.map(main, lst_strPath)
-
     pprint(arrPrint)
     # measure time
     timeEnd = time.time()
