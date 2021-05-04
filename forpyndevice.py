@@ -8,8 +8,8 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from functools import reduce
 from glob import glob
-from pprint import pprint
 from multiprocessing import Manager
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 
@@ -21,9 +21,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 500000
-arrPlotAcc = []
-#arrPlotError = []
+THRESHOLD = 500
 
 
 def sigmoid(a: float) -> float:
@@ -81,7 +79,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
-    #arrPlotAcc.append(acc_nom)  # plot
+    # arrPlotAcc.append(acc_nom)  # plot
     s = f"Average error: {round(fMean, 2)}%"
     arrPrint.append(s)
     s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
@@ -98,7 +96,7 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def main(strPath: str, lst):
+def main(strPath: str, lst_mg: list):
     global IN_NODE
     global HID_NODE
     global DAYS
@@ -163,14 +161,16 @@ def main(strPath: str, lst):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
         if (epoch % 100) == 0:
-            lst.append(fError)
+            lst_mg.append(fError)
             pass
     # while
     return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
 
 if __name__ == "__main__":
-    lst = Manager().list()
+    # プロットのため各プロセスとメモリ共有
+    lst_mg = Manager().list()
+    lst_plot = Manager().list()
 
     timeStart = time.time()
     date_now = datetime.datetime.now()
@@ -180,7 +180,7 @@ if __name__ == "__main__":
     lst_strPath = glob(f"{DIR_PATH}/*.json")
     arrPrint = []
 
-    lst_g = [lst for _ in range(len(lst_strPath))]
+    lst_g = [lst_mg for _ in range(len(lst_strPath))]
     """
     excuter = ProcessPoolExecutor(max_workers=4)
     for (i, strPath) in enumerate(lst_strPath):
@@ -190,9 +190,10 @@ if __name__ == "__main__":
         #main(strPath)
     excuter.shutdown(wait=True)
     """
+    # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[10:], lst_g))
-    # excuter.map(main, lst_strPath)
+        arrPrint = list(excuter.map(main, lst_strPath[0:], lst_g))
+
     pprint(arrPrint)
     # measure time
     timeEnd = time.time()
@@ -201,7 +202,7 @@ if __name__ == "__main__":
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
     plt.subplot(2, 1, 1)
-    plt.plot(lst)
+    plt.plot(lst_mg)
     plt.subplot(2, 1, 2)
-    plt.plot(arrPlotAcc)
+    plt.plot(lst_plot)
     plt.show()
