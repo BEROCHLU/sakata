@@ -86,6 +86,8 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     arrPrint.append(s)
     s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
     arrPrint.append(s)
+    arrPrint.append("")
+
 
     return arrPrint
 
@@ -192,7 +194,7 @@ if __name__ == "__main__":
     """
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[0:], lst_g))
+        arrPrint = list(excuter.map(main, lst_strPath[:20], lst_g))
 
     pprint(arrPrint)
     # measure time

@@ -18,7 +18,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 500000
+THRESHOLD = 5000
 
 
 def sigmoid(a: float) -> float:
