@@ -9,6 +9,7 @@ from concurrent.futures import ProcessPoolExecutor
 from functools import reduce
 from glob import glob
 from pprint import pprint
+from multiprocessing import Manager
 
 import matplotlib.pyplot as plt
 
@@ -22,7 +23,7 @@ DAYS = None
 ETA = 0.5
 THRESHOLD = 500000
 arrPlotAcc = []
-arrPlotError = []
+#arrPlotError = []
 
 
 def sigmoid(a: float) -> float:
@@ -80,7 +81,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
-    arrPlotAcc.append(acc_nom)  # plot
+    #arrPlotAcc.append(acc_nom)  # plot
     s = f"Average error: {round(fMean, 2)}%"
     arrPrint.append(s)
     s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
@@ -97,7 +98,7 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def main(strPath: str):
+def main(strPath: str, lst):
     global IN_NODE
     global HID_NODE
     global DAYS
@@ -162,13 +163,15 @@ def main(strPath: str):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
         if (epoch % 100) == 0:
-            #arrPlotError.append(fError)
+            lst.append(fError)
             pass
     # while
     return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
 
 if __name__ == "__main__":
+    lst = Manager().list()
+
     timeStart = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
@@ -176,6 +179,8 @@ if __name__ == "__main__":
     DIR_PATH = "batch"
     lst_strPath = glob(f"{DIR_PATH}/*.json")
     arrPrint = []
+
+    lst_g = [lst for _ in range(len(lst_strPath))]
     """
     excuter = ProcessPoolExecutor(max_workers=4)
     for (i, strPath) in enumerate(lst_strPath):
@@ -186,7 +191,7 @@ if __name__ == "__main__":
     excuter.shutdown(wait=True)
     """
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[0:]))
+        arrPrint = list(excuter.map(main, lst_strPath[10:], lst_g))
     # excuter.map(main, lst_strPath)
     pprint(arrPrint)
     # measure time
@@ -196,7 +201,7 @@ if __name__ == "__main__":
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
     plt.subplot(2, 1, 1)
-    plt.plot(arrPlotError)
+    plt.plot(lst)
     plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
     plt.show()
