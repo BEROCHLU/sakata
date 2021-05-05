@@ -194,7 +194,7 @@ if __name__ == "__main__":
     """
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[:20], lst_g))
+        arrPrint = list(excuter.map(main, lst_strPath[:], lst_g))
 
     pprint(arrPrint)
     # measure time
