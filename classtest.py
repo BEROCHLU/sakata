@@ -48,7 +48,7 @@ def main():
     pprint(arrPrint)
 
 
-class ONN: # Out of date Neural Networl
+class ONN:  # Out of date Neural Networl
     def __init__(self, x):
         global IN_NODE
         global HID_NODE
@@ -58,13 +58,7 @@ class ONN: # Out of date Neural Networl
         HID_NODE = IN_NODE + 1
         DAYS = len(x)
 
-        self.hid = [0] * HID_NODE
-        self.out = [0] * OUT_NODE
-        self.delta_hid = [0] * HID_NODE
-        self.delta_out = [0] * OUT_NODE
-        self.epoch = 0
         self.v, self.w = [], []
-        self.fError = 0
 
         for _ in range(HID_NODE):
             self.v.append([])
@@ -78,6 +72,21 @@ class ONN: # Out of date Neural Networl
             for _ in range(HID_NODE):
                 self.w[i].append(frandWeight())
 
+    def updateHidOut(self, n, x, v, w, hid, out):
+        for i in range(HID_NODE):
+            dot_h = 0
+            for j in range(IN_NODE):
+                dot_h += x[n][j] * v[i][j]
+            hid[i] = sigmoid(dot_h)
+
+        hid[HID_NODE - 1] = frandBias()
+
+        for i in range(OUT_NODE):
+            dot_o = 0
+            for j in range(HID_NODE):
+                dot_o += w[i][j] * hid[j]
+            out[i] = sigmoid(dot_o)
+
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
         arrErate = []
         arrPrint = []
@@ -85,7 +94,7 @@ class ONN: # Out of date Neural Networl
         acc_max = -sys.maxsize
 
         for i in range(DAYS):
-            self.updateHidOut(i, x, v, w)
+            self.updateHidOut(i, x, v, w, hid, out)
 
             arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
@@ -120,67 +129,59 @@ class ONN: # Out of date Neural Networl
 
         return arrPrint
 
-    def updateHidOut(self, n, x, v, w):
-        for i in range(HID_NODE):
-            dot_h = 0
-            for j in range(IN_NODE):
-                dot_h += x[n][j] * v[i][j]
-            self.hid[i] = sigmoid(dot_h)
-
-        self.hid[HID_NODE - 1] = frandBias()
-
-        for i in range(OUT_NODE):
-            dot_o = 0
-            for j in range(HID_NODE):
-                dot_o += w[i][j] * self.hid[j]
-            self.out[i] = sigmoid(dot_o)
-
     # training
     def train(self, x, t, DIV_T, arrHsh):
-        while self.epoch < THRESHOLD:
-            self.epoch += 1
-            self.fError = 0.0
+        hid = [0] * HID_NODE
+        out = [0] * OUT_NODE
+        delta_hid = [0] * HID_NODE
+        delta_out = [0] * OUT_NODE
+        epoch = 0
+        fError = 0.0
+
+        while epoch < THRESHOLD:
+            epoch += 1
+            fError = 0.0
 
             for n in range(DAYS):
-                self.updateHidOut(n, x, self.v, self.w)
+                self.updateHidOut(n, x, self.v, self.w, hid, out)
 
                 for k in range(OUT_NODE):
-                    self.fError += 0.5 * (t[n][k] - self.out[k]) ** 2
-                    self.delta_out[k] = (t[n][k] - self.out[k]) * self.out[k] * (1 - self.out[k])
+                    fError += 0.5 * (t[n][k] - out[k]) ** 2
+                    delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
 
                 for k in range(OUT_NODE):
                     for j in range(HID_NODE):
-                        self.w[k][j] += ETA * self.delta_out[k] * self.hid[j]
+                        self.w[k][j] += ETA * delta_out[k] * hid[j]
 
                 for i in range(HID_NODE):
-                    self.delta_hid[i] = 0
+                    delta_hid[i] = 0
 
                     for k in range(OUT_NODE):
-                        self.delta_hid[i] += self.delta_out[k] * self.w[k][i]
+                        delta_hid[i] += delta_out[k] * self.w[k][i]
 
-                    self.delta_hid[i] = dsigmoid(self.hid[i]) * self.delta_hid[i]
+                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
 
                 for i in range(HID_NODE):
                     for j in range(IN_NODE):
-                        self.v[i][j] += ETA * self.delta_hid[i] * x[n][j]
+                        self.v[i][j] += ETA * delta_hid[i] * x[n][j]
             # for days
-            if (self.epoch % 100) == 0:
-                arrPlotError.append(self.fError)
+            if (epoch % 100) == 0:
+                arrPlotError.append(fError)
         # while
-        return self.printResult(arrHsh, DIV_T, self.epoch, self.fError, t, self.hid, self.out, x, self.v, self.w)
+        return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, self.v, self.w)
 
 
 if __name__ == "__main__":
     arrPlotAcc = []
     arrPlotError = []
 
-    timeStart = time.time()
+    TIME_START = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
     main()
     # measure time
-    timeEnd = time.time()
-    nSec = int(timeEnd - timeStart)
+    TIME_END = time.time()
+    nSec = int(TIME_END - TIME_START)
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
