@@ -21,13 +21,6 @@ ETA = 0.5
 THRESHOLD = 500000
 
 
-def sigmoid(a: float) -> float:
-    if a < 0:
-        return math.exp(a) / (1 + math.exp(a))
-    else:
-        return 1 / (1 + math.exp(-a))
-
-
 def addBias(hsh: dict) -> dict:
     arrInput = hsh["input"]
     arrInput.append(frandBias())  # add bias
@@ -58,12 +51,18 @@ class ONN:  # Out of date Neural Network
         HID_NODE = IN_NODE + 1
         DAYS = len(x)
 
+    def sigmoid(self, a: float) -> float:
+        if a < 0:
+            return math.exp(a) / (1 + math.exp(a))
+        else:
+            return 1 / (1 + math.exp(-a))
+
     def updateHidOut(self, n, x, v, w, hid, out):
         for i in range(HID_NODE):
             dot_h = 0.0
             for j in range(IN_NODE):
                 dot_h += x[n][j] * v[i][j]
-            hid[i] = sigmoid(dot_h)
+            hid[i] = self.sigmoid(dot_h)
 
         hid[HID_NODE - 1] = frandBias()
 
@@ -71,7 +70,7 @@ class ONN:  # Out of date Neural Network
             dot_o = 0.0
             for j in range(HID_NODE):
                 dot_o += w[i][j] * hid[j]
-            out[i] = sigmoid(dot_o)
+            out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
         arrErate = []
