@@ -48,7 +48,7 @@ def main():
     pprint(arrPrint)
 
 
-class ONN:  # Out of date Neural Networl
+class ONN:  # Out of date Neural Network
     def __init__(self, x):
         global IN_NODE
         global HID_NODE
@@ -58,23 +58,9 @@ class ONN:  # Out of date Neural Networl
         HID_NODE = IN_NODE + 1
         DAYS = len(x)
 
-        self.v, self.w = [], []
-
-        for _ in range(HID_NODE):
-            self.v.append([])
-        for _ in range(OUT_NODE):
-            self.w.append([])
-
-        for i in range(HID_NODE):
-            for _ in range(IN_NODE):
-                self.v[i].append(frandWeight())
-        for i in range(OUT_NODE):
-            for _ in range(HID_NODE):
-                self.w[i].append(frandWeight())
-
     def updateHidOut(self, n, x, v, w, hid, out):
         for i in range(HID_NODE):
-            dot_h = 0
+            dot_h = 0.0
             for j in range(IN_NODE):
                 dot_h += x[n][j] * v[i][j]
             hid[i] = sigmoid(dot_h)
@@ -82,7 +68,7 @@ class ONN:  # Out of date Neural Networl
         hid[HID_NODE - 1] = frandBias()
 
         for i in range(OUT_NODE):
-            dot_o = 0
+            dot_o = 0.0
             for j in range(HID_NODE):
                 dot_o += w[i][j] * hid[j]
             out[i] = sigmoid(dot_o)
@@ -137,13 +123,26 @@ class ONN:  # Out of date Neural Networl
         delta_out = [0] * OUT_NODE
         epoch = 0
         fError = 0.0
+        v, w = [], []
+
+        for _ in range(HID_NODE):
+            v.append([])
+        for _ in range(OUT_NODE):
+            w.append([])
+
+        for i in range(HID_NODE):
+            for _ in range(IN_NODE):
+                v[i].append(frandWeight())
+        for i in range(OUT_NODE):
+            for _ in range(HID_NODE):
+                w[i].append(frandWeight())
 
         while epoch < THRESHOLD:
             epoch += 1
             fError = 0.0
 
             for n in range(DAYS):
-                self.updateHidOut(n, x, self.v, self.w, hid, out)
+                self.updateHidOut(n, x, v, w, hid, out)
 
                 for k in range(OUT_NODE):
                     fError += 0.5 * (t[n][k] - out[k]) ** 2
@@ -151,24 +150,24 @@ class ONN:  # Out of date Neural Networl
 
                 for k in range(OUT_NODE):
                     for j in range(HID_NODE):
-                        self.w[k][j] += ETA * delta_out[k] * hid[j]
+                        w[k][j] += ETA * delta_out[k] * hid[j]
 
                 for i in range(HID_NODE):
                     delta_hid[i] = 0
 
                     for k in range(OUT_NODE):
-                        delta_hid[i] += delta_out[k] * self.w[k][i]
+                        delta_hid[i] += delta_out[k] * w[k][i]
 
                     delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
 
                 for i in range(HID_NODE):
                     for j in range(IN_NODE):
-                        self.v[i][j] += ETA * delta_hid[i] * x[n][j]
+                        v[i][j] += ETA * delta_hid[i] * x[n][j]
             # for days
             if (epoch % 100) == 0:
                 arrPlotError.append(fError)
         # while
-        return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, self.v, self.w)
+        return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
 
 
 if __name__ == "__main__":
