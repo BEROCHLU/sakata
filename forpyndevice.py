@@ -88,7 +88,6 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     arrPrint.append(s)
     arrPrint.append("")
 
-
     return arrPrint
 
 
@@ -129,10 +128,10 @@ def main(strPath: str, lst_mg: list):
         w.append([])
 
     for i in range(HID_NODE):
-        for j in range(IN_NODE):
+        for _ in range(IN_NODE):
             v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
-        for j in range(HID_NODE):
+        for _ in range(HID_NODE):
             w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
 
     while epoch < THRESHOLD:
