@@ -18,7 +18,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 5000
+THRESHOLD = 500000
 
 
 def sigmoid(a: float) -> float:
@@ -68,7 +68,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
         arrPlotAcc.append(accumulate)  # plot
-        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
+        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}"
         arrPrint.append(s)
 
     acc_mid = (acc_max + acc_min) / 2
@@ -124,10 +124,10 @@ def main():
         w.append([])
 
     for i in range(HID_NODE):
-        for j in range(IN_NODE):
+        for _ in range(IN_NODE):
             v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
     for i in range(OUT_NODE):
-        for j in range(HID_NODE):
+        for _ in range(HID_NODE):
             w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
 
     while epoch < THRESHOLD:
