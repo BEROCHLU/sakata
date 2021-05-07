@@ -71,7 +71,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
 
-        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
+        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}"
         arrPrint.append(s)
 
     acc_mid = (acc_max + acc_min) / 2
