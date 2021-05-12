@@ -1,7 +1,6 @@
 import datetime
 import json
 import math
-import random
 import statistics
 import sys
 import time
@@ -47,7 +46,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float):
         out[i] = sigmoid(dot_o)
 
 
-def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float) -> list:
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float, lst_plot) -> list:
     arrErate = []
     arrPrint = []
     acc_min = sys.maxsize
@@ -79,7 +78,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
-    # arrPlotAcc.append(acc_nom)  # plot
+    lst_plot.append(acc_nom)  # plot
     s = f"Average error: {round(fMean, 2)}%"
     arrPrint.append(s)
     s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
@@ -97,7 +96,7 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def main(strPath: str, lst_mg: list):
+def main(strPath: str, lst_mg: list, lst_plot):
     global IN_NODE
     global HID_NODE
     global DAYS
@@ -165,7 +164,7 @@ def main(strPath: str, lst_mg: list):
             lst_mg.append(fError)
             pass
     # while
-    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_plot)
 
 
 if __name__ == "__main__":
@@ -182,6 +181,7 @@ if __name__ == "__main__":
     arrPrint = []
 
     lst_g = [lst_mg for _ in range(len(lst_strPath))]
+    lst_p = [lst_plot for _ in range(len(lst_strPath))]
     """
     excuter = ProcessPoolExecutor(max_workers=4)
     for (i, strPath) in enumerate(lst_strPath):
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     """
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[:], lst_g))
+        arrPrint = list(excuter.map(main, lst_strPath[:], lst_g, lst_p))
 
     pprint(arrPrint)
     # measure time
