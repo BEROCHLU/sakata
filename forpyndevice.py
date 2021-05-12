@@ -70,8 +70,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
 
-        s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}"
-        arrPrint.append(s)
+        arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
@@ -79,12 +78,9 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
     lst_plot.append(acc_nom)  # plot
-    s = f"Average error: {round(fMean, 2)}%"
-    arrPrint.append(s)
-    s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
-    arrPrint.append(s)
-    s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
-    arrPrint.append(s)
+    arrPrint.append(f"Average error: {round(fMean, 2)}%")
+    arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
+    arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
     arrPrint.append("")
 
     return arrPrint
@@ -96,7 +92,7 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def main(strPath: str, lst_mg: list, lst_plot):
+def main(strPath: str, lst_c0: list, lst_c1: list) -> list:
     global IN_NODE
     global HID_NODE
     global DAYS
@@ -128,10 +124,10 @@ def main(strPath: str, lst_mg: list, lst_plot):
 
     for i in range(HID_NODE):
         for _ in range(IN_NODE):
-            v[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
+            v[i].append(frandWeight())
     for i in range(OUT_NODE):
         for _ in range(HID_NODE):
-            w[i].append(frandWeight())  # random() | uniform(0.5, 1.0)
+            w[i].append(frandWeight())
 
     while epoch < THRESHOLD:
         epoch += 1
@@ -161,18 +157,18 @@ def main(strPath: str, lst_mg: list, lst_plot):
                     v[i][j] += ETA * delta_hid[i] * x[n][j]
         # for days
         if (epoch % 100) == 0:
-            lst_mg.append(fError)
+            lst_c0.append(fError)
             pass
     # while
-    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_plot)
+    return printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1)
 
 
 if __name__ == "__main__":
     # プロットのため各プロセスとメモリ共有
-    lst_mg = Manager().list()
-    lst_plot = Manager().list()
+    lst_mg0 = Manager().list()
+    lst_mg1 = Manager().list()
 
-    timeStart = time.time()
+    TIME_START = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
 
@@ -180,8 +176,8 @@ if __name__ == "__main__":
     lst_strPath = glob(f"{DIR_PATH}/*.json")
     arrPrint = []
 
-    lst_g = [lst_mg for _ in range(len(lst_strPath))]
-    lst_p = [lst_plot for _ in range(len(lst_strPath))]
+    lst_c0 = [lst_mg0 for _ in range(len(lst_strPath))]
+    lst_c1 = [lst_mg1 for _ in range(len(lst_strPath))]
     """
     excuter = ProcessPoolExecutor(max_workers=4)
     for (i, strPath) in enumerate(lst_strPath):
@@ -193,17 +189,17 @@ if __name__ == "__main__":
     """
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[:], lst_g, lst_p))
+        arrPrint = list(excuter.map(main, lst_strPath[:], lst_c0, lst_c1))
 
     pprint(arrPrint)
     # measure time
-    timeEnd = time.time()
-    nSec = int(timeEnd - timeStart)
+    TIME_END = time.time()
+    nSec = int(TIME_END - TIME_START)
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # show plot
     plt.subplot(2, 1, 1)
-    plt.plot(lst_mg)
+    plt.plot(lst_mg0)
     plt.subplot(2, 1, 2)
-    plt.plot(lst_plot)
+    plt.plot(lst_mg1)
     plt.show()
