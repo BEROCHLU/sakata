@@ -46,7 +46,7 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float):
         out[i] = sigmoid(dot_o)
 
 
-def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float, lst_plot) -> list:
+def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float, lst_c1: list) -> list:
     arrErate = []
     arrPrint = []
     acc_min = sys.maxsize
@@ -77,7 +77,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
 
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
-    lst_plot.append(acc_nom)  # plot
+    lst_c1.append(acc_nom)  # plot
     arrPrint.append(f"Average error: {round(fMean, 2)}%")
     arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
     arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
@@ -178,15 +178,6 @@ if __name__ == "__main__":
 
     lst_c0 = [lst_mg0 for _ in range(len(lst_strPath))]
     lst_c1 = [lst_mg1 for _ in range(len(lst_strPath))]
-    """
-    excuter = ProcessPoolExecutor(max_workers=4)
-    for (i, strPath) in enumerate(lst_strPath):
-        if not (16 <= i and i <= sys.maxsize):  # pass loop index
-            continue
-        excuter.submit(main, strPath)
-        #main(strPath)
-    excuter.shutdown(wait=True)
-    """
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
         arrPrint = list(excuter.map(main, lst_strPath[:], lst_c0, lst_c1))
@@ -194,9 +185,9 @@ if __name__ == "__main__":
     pprint(arrPrint)
     # measure time
     TIME_END = time.time()
-    nSec = int(TIME_END - TIME_START)
-    nMinute = int(nSec / 60) if 60 <= nSec else 0
-    print(f"Time: {nMinute} min {nSec % 60} sec.\n")
+    INT_SEC = int(TIME_END - TIME_START)
+    INT_MINUTE = int(INT_SEC / 60) if 60 <= INT_SEC else 0
+    print(f"Time: {INT_MINUTE} min {INT_SEC % 60} sec.\n")
     # show plot
     plt.subplot(2, 1, 1)
     plt.plot(lst_mg0)
