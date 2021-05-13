@@ -5,7 +5,7 @@ import statistics
 import sys
 import time
 from functools import reduce
-from pprint import pprint, pformat
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 
@@ -17,7 +17,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 500
+THRESHOLD = 500000
 
 
 def sigmoid(a: float) -> float:
