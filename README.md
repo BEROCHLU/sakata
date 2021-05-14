@@ -15,7 +15,9 @@ This is very simple and out of date neural network program.
     * Python
     * Node.js
     * git
-    * MinGW (option)
+    * MinGW-w64 (optional)  
+        [Using GCC with MinGW](https://code.visualstudio.com/docs/cpp/config-mingw)  
+        Due to error `the file has been downloaded incorrectly` not recommend installer. Alternate source https://winlibs.com/
 2. git clone this repository
 3. install library  
     `pip install -r requirements.txt`  
