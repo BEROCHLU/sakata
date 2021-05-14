@@ -10,7 +10,7 @@ This is very simple and out of date neural network program.
 * [Input, Hidden, Output] layer is [3, 4, 1] and these which except Output layer include biases.
 * Training data is the same Test data.
 * Epoch is 500 thousand.
-# setup
+# Usage
 1. install
     * Python
     * Node.js
