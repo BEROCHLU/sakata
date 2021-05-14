@@ -17,4 +17,7 @@ This is very simple and out of date neural network program.
     * git
     * MinGW (option)
 2. git clone this repository
-3. npm run script which you like
+3. install library  
+    `pip install -r requirements.txt`  
+    `npm install`  
+4. npm run script which you like
