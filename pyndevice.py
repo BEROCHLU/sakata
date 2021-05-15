@@ -43,11 +43,11 @@ def updateHidOut(n: int, hid: float, out: float, x: float, v: float, w: float):
         out[i] = sigmoid(dot_o)
 
 
-def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float, hid: float, out: float, x: float, v: float, w: float) -> str:
+def printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
     arrErate = []
+    arrPrint = []
     acc_min = sys.maxsize
     acc_max = -sys.maxsize
-    strPrint = ""
 
     for i in range(DAYS):
         updateHidOut(i, hid, out, x, v, w)
@@ -67,7 +67,7 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
         acc_max = accumulate if acc_max < accumulate else acc_max
         acc_min = accumulate if accumulate < acc_min else acc_min
         arrPlotAcc.append(accumulate)  # plot
-        strPrint += f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}\n"
+        arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
     acc_mid = (acc_max + acc_min) / 2
     acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
@@ -75,11 +75,12 @@ def printResult(arrHsh: list, DIV_T: float, epoch: int, fError: float, t: float,
     lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
     fMean = statistics.mean(lst_abs)
 
-    strPrint += f"Average error: {round(fMean, 2)}%\n"
-    strPrint += f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}\n"
-    strPrint += f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}\n"
+    arrPrint.append(f"Average error: {round(fMean, 2)}%")
+    arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
+    arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
+    arrPrint.append("")
 
-    return strPrint
+    return arrPrint
 
 
 def addBias(hsh: dict) -> dict:
@@ -88,7 +89,7 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def main() -> str:
+def main():
     global IN_NODE
     global HID_NODE
     global DAYS
@@ -162,15 +163,15 @@ if __name__ == "__main__":
     arrPlotAcc = []
     arrPlotError = []
 
-    timeStart = time.time()
+    TIME_START = time.time()
     date_now = datetime.datetime.now()
     print(date_now.strftime("%F %T"))
-    print(main())
+    pprint(main())
     # measure time
-    timeEnd = time.time()
-    nSec = int(timeEnd - timeStart)
-    nMinute = int(nSec / 60) if 60 <= nSec else 0
-    print(f"Time: {nMinute} min {nSec % 60} sec.\n")
+    TIME_END = time.time()
+    INT_SEC = int(TIME_END - TIME_START)
+    INT_MINUTE = int(INT_SEC / 60) if 60 <= INT_SEC else 0
+    print(f"Time: {INT_MINUTE} min {INT_SEC % 60} sec.\n")
     # show plot
     plt.subplot(2, 1, 1)
     plt.plot(arrPlotError)

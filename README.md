@@ -19,7 +19,7 @@ This is very simple and out of date neural network program.
         [Using GCC with MinGW](https://code.visualstudio.com/docs/cpp/config-mingw)  
         Due to error `the file has been downloaded incorrectly` not recommend installer. Alternate source https://winlibs.com/
 2. git clone this repository
-3. install library  
+3. package  
     `pip install -r requirements.txt`  
     `npm install`  
-4. npm run script which you like
+4. npm run script  
