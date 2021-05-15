@@ -95,8 +95,7 @@ class ONN:  # Out of date Neural Network
             acc_max = accumulate if acc_max < accumulate else acc_max
             acc_min = accumulate if accumulate < acc_min else acc_min
             arrPlotAcc.append(accumulate)  # plot
-            s = f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} Err: {pad_erate} Acc: {pad_acc}"
-            arrPrint.append(s)
+            arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
         acc_mid = (acc_max + acc_min) / 2
         acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
@@ -104,12 +103,10 @@ class ONN:  # Out of date Neural Network
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
 
-        s = f"Average error: {round(fMean, 2)}%"
-        arrPrint.append(s)
-        s = f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}"
-        arrPrint.append(s)
-        s = f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}"
-        arrPrint.append(s)
+        arrPrint.append(f"Average error: {round(fMean, 2)}%")
+        arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
+        arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
+        arrPrint.append("")
 
         return arrPrint
 
