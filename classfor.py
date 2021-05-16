@@ -186,7 +186,7 @@ if __name__ == "__main__":
     lst_c1 = [lst_mg1 for _ in range(len(lst_strPath))]
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[-4:], lst_c0, lst_c1))
+        arrPrint = list(excuter.map(main, lst_strPath[:], lst_c0, lst_c1))
 
     pprint(arrPrint)
     # measure time
