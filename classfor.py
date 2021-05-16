@@ -39,7 +39,7 @@ def main(strPath, lst_c0, lst_c1):
     t = list(map(lambda hsh: hsh["output"], arrHsh))
 
     onn = ONN(x)  # create instance
-    arrPrint = onn.train(x, t, DIV_T, arrHsh)  # call train method
+    arrPrint = onn.train(x, t, DIV_T, arrHsh, lst_c0, lst_c1)  # call train method
     return arrPrint
 
 
@@ -74,7 +74,7 @@ class ONN:  # Out of date Neural Network
                 dot_o += w[i][j] * hid[j]
             out[i] = self.sigmoid(dot_o)
 
-    def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
+    def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
         arrErate = []
         arrPrint = []
         acc_min = sys.maxsize
@@ -97,7 +97,7 @@ class ONN:  # Out of date Neural Network
 
             acc_max = accumulate if acc_max < accumulate else acc_max
             acc_min = accumulate if accumulate < acc_min else acc_min
-            #arrPlotAcc.append(accumulate)  # plot
+
             arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
         acc_mid = (acc_max + acc_min) / 2
@@ -105,7 +105,7 @@ class ONN:  # Out of date Neural Network
 
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
-
+        lst_c1.append(acc_nom)  # plot
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
         arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
         arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
@@ -114,7 +114,7 @@ class ONN:  # Out of date Neural Network
         return arrPrint
 
     # training
-    def train(self, x, t, DIV_T, arrHsh):
+    def train(self, x, t, DIV_T, arrHsh, lst_c0, lst_c1):
         hid = [0] * HID_NODE
         out = [0] * OUT_NODE
         delta_hid = [0] * HID_NODE
@@ -163,10 +163,10 @@ class ONN:  # Out of date Neural Network
                         v[i][j] += ETA * delta_hid[i] * x[n][j]
             # for days
             if (epoch % 100) == 0:
-                #arrPlotError.append(fError)
+                lst_c0.append(fError)
                 pass
         # while
-        return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w)
+        return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1)
 
 
 if __name__ == "__main__":
@@ -186,7 +186,7 @@ if __name__ == "__main__":
     lst_c1 = [lst_mg1 for _ in range(len(lst_strPath))]
     # shutdown不要
     with ProcessPoolExecutor(max_workers=4) as excuter:
-        arrPrint = list(excuter.map(main, lst_strPath[:], lst_c0, lst_c1))
+        arrPrint = list(excuter.map(main, lst_strPath[-4:], lst_c0, lst_c1))
 
     pprint(arrPrint)
     # measure time
