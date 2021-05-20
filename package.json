@@ -9,8 +9,8 @@
     "main+log": "npm run wincmd & python pdnormalize.py && node main.js >> ./text/nlog.txt",
     "O2+log": "npm run wincmd & gcc -O2 cdevice.c -lm && a.exe >> ./text/clog.txt",
     "pyn+log": "npm run wincmd & python pdnormalize.py && python pyndevice.py >> ./text/plog.txt",
-    "formain+log": "npm run wincmd & python slicebatch.py && node formain.js > ./text/nbatch.log & \"C:\\Program Files (x86)\\Hidemaru\\Hidemaru.exe\" /je ./text/nbatch.log",
-    "forpy+log": "npm run wincmd & python slicebatch.py && python forpyndevice.py > ./text/pbatch.log",
+    "formain+log": "npm run wincmd & python pdnormalize.py && python slicebatch.py && node formain.js > ./text/nbatch.log & \"C:\\Program Files (x86)\\Hidemaru\\Hidemaru.exe\" /je ./text/nbatch.log",
+    "forpy+log": "npm run wincmd & python pdnormalize.py && python slicebatch.py && python forpyndevice.py > ./text/pbatch.log",
     "wincmd": "if not exist text mkdir text"
   },
   "keywords": [],

@@ -142,30 +142,28 @@ class ONN:  # Out of date Neural Network
             for n in range(DAYS):
                 self.updateHidOut(n, x, v, w, hid, out)
 
-                for k in range(OUT_NODE):
-                    fError += 0.5 * (t[n][k] - out[k]) ** 2
-                    delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k])
+                for i in range(OUT_NODE):
+                    fError += 0.5 * (t[n][i] - out[i]) ** 2
+                    delta_out[i] = (t[n][i] - out[i]) * out[i] * (1 - out[i])
 
-                for k in range(OUT_NODE):
+                for i in range(OUT_NODE):
                     for j in range(HID_NODE):
-                        w[k][j] += ETA * delta_out[k] * hid[j]
+                        w[i][j] += ETA * delta_out[i] * hid[j]
 
                 for i in range(HID_NODE):
                     delta_hid[i] = 0
-
-                    for k in range(OUT_NODE):
-                        delta_hid[i] += delta_out[k] * w[k][i]
-
+                    for j in range(OUT_NODE):
+                        delta_hid[i] += delta_out[j] * w[j][i]
                     delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
 
                 for i in range(HID_NODE):
                     for j in range(IN_NODE):
                         v[i][j] += ETA * delta_hid[i] * x[n][j]
-            # for days
+            # end for DAYS
             if (epoch % 100) == 0:
                 lst_c0.append(fError)
                 pass
-        # while
+        # end while
         return self.printResult(arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1)
 
 
