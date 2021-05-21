@@ -13,7 +13,7 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 
 # lambda
-dsigmoid = lambda a: a * (1 - a)
+# dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
@@ -121,7 +121,7 @@ class ONN:  # Out of date Neural Network
         delta_out = [0] * OUT_NODE
         epoch = 0
         fError = 0.0
-        v, w = [], []
+        v, w = [], []  # v: weight in-hid, w: weight hid-out
 
         for _ in range(HID_NODE):
             v.append([])
@@ -142,23 +142,23 @@ class ONN:  # Out of date Neural Network
             for n in range(DAYS):
                 self.updateHidOut(n, x, v, w, hid, out)
 
-                for i in range(OUT_NODE):
+                for i in range(OUT_NODE):  # Δw 修正量計算
                     fError += 0.5 * (t[n][i] - out[i]) ** 2
                     delta_out[i] = (t[n][i] - out[i]) * out[i] * (1 - out[i])
 
-                for i in range(OUT_NODE):
+                for i in range(OUT_NODE):  # Δw = ("t−o" )∙"o" ("1−o" )"∙h"
                     for j in range(HID_NODE):
-                        w[i][j] += ETA * delta_out[i] * hid[j]
+                        w[i][j] += ETA * delta_out[i] * hid[j]  # 𝑤_𝑛𝑒𝑤 "=" 𝑤_old " − " η"∆w"
 
-                for i in range(HID_NODE):
+                for i in range(HID_NODE):  # Δv 修正量計算
                     delta_hid[i] = 0
-                    for j in range(OUT_NODE):
+                    for j in range(OUT_NODE):  # h(1−h)∙{∑(t−𝑜)𝑜(1−𝑜)𝑤}
                         delta_hid[i] += delta_out[j] * w[j][i]
-                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]
+                    delta_hid[i] = hid[i] * (1 - hid[i]) * delta_hid[i]
 
-                for i in range(HID_NODE):
+                for i in range(HID_NODE):  # Δv = h(1−h)∙{∑(t−𝑜)𝑜(1−𝑜)𝑤}∙x
                     for j in range(IN_NODE):
-                        v[i][j] += ETA * delta_hid[i] * x[n][j]
+                        v[i][j] += ETA * delta_hid[i] * x[n][j]  # 𝑣_𝑛𝑒𝑤 "=" 𝑣_old " − " η"∆v"
             # end for DAYS
             if (epoch % 100) == 0:
                 lst_c0.append(fError)
