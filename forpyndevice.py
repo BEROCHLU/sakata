@@ -71,7 +71,7 @@ class ONN:  # Out of date Neural Network
         for i in range(OUT_NODE):
             dot_o = 0.0
             for j in range(HID_NODE):
-                dot_o += w[i][j] * hid[j]
+                dot_o += hid[j] * w[i][j]
             out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
