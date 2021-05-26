@@ -58,7 +58,7 @@ class ONN:  # Out of date Neural Network
         else:
             return 1 / (1 + math.exp(-a))
 
-    def updateHidOut(self, n, x, v, w, hid, out):
+    def calculateNode(self, n, x, v, w, hid, out):
         for i in range(HID_NODE):
             dot_h = 0.0
             for j in range(IN_NODE):
@@ -80,7 +80,7 @@ class ONN:  # Out of date Neural Network
         acc_max = -sys.maxsize
 
         for i in range(DAYS):
-            self.updateHidOut(i, x, v, w, hid, out)
+            self.calculateNode(i, x, v, w, hid, out)  # 最後に更新された重みでノードを計算
 
             arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
@@ -139,10 +139,10 @@ class ONN:  # Out of date Neural Network
             fError = 0.0
 
             for n in range(DAYS):
-                self.updateHidOut(n, x, v, w, hid, out)
+                self.calculateNode(n, x, v, w, hid, out)
 
                 for i in range(OUT_NODE):  # Δw 修正量計算
-                    fError += 0.5 * (t[n][i] - out[i]) ** 2
+                    fError += 0.5 * (t[n][i] - out[i]) ** 2  # 損失関数
                     delta_out[i] = (t[n][i] - out[i]) * out[i] * (1 - out[i])
 
                 for i in range(OUT_NODE):  # Δw = ("t−o" )∙"o" ("1−o" )"∙h"

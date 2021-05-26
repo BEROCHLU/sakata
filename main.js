@@ -41,7 +41,7 @@ let timeEnd;
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
 
-const updateHidOut = (n) => {
+const calculateNode = (n) => {
     for (let i = 0; i < HID_NODE; i++) {
         hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
@@ -63,7 +63,7 @@ const printResult = (arrHsh, DIV_T) => {
 
     for (let i = 0; i < DATA_LEN; i++) {
 
-        updateHidOut(i);
+        calculateNode(i); //最終的なNode計算
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
@@ -143,7 +143,7 @@ const printResult = (arrHsh, DIV_T) => {
         fError = 0;
 
         for (let n = 0; n < DATA_LEN; n++) {
-            updateHidOut(n);
+            calculateNode(n);
 
             for (let k = 0; k < OUT_NODE; k++) {
                 fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する
