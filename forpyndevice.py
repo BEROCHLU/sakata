@@ -1,14 +1,14 @@
-import datetime
 import json
 import math
 import statistics
 import sys
-import time
 from concurrent.futures import ProcessPoolExecutor
+from datetime import datetime
 from functools import reduce
 from glob import glob
 from multiprocessing import Manager
 from pprint import pprint
+from time import time
 
 import matplotlib.pyplot as plt
 
@@ -171,8 +171,8 @@ if __name__ == "__main__":
     lst_mg0 = Manager().list()
     lst_mg1 = Manager().list()
 
-    TIME_START = time.time()
-    date_now = datetime.datetime.now()
+    TIME_START = time()
+    date_now = datetime.now()
     print(date_now.strftime("%F %T"))
 
     DIR_PATH = "batch"
@@ -187,7 +187,7 @@ if __name__ == "__main__":
 
     pprint(arrPrint)
     # measure time
-    TIME_END = time.time()
+    TIME_END = time()
     INT_SEC = int(TIME_END - TIME_START)
     INT_MINUTE = int(INT_SEC / 60) if 60 <= INT_SEC else 0
     print(f"Time: {INT_MINUTE} min {INT_SEC % 60} sec.\n")
