@@ -13,7 +13,6 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 
 # lambda
-# dsigmoid = lambda a: a * (1 - a)
 frandWeight = lambda: 0.5
 frandBias = lambda: -1
 # global
