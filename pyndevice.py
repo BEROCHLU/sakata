@@ -76,11 +76,15 @@ class ONN:  # Out of date Neural Network
         arrPrint = []
         acc_min = sys.maxsize
         acc_max = -sys.maxsize
+        accumulate = 0
 
         for i in range(DAYS):
             self.updateHidOut(i, x, v, w, hid, out)
 
             arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
+
+            acc_max = accumulate if acc_max < accumulate else acc_max
+            acc_min = accumulate if accumulate < acc_min else acc_min
 
             accumulate = reduce((lambda result, current: result + current), arrErate)
 
@@ -92,8 +96,6 @@ class ONN:  # Out of date Neural Network
             pad_erate = str(round(arrErate[i], 2)).rjust(5)
             pad_acc = str(round(accumulate, 2)).rjust(5)
 
-            acc_max = accumulate if acc_max < accumulate else acc_max
-            acc_min = accumulate if accumulate < acc_min else acc_min
             arrPlotAcc.append(accumulate)  # plot
             arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
