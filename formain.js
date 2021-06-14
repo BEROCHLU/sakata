@@ -55,10 +55,10 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
 
-        accumulate = _.reduce(arrErate, (result, current) => {
-            accumulateMin = (result < accumulateMin) ? result : accumulateMin; //蓄積中の最小値
-            accumulateMax = (accumulateMax < result) ? result : accumulateMax; //蓄積中の最大値
-            return result + current;
+        accumulate = _.reduce(arrErate, (presum, current) => {
+            accumulateMin = (presum < accumulateMin) ? presum : accumulateMin; //前回の蓄積結果で最小値を更新
+            accumulateMax = (accumulateMax < presum) ? presum : accumulateMax; //前回の蓄積結果で最大値を更新
+            return presum + current;// 配列最後のreturnは最大最小の更新対象にならない
         });
 
         const undo_out = out[0] * DIV_T;
