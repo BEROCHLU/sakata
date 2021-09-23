@@ -1,8 +1,8 @@
 {
   "name": "sakata",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "main": "node main.js",
     "sakata": "node braindevice.js",
@@ -16,11 +16,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
+    "brain.js": "^2.0.0-beta.2",
     "lodash": "^4.17.21",
     "mathjs": "6.6.5"
-  },
-  "devDependencies": {
-    "brain.js": "^2.0.0-beta.2"
   }
 }

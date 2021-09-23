@@ -1,10 +1,7 @@
 node_modules/
 __pycache__/
-old/
+test/
 text/
 batch/
-yarn.lock
-yarn-error.log
 *.exe
 *.bat
-pyproject.toml

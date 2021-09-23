@@ -1,0 +1,3 @@
+[tool.black]
+line-length = 256
+target-version = ['py38']
