@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const _ = require('lodash');
-const brain = require('brain.js');
+const _brain = require('brain.js').brain;
 const {
     performance
 } = require('perf_hooks');
@@ -40,7 +40,7 @@ const trainOpt = {
 const strDate = new Date();
 console.log(strDate.toLocaleString());
 // create a simple feed forward neural network with backpropagation
-const net = new brain.brain.NeuralNetwork(config);
+const net = new _brain.NeuralNetwork(config);
 
 const timeStart = performance.now();
 // start training
