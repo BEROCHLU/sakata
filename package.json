@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "brain.js": "^2.0.0-beta.2",
+    "brain.js": "^2.0.0-beta.3",
     "lodash": "^4.17.21",
     "mathjs": "6.6.5"
   }

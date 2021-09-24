@@ -10,7 +10,6 @@ const {
 const strJsonOut = fs.readFileSync('./json/seikika.json', 'utf8');
 const hshOut = JSON.parse(strJsonOut);
 const arrHshOut = hshOut.listdc;
-const hshSetting = hshOut.div;
 
 const arrTrainX = _.map(arrHshOut, hsh => hsh.input);
 const arrTrainT = _.map(arrHshOut, hsh => hsh.output);
@@ -41,7 +40,7 @@ const trainOpt = {
 const strDate = new Date();
 console.log(strDate.toLocaleString());
 // create a simple feed forward neural network with backpropagation
-const net = new brain.NeuralNetwork(config);
+const net = new brain.brain.NeuralNetwork(config);
 
 const timeStart = performance.now();
 // start training
@@ -65,8 +64,8 @@ for (let i = 0; i < DATA_LEN; i++) {
 
     valance += arrErate[i];
 
-    const undo_out = arrOut[i] * hshSetting.DIV_T;
-    const undo_teacher = arrTrainT[i][0] * hshSetting.DIV_T;
+    const undo_out = arrOut[i] * hshOut.div;
+    const undo_teacher = arrTrainT[i][0] * hshOut.div;
 
     const pad_out = undo_out.toFixed(2).padStart(6);
     const pad_teacher = undo_teacher.toFixed(2).padStart(6);
