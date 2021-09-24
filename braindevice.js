@@ -7,14 +7,10 @@ const {
     performance
 } = require('perf_hooks');
 
-const strPath = './json/n225out.json';
-const strPathSetting = './json/setting.json';
-
-const strJsonOut = fs.readFileSync(strPath, 'utf8');
-const strJsonSetting = fs.readFileSync(strPathSetting, 'utf8');
-
-const arrHshOut = JSON.parse(strJsonOut);
-const hshSetting = JSON.parse(strJsonSetting);
+const strJsonOut = fs.readFileSync('./json/seikika.json', 'utf8');
+const hshOut = JSON.parse(strJsonOut);
+const arrHshOut = hshOut.listdc;
+const hshSetting = hshOut.div;
 
 const arrTrainX = _.map(arrHshOut, hsh => hsh.input);
 const arrTrainT = _.map(arrHshOut, hsh => hsh.output);

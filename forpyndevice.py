@@ -10,7 +10,10 @@ from multiprocessing import Manager
 from pprint import pprint
 from time import time
 
-import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
 
 # lambda
 frandWeight = lambda: 0.5

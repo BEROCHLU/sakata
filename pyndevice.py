@@ -7,7 +7,10 @@ import time
 from functools import reduce
 from pprint import pprint
 
-import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
 
 # lambda
 dsigmoid = lambda a: a * (1 - a)

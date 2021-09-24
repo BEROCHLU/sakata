@@ -1,5 +1,6 @@
 import json
 import os
+from glob import glob
 
 import pandas as pd
 
@@ -32,6 +33,9 @@ if __name__ == "__main__":
     BATCH_PATH = "./batch"
     if not os.path.exists(BATCH_PATH):
         os.mkdir(BATCH_PATH)  # フォルダ新規作成
+    else:
+        for file in glob(f"{BATCH_PATH}/*.json"):
+            os.remove(file)  # 古いファイル削除
 
     FILE_KAZU = len(df_change) - BATCH_SIZE + 1  # スライスするファイル数
     LAST_INDEX = BATCH_SIZE - 1
