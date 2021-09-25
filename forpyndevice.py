@@ -187,7 +187,7 @@ if __name__ == "__main__":
     with ProcessPoolExecutor(max_workers=4) as excuter:
         arrPrint = list(excuter.map(main, lst_strPath[:], lst_c0, lst_c1))
 
-    pprint(arrPrint)
+    pprint(sorted(arrPrint))
     # measure time
     TIME_END = time()
     INT_SEC = int(TIME_END - TIME_START)
