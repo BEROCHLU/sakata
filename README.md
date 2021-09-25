@@ -21,5 +21,5 @@ This is very simple and out of date neural network program.
 2. git clone this repository
 3. package  
     `pip install -r requirements.txt`  
-    `npm install`  
+    `npm install --production`  
 4. npm run script  
