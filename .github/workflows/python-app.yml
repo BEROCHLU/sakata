@@ -6,14 +6,9 @@ name: Python application
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
@@ -31,9 +26,9 @@ jobs:
       with:
         node-version: 14
     - run: |
-        npm install lodash mathjs@7.0.2
+        npm install lodash mathjs@6.6.5
         npm list --depth=0
     - name: run app
       run: |
         node main.js
-        python pyndevice.py
+        # python pyndevice.py
