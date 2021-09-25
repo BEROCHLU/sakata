@@ -11,8 +11,6 @@ from pprint import pprint
 from time import time
 
 import matplotlib
-
-matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 
 # lambda
@@ -195,9 +193,14 @@ if __name__ == "__main__":
     INT_SEC = int(TIME_END - TIME_START)
     INT_MINUTE = int(INT_SEC / 60) if 60 <= INT_SEC else 0
     print(f"Time: {INT_MINUTE} min {INT_SEC % 60} sec.\n")
-    # show plot
+    # plot
     plt.subplot(2, 1, 1)
     plt.plot(lst_mg0)
     plt.subplot(2, 1, 2)
     plt.plot(lst_mg1)
-    plt.show()
+    # show or print
+    try:
+        matplotlib.use("TkAgg")
+        plt.show()
+    except:
+        plt.savefig("fig.png")

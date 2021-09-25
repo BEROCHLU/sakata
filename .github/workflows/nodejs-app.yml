@@ -21,4 +21,11 @@ jobs:
         npm list --depth=0
     - name: run app
       run: |
-        node main.js
+        npm run loopnode-actions
+        cat nbatch.log
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: output artifacts
+        path: |
+          nbatch.log
