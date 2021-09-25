@@ -8,8 +8,6 @@ from functools import reduce
 from pprint import pprint
 
 import matplotlib
-
-matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 
 # lambda
@@ -183,9 +181,14 @@ if __name__ == "__main__":
     nSec = int(TIME_END - TIME_START)
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
-    # show plot
+    # plot
     plt.subplot(2, 1, 1)
     plt.plot(arrPlotError)
     plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
-    plt.show()
+    # show or print
+    try:
+        matplotlib.use("TkAgg")
+        plt.show()
+    except:
+        plt.savefig("fig.png")
