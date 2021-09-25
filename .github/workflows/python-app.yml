@@ -22,6 +22,5 @@ jobs:
         pip list
     - name: run app
       run: |
-        uname -a
         lscpu
       #  python pyndevice.py
