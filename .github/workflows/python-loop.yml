@@ -24,7 +24,7 @@ jobs:
       run: |
         python pdnormalize.py
         python slicebatch.py
-        mkdir result
+        mkdir -p result
         python forpyndevice.py > ./result/pbatch.log
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
