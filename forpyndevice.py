@@ -77,8 +77,8 @@ class ONN:  # Out of date Neural Network
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
         arrErate = []
         arrPrint = []
-        acc_min = sys.maxsize
-        acc_max = sys.maxsize * (-1)
+        acc_min = sys.float_info.max
+        acc_max = -sys.float_info.max
         accumulate = 0
 
         for i in range(DAYS):
@@ -86,10 +86,10 @@ class ONN:  # Out of date Neural Network
 
             arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
 
+            accumulate = reduce((lambda result, current: result + current), arrErate)
+
             acc_max = accumulate if acc_max < accumulate else acc_max
             acc_min = accumulate if accumulate < acc_min else acc_min
-
-            accumulate = reduce((lambda result, current: result + current), arrErate)
 
             undo_out = round(out[0] * DIV_T, 2)
             undo_teacher = round(t[i][0] * DIV_T, 2)
