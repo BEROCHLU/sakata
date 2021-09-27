@@ -201,6 +201,7 @@ if __name__ == "__main__":
     # show or print
     try:
         matplotlib.use("TkAgg")
-        plt.show()
     except:
         plt.savefig("./result/fig.png")
+    finally:
+        plt.show()
