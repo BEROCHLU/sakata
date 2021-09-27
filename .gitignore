@@ -1,7 +1,7 @@
 node_modules/
 __pycache__/
 test/
-result/
+result/*.txt
 batch/
 *.exe
 *.bat

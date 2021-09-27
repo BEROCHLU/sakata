@@ -79,8 +79,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Nom: ${accumulateNom.toFixed(2)}`);
-    console.log(`FinalErr: ${fError.toFixed(5)}\n`);
+    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${fError.toFixed(5)}\n`);
 }
 
 //main

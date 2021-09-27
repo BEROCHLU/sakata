@@ -78,7 +78,7 @@ class ONN:  # Out of date Neural Network
         arrErate = []
         arrPrint = []
         acc_min = sys.maxsize
-        acc_max = -sys.maxsize
+        acc_max = sys.maxsize * (-1)
         accumulate = 0
 
         for i in range(DAYS):
