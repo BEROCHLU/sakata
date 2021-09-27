@@ -10,7 +10,7 @@
     "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
     "pyn+add": "npx mkdirp result & python pdnormalize.py && python pyndevice.py >> ./result/plog.txt",
     "formain+log": "npx mkdirp result & python pdnormalize.py && python slicebatch.py && node formain.js > ./result/nbatch.log & \"C:\\Program Files (x86)\\Hidemaru\\Hidemaru.exe\" /je ./result/nbatch.log",
-    "forpy+log": "npx mkdirp result & python pdnormalize.py && python slicebatch.py && python forpyndevice.py > ./result/pbatch.log",
+    "forpy+log": "npx mkdirp result & python pdnormalize.py && python slicebatch.py && python forpyndevice.py > ./result/pbatch.log && python logcleaner.py",
     "wincmd": "if not exist result mkdir result"
   },
   "keywords": [],
