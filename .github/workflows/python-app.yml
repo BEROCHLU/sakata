@@ -22,4 +22,12 @@ jobs:
         pip list
     - name: run app
       run: |
-        python pyndevice.py
+        mkdir -p result
+        python pdnormalize.py
+        python pyndevice.py > ./result/pbatch.log
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: output artifacts
+        path: |
+          ./result
