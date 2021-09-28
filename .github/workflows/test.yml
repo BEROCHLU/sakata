@@ -22,4 +22,10 @@ jobs:
         pip list
     - name: run app
       run: |
-        ./test/aggtest.py
+        ./plottest/aggtest.py
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: output artifacts
+        path: |
+          ./plottest/bar.png
