@@ -24,7 +24,7 @@ jobs:
       run: |
         mkdir -p result
         python ./util/pdnormalize.py
-        python ./util/pyndevice.py > ./result/plog.txt
+        python ./pyndevice.py > ./result/plog.txt
         python ./util/logclean.py
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
