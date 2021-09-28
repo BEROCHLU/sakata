@@ -22,7 +22,7 @@ jobs:
         pip list
     - name: run app
       run: |
-        mkdir -p result
+        rm -rf result & mkdir result
         python ./util/pdnormalize.py
         python ./util/slicebatch.py
         python forpyndevice.py > ./result/pbatch.log

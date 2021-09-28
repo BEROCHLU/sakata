@@ -11,14 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Node.js 14
-      uses: actions/setup-node@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
       with:
-        node-version: 14
+        python-version: 3.8
     - name: Install dependencies
       run: |
-        npm install --production
-        npm list --depth=0
+        python -m pip install --upgrade pip setuptools
+        pip install matplotlib
+        pip list
     - name: run app
       run: |
-        node main.js
+        ./test/aggtest.py
