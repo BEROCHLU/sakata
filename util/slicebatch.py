@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import json
 import os
 from glob import glob
@@ -6,6 +9,9 @@ import pandas as pd
 
 # global
 old_ite = -1
+# path
+R_PATH = "../csv/hdatexyt.csv"
+BATCH_PATH = "../batch"
 
 
 def f1(ite):
@@ -19,7 +25,8 @@ if __name__ == "__main__":
     BATCH_SIZE = 55
     DESIRED_ERROR = 0.001
 
-    df_hdatexyt = pd.read_csv("./csv/hdatexyt.csv")
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))  # 実行ファイルパスをカレントフォルダに変更する
+    df_hdatexyt = pd.read_csv(R_PATH)
     df_change = pd.DataFrame()
 
     df_change["date"] = df_hdatexyt["date"]
@@ -30,7 +37,6 @@ if __name__ == "__main__":
     df_change.drop(index=0, inplace=True)  # 変化率なので初日除外
     df_change.reset_index(drop=True, inplace=True)  # for iループのためインデックス振り直し
 
-    BATCH_PATH = "./batch"
     if not os.path.exists(BATCH_PATH):
         os.mkdir(BATCH_PATH)  # フォルダ新規作成
     else:

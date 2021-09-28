@@ -1,9 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import json
+import os
 
 import pandas as pd
 
 # global
 old_ite = -1
+# path
+R_PATH = "../csv/hdatexyt.csv"
+W_PATH = "../json/seikika.json"
 
 
 def f1(ite):
@@ -19,7 +26,8 @@ if __name__ == "__main__":
     df_change = pd.DataFrame()
     lst_dc = []
 
-    df_hdatexyt = pd.read_csv("./csv/hdatexyt.csv")
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))  # 実行ファイルパスをカレントフォルダに変更する
+    df_hdatexyt = pd.read_csv(R_PATH)
 
     df_change["date"] = df_hdatexyt["date"]
     df_change["close_x"] = df_hdatexyt["close_x"].map(f1)  # 前日比%
@@ -44,5 +52,5 @@ if __name__ == "__main__":
     DIV_NK = df_change["open_t"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
     dc_seikika = {"listdc": lst_dc, "div": DIV_NK}
 
-    with open("./json/seikika.json", "w") as f:
+    with open(W_PATH, "w") as f:
         json.dump(dc_seikika, f, indent=4)
