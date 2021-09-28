@@ -23,8 +23,8 @@ jobs:
     - name: run app
       run: |
         mkdir -p result
-        python pdnormalize.py
-        python pyndevice.py > ./result/plog.txt
+        python ./util/pdnormalize.py
+        python ./util/pyndevice.py > ./result/plog.txt
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:

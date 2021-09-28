@@ -15,5 +15,6 @@ if __name__ == "__main__":
         strRead = f.read()
 
     with open(RW_PATH, "w") as f:
-        s = re.sub("[\[\]',]", "", strRead)
+        s = re.sub("[\]',]", "", strRead)
+        s = re.sub("\[", " ", s)
         f.write(s)
