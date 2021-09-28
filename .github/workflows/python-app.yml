@@ -25,10 +25,10 @@ jobs:
         mkdir -p result
         python ./util/pdnormalize.py
         python ./pyndevice.py > ./result/plog.txt
-        python ./util/logclean.py
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:
         name: output artifacts
         path: |
           ./result/plog.txt
+          ./result/plot.png
