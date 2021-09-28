@@ -199,9 +199,7 @@ if __name__ == "__main__":
     plt.subplot(2, 1, 2)
     plt.plot(lst_mg1)
     # show or print
-    try:
-        matplotlib.use("TkAgg")
-    except:
-        plt.savefig("./result/fig.png")
-    finally:
-        plt.show()
+    egg = matplotlib.get_backend()
+    matplotlib.use(egg)
+    plt.savefig("./result/plot.png")
+    plt.show()

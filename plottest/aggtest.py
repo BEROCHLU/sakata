@@ -9,7 +9,6 @@ h = [2, 5, 3, 4, 1]
 w = [0.8] * 5
 
 print(matplotlib.get_backend())
-
 matplotlib.use("agg")
 
 fig, ax = plt.subplots()
