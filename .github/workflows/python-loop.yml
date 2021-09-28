@@ -22,9 +22,9 @@ jobs:
         pip list
     - name: run app
       run: |
-        python pdnormalize.py
-        python slicebatch.py
         mkdir -p result
+        python ./util/pdnormalize.py
+        python ./util/slicebatch.py
         python forpyndevice.py > ./result/pbatch.log
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
