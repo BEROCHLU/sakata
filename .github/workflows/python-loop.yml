@@ -22,7 +22,7 @@ jobs:
         pip list
     - name: run app
       run: |
-        rm -rf result & mkdir result
+        mkdir -p result
         python ./util/pdnormalize.py
         python ./util/slicebatch.py
         python forpyndevice.py > ./result/pbatch.log
@@ -32,4 +32,5 @@ jobs:
       with:
         name: output artifacts
         path: |
-          ./result
+          ./result/pbatch.log
+          ./result/plot.png

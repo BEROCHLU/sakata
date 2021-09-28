@@ -30,7 +30,7 @@ jobs:
         npm list --depth=0
     - name: run app
       run: |
-        rm -rf result & mkdir result
+        mkdir -p result
         python ./util/pdnormalize.py
         python ./util/slicebatch.py
         node formain.js > ./result/nbatch.log
@@ -39,4 +39,4 @@ jobs:
       with:
         name: output artifacts
         path: |
-          ./result
+          ./result/nbatch.log
