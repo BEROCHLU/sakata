@@ -10,10 +10,10 @@ w = [0.8] * 5
 
 print(matplotlib.get_backend())
 
+matplotlib.use("agg")
+
 fig, ax = plt.subplots()
 ax.bar(x, h, width=w, align='edge')
 
 fig.savefig('bar.png')
 plt.show()
-
-matplotlib.use("TkAgg")
