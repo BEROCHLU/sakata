@@ -20,7 +20,7 @@ frandBias = lambda: -1
 [IN_NODE, HID_NODE, OUT_NODE] = [None, None, 1]
 DAYS = None
 ETA = 0.5
-THRESHOLD = 500000
+THRESHOLD = 500
 
 
 def addBias(hsh: dict) -> dict:
@@ -75,10 +75,8 @@ class ONN:  # Out of date Neural Network
             out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
-        arrErate = []
-        arrPrint = []
-        acc_min = sys.float_info.max
-        acc_max = -sys.float_info.max
+        arrErate, arrPrint = [], []
+        acc_min, acc_max = sys.float_info.max, -sys.float_info.max
         accumulate = 0
 
         for i in range(DAYS):
@@ -106,7 +104,9 @@ class ONN:  # Out of date Neural Network
 
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
-        lst_c1.append(acc_nom)  # plot
+        # for plot
+        lst_c1.append((arrHsh[i]["date"], acc_nom))
+
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
         arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
         arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
@@ -193,11 +193,14 @@ if __name__ == "__main__":
     INT_SEC = int(TIME_END - TIME_START)
     INT_MINUTE = int(INT_SEC / 60) if 60 <= INT_SEC else 0
     print(f"Time: {INT_MINUTE} min {INT_SEC % 60} sec.\n")
+
+    lst_mg1 = sorted(lst_mg1)
+
     # plot
     plt.subplot(2, 1, 1)
     plt.plot(lst_mg0)
     plt.subplot(2, 1, 2)
-    plt.plot(lst_mg1)
+    plt.plot(*zip(*lst_mg1))
     # show or print
     egg = matplotlib.get_backend()
     matplotlib.use(egg)
