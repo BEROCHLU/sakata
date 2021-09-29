@@ -5,7 +5,7 @@ name: forpyndevice
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master2 ]
 jobs:
   build:
     runs-on: ubuntu-latest
