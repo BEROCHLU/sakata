@@ -186,5 +186,5 @@ if __name__ == "__main__":
     # show or print
     egg = matplotlib.get_backend()
     matplotlib.use(egg)
-    plt.savefig("./result/plot.png")
+    plt.savefig("./result/figure.png")
     plt.show()
