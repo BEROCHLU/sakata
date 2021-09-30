@@ -5,7 +5,7 @@ name: Python application
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master2 ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
         name: output artifacts
         path: |
           ./result/plog.txt
-          ./result/plot.png
+          ./result/figure.png
