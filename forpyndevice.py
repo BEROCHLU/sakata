@@ -177,8 +177,7 @@ if __name__ == "__main__":
     date_now = datetime.now()
     print(date_now.strftime("%F %T"))
 
-    DIR_PATH = "batch"
-    lst_strPath = glob(f"{DIR_PATH}/*.json")
+    lst_strPath = glob("./batch/*.json")
     arrPrint = []
 
     lst_c0 = [lst_mg0 for _ in range(len(lst_strPath))]

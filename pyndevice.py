@@ -73,10 +73,8 @@ class ONN:  # Out of date Neural Network
             out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
-        arrErate = []
-        arrPrint = []
-        acc_min = sys.float_info.max
-        acc_max = -sys.float_info.max
+        arrErate, arrPrint = [], []
+        acc_min, acc_max = sys.float_info.max, -sys.float_info.max
         accumulate = 0
 
         for i in range(DAYS):
@@ -169,8 +167,7 @@ class ONN:  # Out of date Neural Network
 
 
 if __name__ == "__main__":
-    arrPlotAcc = []
-    arrPlotError = []
+    arrPlotAcc, arrPlotError = [], []
 
     TIME_START = time.time()
     date_now = datetime.datetime.now()
