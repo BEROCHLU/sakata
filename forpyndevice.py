@@ -76,7 +76,8 @@ class ONN:  # Out of date Neural Network
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
         arrErate, arrPrint = [], []
-        acc_min, acc_max = sys.float_info.max, -sys.float_info.max
+        acc_min= sys.float_info.max
+        acc_max = -sys.float_info.max
         accumulate = 0
 
         for i in range(DAYS):
