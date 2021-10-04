@@ -9,10 +9,14 @@ const {
 
 let IN_NODE; //入力ノード数（バイアス含む）
 let HID_NODE; //隠れノード数
-const OUT_NODE = 1; //出力ノード数
+let OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
 const THRESH = 500000;
+
+let epoch; //学習回数
+let DATA_LEN; //学習データ数
+let fError = Number.MAX_SAFE_INTEGER;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
@@ -25,11 +29,6 @@ let delta_hid = [];
 
 let x = [];
 let t = [];
-
-let epoch = 0; //学習回数
-let DATA_LEN; //学習データ数
-let fError = Number.MAX_SAFE_INTEGER;
-
 let v = []; //v[HID_NODE][IN_NODE]
 let w = []; //w[OUT_NODE][HID_NODE]
 
@@ -70,7 +69,7 @@ const printResult = (arrHsh, DIV_T) => {
         accumulate = _.reduce(arrErate, (presum, current) => {
             accumulateMin = (presum < accumulateMin) ? presum : accumulateMin; //前回の蓄積結果で最小値を更新
             accumulateMax = (accumulateMax < presum) ? presum : accumulateMax; //前回の蓄積結果で最大値を更新
-            return presum + current;// 配列最後のreturnは最大最小の更新対象にならない
+            return presum + current; // 配列最後のreturnは最大最小の更新対象にならない
         });
 
         const undo_out = out[0] * DIV_T;
@@ -103,12 +102,12 @@ const printResult = (arrHsh, DIV_T) => {
     const arrHsh = hshData["listdc"]
     const DIV_T = hshData["div"]
 
-    x = arrHsh.map(hsh => {
+    x = _.map(arrHsh, hsh => {
         let arrBuf = hsh.input;
         arrBuf.push(frandBias()); //add input layer bias
         return arrBuf;
     });
-    t = arrHsh.map(hsh => hsh.output);
+    t = _.map(arrHsh, hsh => hsh.output);
 
     IN_NODE = x[0].length // get input length include bias
     HID_NODE = IN_NODE + 1;
@@ -138,8 +137,7 @@ const printResult = (arrHsh, DIV_T) => {
     const strDate = new Date();
     console.log(strDate.toLocaleString());
 
-    while (epoch < THRESH) {
-        epoch++;
+    for (epoch = 0; epoch < THRESH; epoch++) {
         fError = 0;
 
         for (let n = 0; n < DATA_LEN; n++) {
@@ -173,7 +171,7 @@ const printResult = (arrHsh, DIV_T) => {
                 }
             }
         }
-    } //while
+    } //for
 
     //計測終了
     timeEnd = performance.now();
