@@ -16,7 +16,7 @@ const THRESH = 500000;
 
 let epoch; //学習回数
 let DATA_LEN; //学習データ数
-let fError = Number.MAX_SAFE_INTEGER;
+let fError;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
