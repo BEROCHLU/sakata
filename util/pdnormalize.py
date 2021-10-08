@@ -54,3 +54,5 @@ if __name__ == "__main__":
 
     with open(W_PATH, "w") as f:
         json.dump(dc_seikika, f, indent=4)
+    
+    print("Done Normalize")

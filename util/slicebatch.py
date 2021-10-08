@@ -70,3 +70,5 @@ if __name__ == "__main__":
 
         with open(f"{BATCH_PATH}/seikika{pad_z}.json", "w") as f:
             json.dump(dc_seikika, f, indent=4)
+
+    print("Done slice batch")
