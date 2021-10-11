@@ -13,7 +13,7 @@ let OUT_NODE = 1; //出力ノード数
 
 let DATA_LEN; //学習データ数
 const ETA = 0.5; //学習係数
-const THRESH = 500000;
+const THRESH = 10000;
 const BATCH_PATH = './batch';
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
@@ -40,7 +40,7 @@ const updateHidOut = (n, hid, out, x, v, w) => {
 }
 
 
-const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
+const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
 
     let arrErate = [];
     let accumulate;
@@ -75,6 +75,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
 
     const accumulateMid = (accumulateMin + accumulateMax) / 2;
     const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
+    const fError = _.mean(arrDiff);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
@@ -96,7 +97,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
         let delta_out = [];
         let delta_hid = [];
         let epoch; //学習回数
-        let fError;
+        let arrDiff;
         let hid = []; //隠れノード
         let out = []; //出力ノード
         let x = undefined;
@@ -140,14 +141,14 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
         }
 
         for (epoch = 0; epoch < THRESH; epoch++) {
-            fError = 0;
+            arrDiff = [];
 
             for (let n = 0; n < DATA_LEN; n++) {
                 const ret = updateHidOut(n, hid, out, x, v, w);
                 [hid, out] = [ret[0], ret[1]];
 
                 for (let k = 0; k < OUT_NODE; k++) {
-                    fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する
+                    arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //誤差をoutnode分加算する
                     // Δw
                     delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
                 }
@@ -175,7 +176,7 @@ const printResult = (arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w) => {
                 }
             }
         } //for
-        printResult(arrHsh, DIV_T, fError, epoch, t, hid, out, x, v, w);
+        printResult(arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();

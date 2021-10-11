@@ -12,11 +12,10 @@ let HID_NODE; //隠れノード数
 let OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const THRESH = 500000;
+const THRESH = 10000;
 
 let epoch; //学習回数
 let DATA_LEN; //学習データ数
-let fError;
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
@@ -53,7 +52,7 @@ const calculateNode = (n) => {
 }
 
 
-const printResult = (arrHsh, DIV_T) => {
+const printResult = (arrHsh, DIV_T, arrDiff) => {
 
     let arrErate = [];
     let accumulate;
@@ -88,6 +87,7 @@ const printResult = (arrHsh, DIV_T) => {
 
     const accumulateMid = (accumulateMin + accumulateMax) / 2;
     const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
+    const fError = _.mean(arrDiff);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
@@ -99,8 +99,10 @@ const printResult = (arrHsh, DIV_T) => {
 {
     const strJson = fs.readFileSync('./json/seikika.json', 'utf8');
     const hshData = JSON.parse(strJson);
-    const arrHsh = hshData["listdc"]
-    const DIV_T = hshData["div"]
+    const arrHsh = hshData["listdc"];
+    const DIV_T = hshData["div"];
+
+    let arrDiff;
 
     x = _.map(arrHsh, hsh => {
         let arrBuf = hsh.input;
@@ -138,13 +140,13 @@ const printResult = (arrHsh, DIV_T) => {
     console.log(strDate.toLocaleString());
 
     for (epoch = 0; epoch < THRESH; epoch++) {
-        fError = 0;
+        arrDiff = [];
 
         for (let n = 0; n < DATA_LEN; n++) {
             calculateNode(n);
 
             for (let k = 0; k < OUT_NODE; k++) {
-                fError += 0.5 * Math.pow((t[n][k] - out[k]), 2); //誤差を日数分加算する
+                arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //誤差をoutnode分加算する
                 // Δw
                 delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
             }
@@ -170,10 +172,14 @@ const printResult = (arrHsh, DIV_T) => {
                     v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                 }
             }
+        } // for batch
+        if (epoch % 100 === 0) {
+            const s = epoch + '';
+            console.log(`${s.padStart(5)}: ${_.round(_.mean(arrDiff), 6)}`);
         }
-    } //for
+    } //for epoch
 
     //計測終了
     timeEnd = performance.now();
-    printResult(arrHsh, DIV_T);
+    printResult(arrHsh, DIV_T, arrDiff);
 }
