@@ -13,7 +13,7 @@ let OUT_NODE = 1; //出力ノード数
 
 let DATA_LEN; //学習データ数
 const ETA = 0.5; //学習係数
-const THRESH = 10000;
+const THRESH = 500000;
 const BATCH_PATH = './batch';
 
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
@@ -23,7 +23,7 @@ const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
 
-const updateHidOut = (n, hid, out, x, v, w) => {
+function calculateNode(n, hid, out, x, v, w) {
     for (let i = 0; i < HID_NODE; i++) {
         const fDot = math.dot(x[n], v[i]);
         hid[i] = sigmoid(fDot);
@@ -39,8 +39,14 @@ const updateHidOut = (n, hid, out, x, v, w) => {
     return [hid, out];
 }
 
+function mseArray(arrArr) {
+    const MSE_AVE = _.meanBy(arrArr, arr => {
+        return _.mean(arr);
+    });
+    return MSE_AVE;
+}
 
-const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
+function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
 
     let arrErate = [];
     let accumulate;
@@ -49,7 +55,7 @@ const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
 
     for (let i = 0; i < DATA_LEN; i++) {
 
-        const ret = updateHidOut(i, hid, out, x, v, w);
+        const ret = calculateNode(i, hid, out, x, v, w);
         [hid, out] = [ret[0], ret[1]];
 
         arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
@@ -75,11 +81,11 @@ const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
 
     const accumulateMid = (accumulateMin + accumulateMax) / 2;
     const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
-    const fError = _.mean(arrDiff);
+    const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${fError.toFixed(5)}\n`);
+    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${MSE_AVE.toFixed(5)}\n`);
 }
 
 //main
@@ -97,13 +103,13 @@ const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
         let delta_out = [];
         let delta_hid = [];
         let epoch; //学習回数
-        let arrDiff;
         let hid = []; //隠れノード
         let out = []; //出力ノード
         let x = undefined;
         let t = undefined;
         let v = []; //v[HID_NODE][IN_NODE]
         let w = []; //w[OUT_NODE][HID_NODE]
+        let arrMSE = [];
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
@@ -141,14 +147,14 @@ const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
         }
 
         for (epoch = 0; epoch < THRESH; epoch++) {
-            arrDiff = [];
 
             for (let n = 0; n < DATA_LEN; n++) {
-                const ret = updateHidOut(n, hid, out, x, v, w);
+                let arrDiff =[];
+                const ret = calculateNode(n, hid, out, x, v, w);
                 [hid, out] = [ret[0], ret[1]];
 
                 for (let k = 0; k < OUT_NODE; k++) {
-                    arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //誤差をoutnode分加算する
+                    arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
                     // Δw
                     delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
                 }
@@ -174,9 +180,10 @@ const printResult = (arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w) => {
                         v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                     }
                 }
-            }
-        } //for
-        printResult(arrHsh, DIV_T, arrDiff, epoch, t, hid, out, x, v, w);
+                arrMSE[n] = arrDiff;
+            } // for DATA_LEN
+        } //for epoch
+        printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();

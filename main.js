@@ -39,7 +39,7 @@ let timeEnd;
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
 
-const calculateNode = (n) => {
+function calculateNode(n) {
     for (let i = 0; i < HID_NODE; i++) {
         hid[i] = sigmoid(math.dot(x[n], v[i]));
     }
@@ -51,8 +51,15 @@ const calculateNode = (n) => {
     }
 }
 
+function mseArray(arrArr) {
+    const MSE_AVE = _.meanBy(arrArr, arr => {
+        return _.mean(arr);
+    });
+    return MSE_AVE;
+}
 
-const printResult = (arrHsh, DIV_T, arrDiff) => {
+
+function printResult(arrHsh, DIV_T, arrMSE) {
 
     let arrErate = [];
     let accumulate;
@@ -87,12 +94,12 @@ const printResult = (arrHsh, DIV_T, arrDiff) => {
 
     const accumulateMid = (accumulateMin + accumulateMax) / 2;
     const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
-    const fError = _.mean(arrDiff);
+    const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
     console.log(`Nom: ${accumulateNom.toFixed(2)}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec. FinalErr: ${fError.toFixed(5)}\n`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec. FinalErr: ${MSE_AVE.toFixed(5)}\n`);
 }
 
 //main
@@ -102,7 +109,7 @@ const printResult = (arrHsh, DIV_T, arrDiff) => {
     const arrHsh = hshData["listdc"];
     const DIV_T = hshData["div"];
 
-    let arrDiff;
+    let arrMSE = [];
 
     x = _.map(arrHsh, hsh => {
         let arrBuf = hsh.input;
@@ -140,13 +147,13 @@ const printResult = (arrHsh, DIV_T, arrDiff) => {
     console.log(strDate.toLocaleString());
 
     for (epoch = 0; epoch < THRESH; epoch++) {
-        arrDiff = [];
 
         for (let n = 0; n < DATA_LEN; n++) {
+            let arrDiff = [];
             calculateNode(n);
 
             for (let k = 0; k < OUT_NODE; k++) {
-                arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //誤差をoutnode分加算する
+                arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
                 // Δw
                 delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
             }
@@ -172,14 +179,14 @@ const printResult = (arrHsh, DIV_T, arrDiff) => {
                     v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                 }
             }
-        } // for batch
-        if (epoch % 100 === 0) {
+            arrMSE[n] = arrDiff;
+        } // for DATA_LEN
+        if (epoch % 100 === 0) { //logging
             const s = epoch + '';
-            console.log(`${s.padStart(5)}: ${_.round(_.mean(arrDiff), 6)}`);
+            console.log(`${s.padStart(5)}: ${mseArray(arrMSE)}`);
         }
     } //for epoch
-
     //計測終了
     timeEnd = performance.now();
-    printResult(arrHsh, DIV_T, arrDiff);
+    printResult(arrHsh, DIV_T, arrMSE);
 }
