@@ -85,7 +85,7 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${MSE_AVE.toFixed(5)}\n`);
+    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${MSE_AVE.toFixed(6)}\n`);
 }
 
 //main
@@ -149,7 +149,7 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
         for (epoch = 0; epoch < THRESH; epoch++) {
 
             for (let n = 0; n < DATA_LEN; n++) {
-                let arrDiff =[];
+                let arrDiff = [];
                 const ret = calculateNode(n, hid, out, x, v, w);
                 [hid, out] = [ret[0], ret[1]];
 
@@ -181,7 +181,7 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
                     }
                 }
                 arrMSE[n] = arrDiff;
-            } // for DATA_LEN
+            } //for DATA_LEN
         } //for epoch
         printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w);
     }); // _.forEach

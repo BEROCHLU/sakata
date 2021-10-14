@@ -99,7 +99,7 @@ function printResult(arrHsh, DIV_T, arrMSE) {
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
     console.log(`Nom: ${accumulateNom.toFixed(2)}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec. FinalErr: ${MSE_AVE.toFixed(5)}\n`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec. FinalErr: ${MSE_AVE.toFixed(6)}\n`);
 }
 
 //main

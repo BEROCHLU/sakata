@@ -5,7 +5,7 @@ name: formain
 
 on:
   push:
-    branches: [ master2 ]
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
