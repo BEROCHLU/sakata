@@ -12,7 +12,7 @@ let HID_NODE; //隠れノード数
 let OUT_NODE = 1; //出力ノード数
 
 const ETA = 0.5; //学習係数
-const THRESH = 10000;
+const THRESH = 500000;
 
 let epoch; //学習回数
 let DATA_LEN; //学習データ数
@@ -183,7 +183,7 @@ function printResult(arrHsh, DIV_T, arrMSE) {
         } // for DATA_LEN
         if (epoch % 100 === 0) { //logging
             const s = epoch + '';
-            console.log(`${s.padStart(5)}: ${mseArray(arrMSE)}`);
+            //console.log(`${s.padStart(5)}: ${mseArray(arrMSE)}`);
         }
     } //for epoch
     //計測終了
