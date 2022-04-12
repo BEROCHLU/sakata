@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const _ = require('lodash');
-const _brain = require('brain.js').brain;
+const _brain = require('brain.js');
 const {
     performance
 } = require('perf_hooks');
