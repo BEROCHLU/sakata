@@ -32,7 +32,7 @@ if __name__ == "__main__":
     df_change["date"] = df_hdatexyt["date"]
     df_change["close_x"] = df_hdatexyt["close_x"].map(f1)  # 前日比%
     df_change["close_y"] = df_hdatexyt["close_y"].map(f1)  # 前日比%
-    df_change["close"] = df_hdatexyt["close"].map(f1)  # 前日比%
+    df_change["open_t"] = df_hdatexyt["open_t"].map(f1)  # 前日比%
 
     df_change.drop(index=0, inplace=True)  # 変化率なので初日除外
     df_change.reset_index(drop=True, inplace=True)  # for iループのためインデックス振り直し
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
         lst_close_x = df_normalize["close_x"].values.tolist()
         lst_close_y = df_normalize["close_y"].values.tolist()
-        lst_open_t = df_normalize["close"].values.tolist()
+        lst_open_t = df_normalize["open_t"].values.tolist()
         lst_date = df_normalize["date"].values.tolist()
 
         lst_dc = []
@@ -64,7 +64,7 @@ if __name__ == "__main__":
             dc = {"input": [x, y], "output": [t], "date": d}
             lst_dc.append(dc)
 
-        DIV_NK = df_batch["close"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
+        DIV_NK = df_batch["open_t"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
         dc_seikika = {"listdc": lst_dc, "div": DIV_NK}
         pad_z = str(i).zfill(2)
 

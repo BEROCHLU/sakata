@@ -32,7 +32,7 @@ if __name__ == "__main__":
     df_change["date"] = df_hdatexyt["date"]
     df_change["close_x"] = df_hdatexyt["close_x"].map(f1)  # 前日比%
     df_change["close_y"] = df_hdatexyt["close_y"].map(f1)  # 前日比%
-    df_change["close"] = df_hdatexyt["close"].map(f1)  # 前日比%
+    df_change["open_t"] = df_hdatexyt["open_t"].map(f1)  # 前日比%
 
     df_change = df_change.tail(PERIOD)  # tailからPERIODまで抽出
 
@@ -42,14 +42,14 @@ if __name__ == "__main__":
 
     lst_close_x = df_normalize["close_x"].values.tolist()
     lst_close_y = df_normalize["close_y"].values.tolist()
-    lst_open_t = df_normalize["close"].values.tolist()
+    lst_open_t = df_normalize["open_t"].values.tolist()
     lst_date = df_normalize["date"].values.tolist()
 
     for x, y, t, d in zip(lst_close_x, lst_close_y, lst_open_t, lst_date):
         dc = {"input": [x, y], "output": [t], "date": d}
         lst_dc.append(dc)
 
-    DIV_NK = df_change["close"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
+    DIV_NK = df_change["open_t"].max() * (1 + DESIRED_ERROR)  # 学習結果のアウトプットを正規化前に戻すため除数を渡す
     dc_seikika = {"listdc": lst_dc, "div": DIV_NK}
 
     with open(W_PATH, "w") as f:
