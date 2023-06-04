@@ -12,6 +12,9 @@ old_ite = -1
 # path
 R_PATH = "../csv/hdatexyt.csv"
 BATCH_PATH = "../batch"
+# parameter
+DESIRED_ERROR = 0.001
+BATCH_SIZE = 52
 
 
 def f1(ite):
@@ -22,9 +25,6 @@ def f1(ite):
 
 
 if __name__ == "__main__":
-    BATCH_SIZE = 55
-    DESIRED_ERROR = 0.001
-
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # 実行ファイルパスをカレントフォルダに変更する
     df_hdatexyt = pd.read_csv(R_PATH)
     df_change = pd.DataFrame()

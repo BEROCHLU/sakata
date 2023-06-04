@@ -11,6 +11,9 @@ old_ite = -1
 # path
 R_PATH = "../csv/hdatexyt.csv"
 W_PATH = "../json/seikika.json"
+# parameter
+DESIRED_ERROR = 0.001
+PERIOD = 52  # PERIOD以下であった場合のエラー処理
 
 
 def f1(ite):
@@ -21,8 +24,6 @@ def f1(ite):
 
 
 if __name__ == "__main__":
-    DESIRED_ERROR = 0.001
-    PERIOD = 55  # PERIOD以下であった場合のエラー処理
     df_change = pd.DataFrame()
     lst_dc = []
 
@@ -54,5 +55,5 @@ if __name__ == "__main__":
 
     with open(W_PATH, "w") as f:
         json.dump(dc_seikika, f, indent=4)
-    
+
     print("Done Normalize")
