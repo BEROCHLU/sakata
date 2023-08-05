@@ -23,3 +23,5 @@ This is very simple and out of date neural network program.
     `pip install -r requirements.txt`  
     `npm install --production`  
 4. npm run script  
+# Note 
+Despite its vulnerabilities, the matrix multiplication (dot) function of `math.js@6.6.5` is being used due to its high speed.
