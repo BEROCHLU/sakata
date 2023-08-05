@@ -84,8 +84,8 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
     const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
-    console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)} Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
-    console.log(`Nom: ${accumulateNom.toFixed(2)} FinalErr: ${MSE_AVE.toFixed(6)}\n`);
+    console.log(`Min: ${accumulateMin.toFixed(2)}, Max: ${accumulateMax.toFixed(2)}, Mid: ${accumulateMid.toFixed(2)}, Epoch: ${epoch} DATA_LEN: ${DATA_LEN}`);
+    console.log(`Nom: ${accumulateNom.toFixed(2)}, FinalErr: ${MSE_AVE.toFixed(6)}\n`);
 }
 
 //main

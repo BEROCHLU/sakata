@@ -6,15 +6,16 @@ import os
 from glob import glob
 
 import pandas as pd
+import setting
 
 # global
 old_ite = -1
 # path
 R_PATH = "../csv/hdatexyt.csv"
 BATCH_PATH = "../batch"
-# parameter
-DESIRED_ERROR = 0.001
-BATCH_SIZE = 52
+# import parameter
+DESIRED_ERROR = setting.DESIRED_ERROR
+BATCH_SIZE = setting.PERIOD
 
 
 def f1(ite):

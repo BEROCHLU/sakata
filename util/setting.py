@@ -1,0 +1,2 @@
+DESIRED_ERROR = 0.001
+PERIOD = 55  # PERIOD以下であった場合のエラー処理
