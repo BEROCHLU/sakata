@@ -13,5 +13,5 @@ jobs:
         node-version: 14
     - name: Install dependencies
       run: |
-        npm install --production
+        npm install --omit=dev
         npm list --depth=0
