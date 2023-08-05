@@ -5,3 +5,4 @@ result/*.txt
 batch/
 *.exe
 *.bat
+*.png
