@@ -26,7 +26,7 @@ jobs:
         node-version: 16
     - name: Install dependencies
       run: |
-        npm install --omit=dev
+        npm install --omit=dev --no-audit
         npm list --depth=0
     - name: run app
       run: |
