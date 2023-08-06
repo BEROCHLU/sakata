@@ -58,11 +58,11 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
         const ret = calculateNode(i, hid, out, x, v, w);
         [hid, out] = [ret[0], ret[1]];
 
-        arrErate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
+        arrErate[i] = (t[i][0] - out[0]) / out[0] * 100; //t[i][0] | out[0]
 
         accumulate = _.reduce(arrErate, (presum, current) => {
-            accumulateMin = (presum < accumulateMin) ? presum : accumulateMin; //前回の蓄積結果で最小値を更新
-            accumulateMax = (accumulateMax < presum) ? presum : accumulateMax; //前回の蓄積結果で最大値を更新
+            accumulateMin = Math.min(accumulateMin, presum); //前回の蓄積結果で最小値を更新
+            accumulateMax = Math.max(accumulateMax, presum); //前回の蓄積結果で最大値を更新
             return presum + current; // 配列最後のreturnは最大最小の更新対象にならない
         });
 

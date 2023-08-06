@@ -27,6 +27,13 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
+def updateAcc(presum, current):
+    global acc_min, acc_max
+    acc_min = min(presum, acc_min)  # 前回の蓄積結果で最小値を更新
+    acc_max = max(presum, acc_max)  # 前回の蓄積結果で最大値を更新
+    return presum + current  # 現在の値を蓄積結果に加える
+
+
 def main():
     f = open("./json/seikika.json", "r")
     dc_raw = json.load(f)
@@ -73,20 +80,21 @@ class ONN:  # Out of date Neural Network
             out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
+        global acc_min, acc_max
         arrErate, arrPrint = [], []
-        acc_min= sys.float_info.max
+        acc_min = sys.float_info.max
         acc_max = -sys.float_info.max
         accumulate = 0
 
         for i in range(DAYS):
             self.updateHidOut(i, x, v, w, hid, out)
 
-            arrErate.append(100 * (t[i][0] - out[0]) / t[i][0])
+            arrErate.append(100 * (t[i][0] - out[0]) / out[0])
 
-            accumulate = reduce((lambda result, current: result + current), arrErate)
-
-            acc_max = accumulate if acc_max < accumulate else acc_max
-            acc_min = accumulate if accumulate < acc_min else acc_min
+            accumulate = reduce(updateAcc, arrErate)  # 蓄積結果を計算
+            # accumulate = reduce((lambda result, current: result + current), arrErate)
+            # acc_max = accumulate if acc_max < accumulate else acc_max
+            # acc_min = accumulate if accumulate < acc_min else acc_min
 
             undo_out = round(out[0] * DIV_T, 2)
             undo_teacher = round(t[i][0] * DIV_T, 2)

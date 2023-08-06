@@ -195,7 +195,7 @@ void printResult(void){
     for (i = 0; i < days; i++) {
         updateHidOut(i);
 
-        Erate[i] = (t[i][0] - out[0]) / t[i][0] * 100;
+        Erate[i] = (t[i][0] - out[0]) / out[0] * 100; //t[i][0] | out[0]
         valance += Erate[i];
 
         printf("%-11s %6.2lf True %6.2lf Error %5.2lf%% %5.2lf", date_S[i], out[0] * N225div, t[i][0] * N225div, Erate[i], valance);
