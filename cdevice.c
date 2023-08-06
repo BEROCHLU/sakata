@@ -188,31 +188,36 @@ void updateHidOut(int n){
 
 void printResult(void){
     int i;
-    float Esum = 0, Erate[SIZE], valance = 0;
-    float valanceMin = FLT_MAX, valanceMax = -FLT_MAX;
-    float valanceNom = 0;
+    float Esum = 0, Erate[SIZE], acc = 0;
+    float accMin = FLT_MAX, accMax = -FLT_MAX;
+    float accNorm = 0;
 
     for (i = 0; i < days; i++) {
         updateHidOut(i);
 
         Erate[i] = (t[i][0] - out[0]) / out[0] * 100; //t[i][0] | out[0]
-        valance += Erate[i];
+        acc += Erate[i];
 
-        printf("%-11s %6.2lf True %6.2lf Error %5.2lf%% %5.2lf", date_S[i], out[0] * N225div, t[i][0] * N225div, Erate[i], valance);
+        printf("%-11s %6.2lf True %6.2lf Error %5.2lf%% %5.2lf", date_S[i], out[0] * N225div, t[i][0] * N225div, Erate[i], acc);
 
         Erate[i] = fabs(Erate[i]);
         Esum += Erate[i];
 
-        if (valance < valanceMin) valanceMin = valance;
-        if (valanceMax < valance) valanceMax = valance;
+        //iが最後の場合はacc更新をスキップ
+        if (i == days - 1) {
+            continue;
+        }
+
+        if (acc < accMin) accMin = acc;
+        if (accMax < acc) accMax = acc;
     }
 
-    valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
+    accNorm = (acc - accMin) * 100 / (accMax - accMin);
 
     printf("\nAverage error = %.2lf%%\n", (Esum / days));
-    printf("Min = %.2lf Max = %.2lf Mid = %.2lf\n", valanceMin, valanceMax, (valanceMin + valanceMax) / 2);
+    printf("Min = %.2lf Max = %.2lf Mid = %.2lf\n", accMin, accMax, (accMin + accMax) / 2);
     printf("epoch = %d days = %d\n", q, days);
-    printf("Norm = %.2lf\n", valanceNom);
+    printf("Norm = %.2lf\n", accNorm);
 }
 //fix same seed issue of random number
 float frandWeight(void){
