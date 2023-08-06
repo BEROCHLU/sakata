@@ -212,7 +212,7 @@ void printResult(void){
     printf("\nAverage error = %.2lf%%\n", (Esum / days));
     printf("Min = %.2lf Max = %.2lf Mid = %.2lf\n", valanceMin, valanceMax, (valanceMin + valanceMax) / 2);
     printf("epoch = %d days = %d\n", q, days);
-    printf("Nom = %.2lf\n", valanceNom);
+    printf("Norm = %.2lf\n", valanceNom);
 }
 //fix same seed issue of random number
 float frandWeight(void){

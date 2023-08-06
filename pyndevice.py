@@ -114,8 +114,9 @@ class ONN:  # Out of date Neural Network
         fMean = statistics.mean(lst_abs)
 
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
-        arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)} Epoch: {epoch} Days: {DAYS}")
-        arrPrint.append(f"Nom: {round(acc_nom, 2)} FinalErr: {round(fError, 5)}")
+        arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
+        arrPrint.append(f"Epoch: {epoch} Days: {DAYS} MSE: {round(fError, 5)}")
+        arrPrint.append(f"Norm: {round(acc_nom, 2)}")
         arrPrint.append("")
 
         return arrPrint
