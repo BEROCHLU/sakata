@@ -82,6 +82,7 @@ class ONN:  # Out of date Neural Network
             out[i] = self.sigmoid(dot_o)
 
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w, lst_c1):
+        global acc_min, acc_max
         arrErate, arrPrint = [], []
         acc_min = sys.float_info.max
         acc_max = -sys.float_info.max
