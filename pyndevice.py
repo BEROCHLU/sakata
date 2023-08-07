@@ -27,13 +27,6 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def updateAcc(presum, current):
-    global acc_min, acc_max
-    acc_min = min(presum, acc_min)  # 前回の蓄積結果で最小値を更新
-    acc_max = max(presum, acc_max)  # 前回の蓄積結果で最大値を更新
-    return presum + current  # 現在の値を蓄積結果に加える
-
-
 def main():
     f = open("./json/seikika.json", "r")
     dc_raw = json.load(f)
@@ -53,6 +46,8 @@ class ONN:  # Out of date Neural Network
         global IN_NODE
         global HID_NODE
         global DAYS
+        self.acc_min = sys.float_info.max
+        self.acc_max = -sys.float_info.max
 
         IN_NODE = len(x[0])  # get input length include bias
         HID_NODE = IN_NODE + 1
@@ -79,22 +74,20 @@ class ONN:  # Out of date Neural Network
                 dot_o += w[i][j] * hid[j]
             out[i] = self.sigmoid(dot_o)
 
+    def updateAcc(self, presum, current):
+        self.acc_min = min(presum, self.acc_min)  # 前回の蓄積結果で最小値を更新
+        self.acc_max = max(presum, self.acc_max)  # 前回の蓄積結果で最大値を更新
+        return presum + current  # 現在の値を蓄積結果に加える
+
     def printResult(self, arrHsh, DIV_T, epoch, fError, t, hid, out, x, v, w):
-        global acc_min, acc_max
         arrErate, arrPrint = [], []
-        acc_min = sys.float_info.max
-        acc_max = -sys.float_info.max
-        accumulate = 0
+        acc = 0
 
         for i in range(DAYS):
             self.updateHidOut(i, x, v, w, hid, out)
 
             arrErate.append(100 * (t[i][0] - out[0]) / out[0])
-
-            accumulate = reduce(updateAcc, arrErate)  # 蓄積結果を計算
-            # accumulate = reduce((lambda result, current: result + current), arrErate)
-            # acc_max = accumulate if acc_max < accumulate else acc_max
-            # acc_min = accumulate if accumulate < acc_min else acc_min
+            acc = reduce(self.updateAcc, arrErate)  # 蓄積結果を計算
 
             undo_out = round(out[0] * DIV_T, 2)
             undo_teacher = round(t[i][0] * DIV_T, 2)
@@ -102,21 +95,21 @@ class ONN:  # Out of date Neural Network
             pad_out = str(undo_out).rjust(6)
             pad_teacher = str(undo_teacher).rjust(6)
             pad_erate = str(round(arrErate[i], 2)).rjust(5)
-            pad_acc = str(round(accumulate, 2)).rjust(5)
+            pad_acc = str(round(acc, 2)).rjust(5)
 
-            arrPlotAcc.append(accumulate)  # plot
+            arrPlotAcc.append(acc)  # plot
             arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
-        acc_mid = (acc_max + acc_min) / 2
-        acc_nom = (accumulate - acc_min) * 100 / (acc_max - acc_min)
+        acc_mid = (self.acc_max + self.acc_min) / 2
+        acc_norm = (acc - self.acc_min) * 100 / (self.acc_max - self.acc_min)
 
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
 
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
-        arrPrint.append(f"Min: {round(acc_min, 2)} Max: {round(acc_max, 2)} Mid: {round(acc_mid, 2)}")
+        arrPrint.append(f"Min: {round(self.acc_min, 2)} Max: {round(self.acc_max, 2)} Mid: {round(acc_mid, 2)}")
         arrPrint.append(f"Epoch: {epoch} Days: {DAYS} MSE: {round(fError, 5)}")
-        arrPrint.append(f"Norm: {round(acc_nom, 2)}")
+        arrPrint.append(f"Norm: {round(acc_norm, 2)}")
         arrPrint.append("")
 
         return arrPrint
