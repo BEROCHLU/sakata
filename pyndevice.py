@@ -189,5 +189,5 @@ if __name__ == "__main__":
     # show or print
     egg = matplotlib.get_backend()
     matplotlib.use(egg)
-    plt.savefig("./result/figure.png")
+    plt.savefig("./result/norm_value_by_date.png")
     plt.show()

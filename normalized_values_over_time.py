@@ -50,4 +50,5 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # グラフを表示
+plt.savefig("./result/norm_value_by_date.png")
 plt.show()
