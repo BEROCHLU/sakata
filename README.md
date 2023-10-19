@@ -1,6 +1,14 @@
 # Sakata Index
-At the right end of each date in the result, you'll find a accumulator.  
-The Sakata index is a value normalized by most recent accumulator of the difference between actual values and values predicted by the neural network.  
+The results are as follows:  
+date, predicted, actual, difference, accumulator.
+
+* 'predicted' is a calculated value by a neural network.
+* 'actual' represents the teacher signal in the input file.
+* 'difference' is a value obtained by subtracting 'predicted' from 'actual'.
+* 'accumulator' is a daily cumulative 'difference'.
+
+The Sakata index is a value normalized by most recent 'accumulator'.  
+Finally, this program's goal is calculating the Sakata index.  
 # Neural Network
 This is very simple and out of date neural network program.  
 * Loss function is `least-squares method`
