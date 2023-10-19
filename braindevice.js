@@ -3,9 +3,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const _brain = require('brain.js');
-const {
-    performance
-} = require('perf_hooks');
+const { performance } = require('perf_hooks');
 
 const strJsonOut = fs.readFileSync('./json/seikika.json', 'utf8');
 const hshOut = JSON.parse(strJsonOut);
@@ -29,7 +27,6 @@ const CONFIG = {
     activation: 'sigmoid', // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh'],
     leakyReluAlpha: 0.01, // supported for activation type 'leaky-relu'
 }
-
 const TRAIN_OPT = {
     iterations: 600000,
     errorThresh: 0.00001, // the acceptable error percentage from training data --> number between 0 and 1
@@ -62,9 +59,14 @@ const DATA_LEN = arrTrainX.length;
 for (let i = 0; i < DATA_LEN; i++) {
     arrErate[i] = (arrTrainT[i][0] - arrOut[i]) / arrTrainT[i][0] * 100;
 
-    acc += arrErate[i];
+    /*acc += arrErate[i];
     acc_min = (acc < acc_min) ? acc : acc_min;
-    acc_max = (acc_max < acc) ? acc : acc_max;
+    acc_max = (acc_max < acc) ? acc : acc_max;*/
+    acc = _.reduce(arrErate, (presum, current) => {
+        acc_min = Math.min(acc_min, presum); //前回の蓄積結果で最小値を更新
+        acc_max = Math.max(acc_max, presum); //前回の蓄積結果で最大値を更新
+        return presum + current; // 配列最後のreturnは最大最小の更新対象にならない
+    });
 
     const undo_out = arrOut[i] * hshOut.div;
     const undo_teacher = arrTrainT[i][0] * hshOut.div;

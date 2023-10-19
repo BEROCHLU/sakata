@@ -49,9 +49,9 @@ function mseArray(arrArr) {
 function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
 
     let arrErate = [];
-    let accumulate;
-    let accumulateMin = Number.MAX_SAFE_INTEGER;
-    let accumulateMax = Number.MIN_SAFE_INTEGER;
+    let accumulator;
+    let accumulatorMin = Number.MAX_SAFE_INTEGER;
+    let accumulatorMax = Number.MIN_SAFE_INTEGER;
 
     for (let i = 0; i < DATA_LEN; i++) {
 
@@ -60,9 +60,9 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
 
         arrErate[i] = (t[i][0] - out[0]) / out[0] * 100; //t[i][0] | out[0]
 
-        accumulate = _.reduce(arrErate, (presum, current) => {
-            accumulateMin = Math.min(accumulateMin, presum); //前回の蓄積結果で最小値を更新
-            accumulateMax = Math.max(accumulateMax, presum); //前回の蓄積結果で最大値を更新
+        accumulator = _.reduce(arrErate, (presum, current) => {
+            accumulatorMin = Math.min(accumulatorMin, presum); //前回の蓄積結果で最小値を更新
+            accumulatorMax = Math.max(accumulatorMax, presum); //前回の蓄積結果で最大値を更新
             return presum + current; // 配列最後のreturnは最大最小の更新対象にならない
         });
 
@@ -72,21 +72,21 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
         const pad_out = undo_out.toFixed(2).padStart(6);
         const pad_teacher = undo_teacher.toFixed(2).padStart(6);
         const pad_erate = arrErate[i].toFixed(2).padStart(5);
-        const pad_accumulate = accumulate.toFixed(2).padStart(5);
+        const pad_accumulator = accumulator.toFixed(2).padStart(5);
 
-        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_accumulate}`);
+        console.log(`${arrHsh[i].date} ${pad_out} True: ${pad_teacher} ${pad_erate}% ${pad_accumulator}`);
     }
 
     const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
 
-    const accumulateMid = (accumulateMin + accumulateMax) / 2;
-    const accumulateNom = (accumulate - accumulateMin) * 100 / (accumulateMax - accumulateMin);
+    const accumulatorMid = (accumulatorMin + accumulatorMax) / 2;
+    const accumulatorNom = (accumulator - accumulatorMin) * 100 / (accumulatorMax - accumulatorMin);
     const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
-    console.log(`Min: ${accumulateMin.toFixed(2)} Max: ${accumulateMax.toFixed(2)} Mid: ${accumulateMid.toFixed(2)}`);
+    console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
     console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} MSE_AVE: ${MSE_AVE.toFixed(6)}`);
-    console.log(`Norm: ${accumulateNom.toFixed(2)}\n`);
+    console.log(`Norm: ${accumulatorNom.toFixed(2)}\n`);
 }
 
 //main
