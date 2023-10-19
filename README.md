@@ -1,6 +1,7 @@
-# sakata
-sakata index is accumulator of difference value between actual and predict calculated by neural network.
-# neural network
+# Sakata Index
+At the right end of each date in the result, you'll find a accumulator.  
+The Sakata index is a value normalized by most recent accumulator of the difference between actual values and values predicted by the neural network.  
+# Neural Network
 This is very simple and out of date neural network program.  
 * Loss function is `least-squares method`
 * Activation function is `sigmoid`
@@ -24,4 +25,4 @@ This is very simple and out of date neural network program.
     `npm install --production`  
 4. npm run script  
 # Note 
-Despite its vulnerabilities, the matrix multiplication (dot) function of `math.js@6.6.5` is being used due to its high speed.
+Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.
