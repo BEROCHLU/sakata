@@ -22,15 +22,15 @@ const arrTrainData = _.zipWith(arrTrainX, arrTrainT, arrDate, (x, t, d) => {
         date: d
     }
 });
-// provide optional config object (or undefined). Defaults shown.
-const config = {
+// provide optional CONFIG object (or undefined). Defaults shown.
+const CONFIG = {
     binaryThresh: 0.5,
     hiddenLayers: [4], // array of ints for the sizes of the hidden layers in the network
     activation: 'sigmoid', // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh'],
     leakyReluAlpha: 0.01, // supported for activation type 'leaky-relu'
 }
 
-const trainOpt = {
+const TRAIN_OPT = {
     iterations: 600000,
     errorThresh: 0.00001, // the acceptable error percentage from training data --> number between 0 and 1
     log: false, // true to use console.log, when a function is supplied it is used --> Either true or a function
@@ -40,29 +40,31 @@ const trainOpt = {
 const strDate = new Date();
 console.log(strDate.toLocaleString());
 // create a simple feed forward neural network with backpropagation
-const net = new _brain.NeuralNetwork(config);
+const BNN = new _brain.NeuralNetwork(CONFIG);
 
 const timeStart = performance.now();
 // start training
-const netrain = net.train(arrTrainData, trainOpt);
+const netrain = BNN.train(arrTrainData, TRAIN_OPT);
 const timeEnd = performance.now();
 const timeSec = (timeEnd - timeStart) / 1000;
 
 const arrOut = _.map(arrTrainX, arr => {
-    return net.run(arr)[0];
+    return BNN.run(arr)[0];
 });
 
 let arrErate = [];
-let valance = 0;
-let valanceMin = Number.MAX_SAFE_INTEGER;
-let valanceMax = Number.MIN_SAFE_INTEGER;
+let acc = 0;
+let acc_min = Number.MAX_SAFE_INTEGER;
+let acc_max = Number.MIN_SAFE_INTEGER;
 
 const DATA_LEN = arrTrainX.length;
 
 for (let i = 0; i < DATA_LEN; i++) {
     arrErate[i] = (arrTrainT[i][0] - arrOut[i]) / arrTrainT[i][0] * 100;
 
-    valance += arrErate[i];
+    acc += arrErate[i];
+    acc_min = (acc < acc_min) ? acc : acc_min;
+    acc_max = (acc_max < acc) ? acc : acc_max;
 
     const undo_out = arrOut[i] * hshOut.div;
     const undo_teacher = arrTrainT[i][0] * hshOut.div;
@@ -70,20 +72,17 @@ for (let i = 0; i < DATA_LEN; i++) {
     const pad_out = undo_out.toFixed(2).padStart(6);
     const pad_teacher = undo_teacher.toFixed(2).padStart(6);
     const pad_erate = arrErate[i].toFixed(2).padStart(5);
-    const pad_valance = valance.toFixed(2).padStart(5);
+    const pad_acc = acc.toFixed(2).padStart(5);
 
-    console.log(`${arrDate[i]} ${pad_out} True: ${pad_teacher} ${pad_erate} ${pad_valance}`);
-
-    valanceMin = (valance < valanceMin) ? valance : valanceMin;
-    valanceMax = (valanceMax < valance) ? valance : valanceMax;
+    console.log(`${arrDate[i]} ${pad_out} True: ${pad_teacher} ${pad_erate} ${pad_acc}`);
 }
 
 const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
-const valanceMid = (valanceMin + valanceMax) / 2;
-const valanceNom = (valance - valanceMin) * 100 / (valanceMax - valanceMin);
+const acc_mid = (acc_min + acc_max) / 2;
+const acc_norm = (acc - acc_min) * 100 / (acc_max - acc_min);
 
 console.log(`Average error: ${averageError}%`);
-console.log(`Min: ${valanceMin.toFixed(2)} Max: ${valanceMax.toFixed(2)} Mid: ${valanceMid.toFixed(2)}`);
+console.log(`Min: ${acc_min.toFixed(2)} Max: ${acc_max.toFixed(2)} Mid: ${acc_mid.toFixed(2)}`);
 console.log(`epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
-console.log(`Norm: ${valanceNom.toFixed(2)}`);
+console.log(`Norm: ${acc_norm.toFixed(2)}`);
 console.log(`Time: ${timeSec.toFixed(2)}sec.`);
