@@ -1,8 +1,8 @@
 {
   "name": "sakata",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "",
-  "main": "index.js",
+  "main": "none.js",
   "scripts": {
     "matplot": "python ./normalized_values_over_time.py",
     "start": "python ./util/pdnormalize.py && node main.js",
@@ -12,7 +12,7 @@
     "main+add": "npx mkdirp result & python ./util/pdnormalize.py && node main.js >> ./result/nlog.txt",
     "main+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && node main-batch.js > ./result/nbatch.log && \"C:\\Program Files (x86)\\Hidemaru\\Hidemaru.exe\" /je ./result/nbatch.log",
     "py+add": "npx mkdirp result & python ./util/pdnormalize.py && python pyndevice.py >> ./result/plog.txt",
-    "py+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && python forpyndevice.py > ./result/pbatch.log && python ./util/logclean.py",
+    "py+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && python pyndevice-batch.py > ./result/pbatch.log && python ./util/logclean.py",
     "wincmd": "if not exist result mkdir result"
   },
   "keywords": [],
