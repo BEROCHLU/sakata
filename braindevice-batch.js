@@ -92,11 +92,12 @@ const BATCH_PATH = './batch';
 
         console.log(`Average error: ${averageError}%`);
         console.log(`Min: ${acc_min.toFixed(2)} Max: ${acc_max.toFixed(2)} Mid: ${acc_mid.toFixed(2)}`);
-        console.log(`epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
+        console.log(`Epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
         console.log(`Norm: ${acc_norm.toFixed(2)}\n`);
     });// _.forEach
     //計測終了
     const timeEnd = performance.now();
     const timeSec = (timeEnd - timeStart) / 1000;
-    console.log(`Time: ${timeSec.toFixed(2)}sec.`);
+
+    console.log(`Time: ${Math.floor(timeSec / 60)} min ${Math.floor(timeSec % 60)} sec.\n`);
 }

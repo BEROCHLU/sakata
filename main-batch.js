@@ -188,6 +188,6 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();
-    const nSec = (timeEnd - timeStart) / 1000;
-    console.log(`Time: ${Math.floor(nSec / 60)} min ${Math.floor(nSec % 60)} sec.\n`);
+    const timeSec = (timeEnd - timeStart) / 1000;
+    console.log(`Time: ${Math.floor(timeSec / 60)} min ${Math.floor(timeSec % 60)} sec.\n`);
 }
