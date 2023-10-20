@@ -4,7 +4,7 @@
   "description": "",
   "main": "none.js",
   "scripts": {
-    "matplot": "python ./normalized_values_over_time.py",
+    "matplot": "python ./python/normalized_values_over_time.py",
     "sakata": "python ./util/pdnormalize.py && node braindevice.js >> ./result/sakata.txt",
     "sakata+batch": "python ./util/pdnormalize.py && node braindevice-batch.js > ./result/sakata-batch.log",
     "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",

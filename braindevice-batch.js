@@ -13,7 +13,7 @@ const CONFIG = {
     leakyReluAlpha: 0.01, // supported for activation type 'leaky-relu'
 }
 const TRAIN_OPT = {
-    iterations: 600000,
+    iterations: 500000,
     errorThresh: 0.00001, // the acceptable error percentage from training data --> number between 0 and 1
     log: false, // true to use console.log, when a function is supplied it is used --> Either true or a function
     logPeriod: 100000
