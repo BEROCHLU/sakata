@@ -23,7 +23,7 @@ This is very simple and out of date neural network program.
 # Usage
 1. install
     * Python
-    * Node.js
+    * Node.js 16
     * git
     * MinGW-w64 (optional)  
         [Using GCC with MinGW](https://code.visualstudio.com/docs/cpp/config-mingw)  
@@ -37,4 +37,5 @@ This is very simple and out of date neural network program.
     `npm run main+batch`  
     `npm run matplot`  
 # Note 
-Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.
+Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.  
+For the same reason, Node.js 16 is recommended.  
