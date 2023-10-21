@@ -3,7 +3,7 @@ The results are as follows:
 date, predicted, actual, difference, accumulator.
 
 * 'predicted' is a calculated value by a neural network.
-* 'actual' represents the teacher signal in the input file. Here, the teacher signal is opening value of Nikkei 225.
+* 'actual' represents the teacher signal in the input file. Here, the teacher signal is opening value of Nikkei 225 ETF.
 * 'difference' is a value obtained by subtracting 'predicted' from 'actual'.
 * 'accumulator' is a daily cumulative 'difference'.
 
@@ -12,14 +12,14 @@ The signal is strong buy as the Sakata index gets closer to 0; on the other hand
 Finally, this program's goal is calculating the Sakata index.  
 # Neural Network
 This is very simple and out of date neural network program.  
-* Loss function is `least-squares method`
-* Activation function is `sigmoid`
-* Learning rate is fixed 0.5
-* Weight is fixed 0.5
-* Bias is fixed -1
-* [Input, Hidden, Output] layer is [3, 4, 1] and these which except Output layer include biases.
-* Training data is the same Test data.
-* Epoch is 500 thousand.
+* Loss function: `least-squares method`
+* Activation function: `sigmoid`
+* Learning rate: 0.5
+* Weight: 0.5
+* Biases: -1
+* Epoch: 500,000
+* [Input, Hidden, Output] layer is [3, 4, 1] and all layers, except for the Output layer, include biases.
+* Training data is the same as the Test data.
 # Usage
 1. install
     * Python
