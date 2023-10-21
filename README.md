@@ -3,11 +3,12 @@ The results are as follows:
 date, predicted, actual, difference, accumulator.
 
 * 'predicted' is a calculated value by a neural network.
-* 'actual' represents the teacher signal in the input file.
+* 'actual' represents the teacher signal in the input file. Here, the teacher signal is opening value of Nikkei 225.
 * 'difference' is a value obtained by subtracting 'predicted' from 'actual'.
 * 'accumulator' is a daily cumulative 'difference'.
 
-The Sakata index is a value normalized by most recent 'accumulator'.  
+The Sakata index is a value which is normalized by the most recent 'accumulator' for each period.  
+The signal is strong buy as the Sakata index gets closer to 0; on the other hand, the signal is strong sell as it gets closer to 100.  
 Finally, this program's goal is calculating the Sakata index.  
 # Neural Network
 This is very simple and out of date neural network program.  
@@ -30,7 +31,7 @@ This is very simple and out of date neural network program.
 2. git clone this repository
 3. package  
     `pip install -r requirements.txt`  
-    `npm install --production`  
+    `npm install`  
 4. npm run script  
 # Note 
 Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.
