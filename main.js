@@ -3,9 +3,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const math = require('mathjs');
-const {
-    performance
-} = require('perf_hooks');
+const { performance } = require('perf_hooks');
 
 let IN_NODE; //入力ノード数（バイアス含む）
 let HID_NODE; //隠れノード数

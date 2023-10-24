@@ -1,4 +1,3 @@
-import os
 import re
 import datetime
 import matplotlib.pyplot as plt
@@ -43,5 +42,5 @@ plt.title("Norm: value over time")
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-plt.savefig("./result/norm_value_by_date.png")
+plt.savefig("./result/plot-multi.png")
 plt.show()
