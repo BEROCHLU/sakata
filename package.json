@@ -8,11 +8,11 @@
     "plot-single": "python ./python/plot-single.py",
     "sakata": "python ./util/pdnormalize.py && node braindevice.js >> ./result/sakata.txt",
     "sakata+batch": "python ./util/pdnormalize.py && node braindevice-batch.js > ./result/sakata-batch.log",
-    "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
     "main+add": "npx mkdirp result & python ./util/pdnormalize.py && node main.js >> ./result/nlog.txt",
-    "main+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && node main-batch.js > ./result/nbatch.log && \"C:\\Program Files (x86)\\Hidemaru\\Hidemaru.exe\" /je ./result/nbatch.log",
+    "main+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && node main-batch.js > ./result/nbatch.log",
     "py+add": "npx mkdirp result & python ./util/pdnormalize.py && python ./python/pyndevice.py >> ./result/plog.txt",
     "py+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logclean.py",
+    "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
     "wincmd": "if not exist result mkdir result"
   },
   "keywords": [],
