@@ -9,8 +9,7 @@ date, predicted, actual, difference, accumulator.
 
 The Sakata index is a value which is normalized by the most recent 'accumulator' for each period.  
 The signal is `strong buy` as the Sakata index gets closer to 0; on the other hand, the signal is `strong sell` as it gets closer to 100.  
-Finally, this program's goal is calculating the Sakata index.  
-The important aspect of the Sakata index is not bringing 'predicted' close to 'actual', but accumulating the difference obtained by subtracting 'predicted' from 'actual'.  
+Finally, this program's goal is calculating the Sakata index. The important aspect of the Sakata index is not bringing 'predicted' close to 'actual', but accumulating the difference obtained by subtracting 'predicted' from 'actual'.  
 The accumulated value flips at a certain point, and then a strong signal occurs.  
 # Neural Network
 This is very simple and out of date neural network program.  
