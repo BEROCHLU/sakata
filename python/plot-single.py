@@ -43,11 +43,9 @@ for section in sections:
 # グラフを描画
 plt.figure(figsize=(10, 6))
 plt.plot(dates, norm_values, marker="o")
-#plt.xlabel("Date")
-#plt.ylabel("Norm: sakata")
-plt.title("Norm: sakata over time")
-#plt.xticks(rotation=45)
+plt.title("The Sakata Index")
+# plt.xticks(rotation=45)
 plt.tight_layout()
 plt.grid()
+plt.savefig("./result/plot-single.png")  # showの前でないと保存されない
 plt.show()
-plt.savefig("./result/plot-single.png")
