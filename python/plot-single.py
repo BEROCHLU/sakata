@@ -43,12 +43,11 @@ for section in sections:
 # グラフを描画
 plt.figure(figsize=(10, 6))
 plt.plot(dates, norm_values, marker="o")
-plt.xlabel("Date")
-plt.ylabel("Norm: value")
-plt.title("Norm: value over time")
-plt.xticks(rotation=45)
+#plt.xlabel("Date")
+#plt.ylabel("Norm: sakata")
+plt.title("Norm: sakata over time")
+#plt.xticks(rotation=45)
 plt.tight_layout()
-
-# グラフを表示
-plt.savefig("./result/plot-single.png")
+plt.grid()
 plt.show()
+plt.savefig("./result/plot-single.png")

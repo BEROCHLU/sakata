@@ -36,11 +36,11 @@ for file_path in file_paths:
 plt.figure(figsize=(10, 6))
 for norm_values in norm_values_list:
     plt.plot(dates, norm_values, marker="o")
-plt.xlabel("Date")
-plt.ylabel("Norm: value")
-plt.title("Norm: value over time")
-plt.xticks(rotation=45)
+#plt.xlabel("Date")
+#plt.ylabel("Norm: value")
+plt.title("Sakata index")
+#plt.xticks(rotation=45)
 plt.tight_layout()
-
-plt.savefig("./result/plot-multi.png")
+plt.grid()
 plt.show()
+plt.savefig("./result/plot-multi.png")

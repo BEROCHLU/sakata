@@ -6,8 +6,8 @@
   "scripts": {
     "plot-multi": "python ./python/plot-multi.py",
     "plot-single": "python ./python/plot-single.py",
-    "sakata": "python ./util/pdnormalize.py && node braindevice.js >> ./result/sakata.txt",
-    "sakata+batch": "python ./util/pdnormalize.py && node braindevice-batch.js > ./result/sakata-batch.log",
+    "sakata": "npx mkdirp result & python ./util/pdnormalize.py && node braindevice.js >> ./result/sakata.txt",
+    "sakata+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && node braindevice-batch.js > ./result/sakata-batch.log",
     "main+add": "npx mkdirp result & python ./util/pdnormalize.py && node main.js >> ./result/nlog.txt",
     "main+batch": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py && node main-batch.js > ./result/nbatch.log",
     "py+add": "npx mkdirp result & python ./util/pdnormalize.py && python ./python/pyndevice.py >> ./result/plog.txt",
