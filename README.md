@@ -33,9 +33,10 @@ The settings of main.js are as follows:
     `pip install -r requirements.txt`  
     `npm install`  
 4. npm run script  
+    `npm run cooking`  
     `npm run sakata+batch`  
     `npm run main+batch`  
-    `npm run matplot`  
+    `npm run plot-multi`  
 # Note 
 Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.
 For the same reason, Node.js 16 is recommended.  
