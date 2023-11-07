@@ -10,8 +10,8 @@ date, predicted, actual, difference, accumulator.
 The Sakata index is a value which is normalized by the most recent 'accumulator' for each period. The signal is __strong buy__ as the Sakata index approaches 0; on the other hand, the signal is __strong sell__ as it approaches 100. Finally, this program's goal is calculating the Sakata index.  
   
 The important aspect of the Sakata index is not bringing 'predicted' close to 'actual', but accumulating the difference obtained by subtracting 'predicted' from 'actual'. The accumulated value flips at a certain point, and then a strong signal occurs.  
-# Neural Network
-The settings of main.js are as follows:  
+# A custom implementation of a simple neural network
+The settings are as follows:  
 * Loss function: `least-squares method`
 * Activation function: `sigmoid`
 * Learning rate: 0.5
