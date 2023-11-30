@@ -34,9 +34,8 @@ The settings are as follows:
     `npm install`  
 4. npm run script  
     `npm run cooking`  
-    `npm run sakata+batch`  
     `npm run main+batch`  
-    `npm run plot-multi`  
+    `npm run plot-single`  
 # Note 
 Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.
 For the same reason, Node.js 16 is recommended.  
