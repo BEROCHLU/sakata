@@ -1,0 +1,27 @@
+{
+  "name": "sakata",
+  "version": "2.1.0",
+  "description": "",
+  "scripts": {
+    "cooking": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py",
+    "plot-multi": "python ./util/plot-multi.py",
+    "plot-single": "python ./util/plot-single.py",
+    "sakata": "node ./nodejs/braindevice.js >> ./result/sakata.txt",
+    "sakata+batch": "node ./nodejs/braindevice-batch.js > ./result/sakata-batch.log",
+    "main+add": "node ./nodejs/main.js >> ./result/nlog.txt",
+    "main+batch": "node ./nodejs/main-batch.js > ./result/nbatch.log",
+    "py+add": "python ./python/pyndevice.py >> ./result/plog.txt",
+    "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logclean.py",
+    "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
+    "wincmd": "if not exist result mkdir result"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "mathjs": "6.6.5"
+  },
+  "devDependencies": {
+    "brain.js": "^2.0.0-beta.23"
+  }
+}

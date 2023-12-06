@@ -1,0 +1,17 @@
+name: test-node
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: |
+        npm install --production
+        npm list --depth=0
