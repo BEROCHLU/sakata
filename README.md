@@ -30,7 +30,7 @@ The settings are as follows:
 2. git clone this repository
 3. package  
     `pip install -r requirements.txt`  
-    `npm install --only=prod`  
+    `npm install --omit=dev`  
 4. npm run script  
     `npm run cooking`  
     `npm run main+batch`  

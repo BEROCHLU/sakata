@@ -4,3 +4,4 @@ test/
 result/*.txt
 batch/
 *.exe
+package-lock.json
