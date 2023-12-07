@@ -35,7 +35,7 @@ To use this program, follow these steps:
    - Python 3
    - Node.js 16
    - MinGW-w64 (optional): For users who want to use GCC with MinGW.  
-      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setup MinGW. But an [another link](https://winlibs.com/) is recommended due to error `the file has been downloaded incorrectly`.
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly!" [another link](https://winlibs.com/) is recommended 
    - brain.js (optional): A GPU accelerated library for Neural Networks written in JavaScript.
 
 2. **Install packages**:
@@ -53,5 +53,4 @@ To use this program, follow these steps:
 
 # Note
 
-Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed.  
-For the same reason, Node.js 16 is recommended.  
+Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed. For the same reason, Node.js 16 is recommended.  
