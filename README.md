@@ -32,18 +32,24 @@ This section outlines the configuration of a simple neural network used to calcu
 To use this program, follow these steps:
 
 1. **Install prerequisites**:
-   - Python: Required programming language.
-   - Node.js 16: JavaScript runtime environment.
-   - MinGW-w64 (optional): For users who want to use GCC with MinGW, a link is provided for setup instructions. An alternate source is recommended due to potential download issues with the installer.
+   - Python 3
+   - Node.js 16
+   - MinGW-w64 (optional): For users who want to use GCC with MinGW.  
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setup MinGW. But an [another link](https://winlibs.com/) is recommended due to error `the file has been downloaded incorrectly`.
+   - brain.js (optional): A GPU accelerated library for Neural Networks written in JavaScript.
 
 2. **Install packages**:
-   - Use `pip install -r requirements.txt` to install Python dependencies.
-   - Use `npm install --omit=dev` to install Node.js dependencies without the development packages.
+   - `pip install -r requirements.txt` to install Python dependencies.
+   - `npm install --omit=dev` to install Node.js dependencies without the development packages.
 
 3. **Run scripts**:
-   - Execute `npm run cooking` to presumably prepare the data.
-   - Run `npm run main+add` to start the main process along with batch operations.
-   - Use `npm run plot-single` to visualize the results.
+   - `npm run cooking` to presumably prepare the data.
+   - `npm run main+add` to run main.js and append the results.
+   - `npm run plot-single` to visualize the results.
+
+4. **If you succeed optional install, you can try this**
+   - `npm run O2+add` to run cdevice.c and append the results.
+   - `npm run sakata` to run braindevide.js which depend on brain.js.
 
 # Note
 
