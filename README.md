@@ -35,7 +35,7 @@ To use this program, follow these steps:
    - Python 3
    - Node.js 16
    - MinGW-w64 (optional): For users who want to use GCC with MinGW.  
-      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly!" [another link](https://winlibs.com/) is recommended 
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.
    - brain.js (optional): A GPU accelerated library for Neural Networks written in JavaScript.
 
 2. **Install packages**:
