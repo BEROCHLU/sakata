@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools
-        pip install pandas
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip list
     - name: Set up Node.js 14
       uses: actions/setup-node@v2
