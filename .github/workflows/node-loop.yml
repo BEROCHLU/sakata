@@ -27,18 +27,20 @@ jobs:
     - name: Install dependencies
       run: |
         npm install --production
+        npm install gpu.js@^2.16.0
         npm list --depth=0
+        sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
     - name: run app
       run: |
-        mkdir -p result
-        python ./util/pdnormalize.py
-        python ./util/slicebatch.py
-        node ./nodejs/main-batch.js > ./result/nbatch.log
-        python ./util/plot-single.py
+        npm run cooking
+        npm run main+batch
+        npm run sakata+batch
+        npm run plot-multi
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
       with:
         name: output artifacts
         path: |
           ./result/nbatch.log
-          ./result/plot-single.png
+          ./result/sakata-batch.log
+          ./result/plot-multi.png
