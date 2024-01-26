@@ -11,7 +11,7 @@
     "main+add": "node ./nodejs/main.js >> ./result/nlog.txt",
     "main+batch": "node ./nodejs/main-batch.js > ./result/nbatch.log",
     "py+add": "python ./python/pyndevice.py >> ./result/plog.txt",
-    "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logclean.py",
+    "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logformatter.py",
     "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
     "wincmd": "if not exist result mkdir result"
   },
