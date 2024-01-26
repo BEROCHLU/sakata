@@ -1,26 +1,26 @@
 name: test-node
-on:
-  push:
-    branches: [ master ]
+
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Node.js 14
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - name: Install dependencies
-      run: |
-        npm install --production
-        npm install gpu.js@^2.16.0
-        npm list --depth=0
-        sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
-        npm run sakata
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: output artifacts
-        path: |
-          ./result/sakata.txt
+      - uses: actions/checkout@v2
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: |
+          npm install --production
+          npm install gpu.js@^2.16.0
+          npm list --depth=0
+          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+          npm run sakata
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: output artifacts
+          path: |
+            ./result/sakata.txt
