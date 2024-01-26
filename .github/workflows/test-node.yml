@@ -7,10 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
+
       - name: Install dependencies
         run: |
           npm install --production
@@ -18,6 +20,7 @@ jobs:
           npm list --depth=0
           sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm run sakata
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
