@@ -12,10 +12,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "16"
-
+      # npm install --omit=dev
       - name: Install dependencies
         run: |
-          npm install --omit=dev
+          npm install
           npm list --depth=0
           sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm run sakata
