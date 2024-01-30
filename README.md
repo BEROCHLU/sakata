@@ -38,7 +38,7 @@ To use this program, follow these steps:
 
 2. **Install packages**:
    - `pip install -r requirements.txt` to install Python dependencies.
-   - `npm install --omit=dev` to install Node.js dependencies without the development packages.
+   - `npm install --omit=dev --no-audit` to install Node.js dependencies without the development packages.
 
 3. **Run scripts**:
    - `npm run cooking` to presumably prepare the data.
@@ -47,6 +47,7 @@ To use this program, follow these steps:
 
 4. **If you succeed optional install, you can try this**
    - `npm run O2+add` to run cdevice.c and append the results.
+   - `npm install brain.js gpu.js@^2.16.0 --no-audit`
    - `npm run sakata` to run braindevide.js which depend on brain.js.
 
 # Note
