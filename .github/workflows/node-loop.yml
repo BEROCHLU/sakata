@@ -40,12 +40,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build
     steps:
+      - uses: actions/checkout@v4
       - run: npm run main+batch
 
   Task-Sakata:
     runs-on: ubuntu-latest
     needs: Build
     steps:
+      - uses: actions/checkout@v4
       - run: npm run sakata+batch
 
   # The 'Sync' job waits for 'Task-Main' and 'Task-Sakata' to complete, then runs 'npm run plot-multi'
