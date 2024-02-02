@@ -5,28 +5,12 @@ on:
     branches: [master]
 
 jobs:
-  setup_dependencies:
+  main_job:
     runs-on: ubuntu-latest
-    outputs:
-      cache-key-pip: ${{ steps.cache-key-pip.outputs.key }}
-      cache-key-npm: ${{ steps.cache-key-npm.outputs.key }}
     steps:
       - uses: actions/checkout@v4
 
-      # Cache Python dependencies
-      - name: Get pip cache directory
-        id: pip-cache
-        run: echo "::set-output name=dir::$(pip cache dir)"
-
-      - name: Cache pip
-        id: cache-pip
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-
-      - name: Set up Python 3.10 and install dependencies
-        if: steps.cache-pip.outputs.cache-hit != 'true'
+      - name: Set up Python 3.10 and dependencies
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -35,20 +19,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip list
 
-      # Cache Node.js dependencies
-      - name: Get npm cache directory
-        id: npm-cache
-        run: echo "::set-output name=dir::$(npm config get cache)"
-
-      - name: Cache npm
-        id: cache-npm
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Set up Node.js 16 and install dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
+      - name: Set up Node.js 16 and dependencies
         uses: actions/setup-node@v4
         with:
           node-version: "16"
@@ -56,24 +27,7 @@ jobs:
           npm ci --no-audit
           npm list --depth=0
 
-  main_job:
-    needs: setup_dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Use cached dependencies
-      - name: Set up Python 3.10 from cache
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-
-      - name: Set up Node.js 16 from cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: "16"
-
-      - name: Run npm scripts
+      - name: run npm script
         run: |
           npm run cooking
           npm run main+batch
@@ -82,29 +36,33 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: main-artifacts
-          path: ./result/nbatch.log
+          path: |
+            ./result/nbatch.log
 
   sakata_job:
-    needs: setup_dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Use cached dependencies
-      - name: Set up Python 3.10 from cache
+      - name: Set up Python 3.10 dependencies
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+      - run: |
+          python -m pip install --upgrade pip setuptools
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip list
 
-      - name: Set up Node.js 16 from cache
+      - name: Set up Node.js 16 and dependencies
         uses: actions/setup-node@v4
         with:
           node-version: "16"
+      - run: |
+          npm ci --no-audit
+          npm list --depth=0
+          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
 
-      - name: Install additional system dependencies
-        run: sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
-
-      - name: Run sakata+batch script
+      - name: run sakata+batch
         run: |
           npm run cooking
           npm run sakata+batch
@@ -113,7 +71,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sakata-artifacts
-          path: ./result/sakata-batch.log
+          path: |
+            ./result/sakata-batch.log
 
   merge_artifacts:
     needs: [main_job, sakata_job]
@@ -121,25 +80,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Use cached dependencies
-      - name: Set up Python 3.10 from cache
+      - name: Set up Python 3.10 and dependencies
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+      - run: |
+          python -m pip install --upgrade pip setuptools
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip list
 
       - run: npm run plot-multi
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: List all downloaded files
+      - name: Confirm the directory and move files
         run: ls -R
+      - run: mv ./main-artifacts/nbatch.log ./result/nbatch.log
+      - run: mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
 
       - name: Archive all artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: all-artifacts
+          name: result-artifacts
           path: |
-            ./main-artifacts/nbatch.log
-            ./sakata-artifacts/sakata-batch.log
+            ./result/nbatch.log
+            ./result/sakata-batch.log
             ./result/plot-multi.png
