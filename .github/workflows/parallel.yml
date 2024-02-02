@@ -77,7 +77,7 @@ jobs:
             ./result/sakata-batch.log
 
   merge_artifacts:
-    needs: [main_batch, sakata_batch]
+    needs: [main_job, sakata_job]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
