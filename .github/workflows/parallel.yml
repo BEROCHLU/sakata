@@ -1,0 +1,101 @@
+name: main-batch
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  main_batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip list
+
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v4
+        with:
+          node-version: "16"
+
+      - name: Install Node.js dependencies
+        run: |
+          npm ci --omit=dev --no-audit
+          npm list --depth=0
+
+      - name: run npm script
+        run: |
+          npm run cooking
+          npm run main+batch
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-batch-artifacts
+          path: |
+            ./result/nbatch.log
+            ./result/plot-multi.png
+
+  sakata_batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip list
+
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v4
+        with:
+          node-version: "16"
+
+      - name: Install Node.js dependencies
+        run: |
+          npm ci --no-audit
+          npm list --depth=0
+          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+
+      - name: run sakata+batch
+        run: |
+          npm run cooking
+          npm run sakata+batch
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sakata-batch-artifacts
+          path: |
+            ./result/sakata-batch.log
+
+  merge_artifacts:
+    needs: [main_batch, sakata_batch]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+      - name: List all downloaded files
+        run: ls -R
+      - name: Archive all artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-artifacts
+          path: |
+            ./result/nbatch.log
+            ./result/sakata-batch.log
+            ./result/plot-multi.png
