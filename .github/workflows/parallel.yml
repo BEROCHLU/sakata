@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Node.js dependencies
         run: |
-          npm install --omit=dev --no-audit
+          npm ci --no-audit
           npm list --depth=0
 
       - name: run npm script
