@@ -1,5 +1,4 @@
-# This is a workflow definition for GitHub Actions named 'main-batch'
-name: main-batch
+name: node-loop
 
 on:
   push:
@@ -10,13 +9,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Download the repository code at v4 using the checkout action
       - uses: actions/checkout@v4
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            !~/.cache/pip/log
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install Python dependencies
         run: |
@@ -28,6 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "16"
+          cache: "npm"
 
       - name: Install Node.js dependencies
         run: |
