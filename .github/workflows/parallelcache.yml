@@ -1,4 +1,4 @@
-name: parallel-cache
+name: parallelcache
 
 on:
   push:
