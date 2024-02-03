@@ -1,8 +1,7 @@
 name: test-py
 
-on:
-  push:
-    branches: [master]
+on: [push]
+
 jobs:
   Test:
     runs-on: ubuntu-latest
