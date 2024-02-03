@@ -102,7 +102,7 @@ jobs:
       - name: Archive all artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: output-artifacts
+          name: result-artifacts
           path: |
             ./result/nbatch.log
             ./result/sakata-batch.log
