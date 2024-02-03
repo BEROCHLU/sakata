@@ -1,4 +1,4 @@
-name: parallel
+name: parallel-cache
 
 on:
   push:
@@ -20,7 +20,6 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ steps.cache-py.outputs.cache-key }}
 
       # Set up Python environment
       - name: Set up Python 3.10
@@ -38,7 +37,6 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ steps.cache-node.outputs.cache-key }}
 
       # Set up Node.js environment
       - name: Set up Node.js 16
