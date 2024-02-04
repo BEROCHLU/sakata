@@ -1,0 +1,28 @@
+on: [push]
+
+jobs:
+  setup-build:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-keys-id.outputs.key }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate cache key for Node.js dependencies
+        id: cache-keys-id
+        run: echo "::set-output name=key::$(date +%Y-%m-%d)-$(hashFiles('**/package-lock.json'))"
+
+  build:
+    needs: setup-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ needs.setup-build.outputs.cache-key }}
+
+      - name: Install dependencies
+        run: npm install
