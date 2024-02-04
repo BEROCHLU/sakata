@@ -1,16 +1,15 @@
 on: [push]
-
 jobs:
   setup-build:
     runs-on: ubuntu-latest
     outputs:
-      cache-key: ${{ steps.cache-keys-id.outputs.key }}
+      cache-key: ${{ steps.idcache-keys.outputs.key }}
     steps:
       - uses: actions/checkout@v2
 
-      - name: Generate cache key for Node.js dependencies
-        id: cache-keys-id
-        run: echo "::set-output name=key::$(date +%Y-%m-%d)-$(hashFiles('**/package-lock.json'))"
+      - name: Generate cache key for Python dependencies
+        id: idcache-keys
+        run: echo "::set-output name=key::$(date +%Y-%m-%d)-$(hashFiles('**/requirements.txt'))"
 
   build:
     needs: setup-build
@@ -18,11 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache Node.js dependencies
+      - name: Cache Python dependencies
         uses: actions/cache@v2
         with:
-          path: node_modules
+          path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
