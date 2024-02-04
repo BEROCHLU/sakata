@@ -5,12 +5,12 @@ jobs:
   setup-build:
     runs-on: ubuntu-latest
     outputs:
-      cache-key: ${{ steps.idcache-keys.outputs.key }}
+      cache-key: ${{ steps.idcache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Generate cache key for Python dependencies
-        id: idcache-keys
+        id: idcache-key
         run: echo "::set-output name=key::${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
 
   build:

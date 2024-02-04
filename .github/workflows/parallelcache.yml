@@ -3,19 +3,19 @@ on:
     branches: [master]
 
 jobs:
-  setup_dependencies:
+  setup-build:
     runs-on: ubuntu-latest
     outputs:
-      cache-keypy: ${{ steps.idcache-py.outputs.cache-key }}
+      cache-key: ${{ steps.idcache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Generate cache key for Python dependencies
-        id: idcache-py
+        id: idcache-key
         run: echo "::set-output name=key::${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
 
   main_job:
-    needs: setup_dependencies
+    needs: setup-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
+          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install Python dependencies
         run: |
@@ -56,7 +56,7 @@ jobs:
           path: ./result/nbatch.log
 
   sakata_job:
-    needs: setup_dependencies
+    needs: setup-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -65,7 +65,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
+          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install Python dependencies
         run: |
@@ -114,7 +114,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
+          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install Python dependencies
         run: |
