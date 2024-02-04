@@ -16,8 +16,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm cache clean --force
-          npm install --omit=dev
+          npm install lodash@^4.17.21 mathjs@6.6.5
           npm list --depth=0
           npm run main
 
