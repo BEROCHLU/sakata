@@ -9,7 +9,7 @@ jobs:
 
       - name: Generate cache key for Python dependencies
         id: idcache-keys
-        run: echo "::set-output name=key::$(date +%Y-%m-%d)-$(hashFiles('**/requirements.txt'))"
+        run: echo "::set-output name=key::${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
 
   build:
     needs: setup-build
