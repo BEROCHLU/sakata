@@ -6,24 +6,13 @@ jobs:
   setup_dependencies:
     runs-on: ubuntu-latest
     outputs:
-      cache-key-py: ${{ steps.cache-py.outputs.cache-key }}
+      cache-keypy: ${{ steps.idcache-py.outputs.cache-key }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Python dependencies
-        id: cache-py
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-      - run: |
-          python -m pip install --upgrade pip setuptools
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Generate cache key for Python dependencies
+        id: idcache-py
+        run: echo "::set-output name=key::${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
 
   main_job:
     needs: setup_dependencies
@@ -35,7 +24,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-key-py }}
+          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
 
       - name: Install Python dependencies
         run: |
@@ -72,12 +61,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Use cached dependencies
       - name: Use Python cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-key-py }}
+          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
 
       - name: Install Python dependencies
         run: |
@@ -126,7 +114,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ needs.setup_dependencies.outputs.cache-key-py }}
+          key: ${{ needs.setup_dependencies.outputs.cache-keypy }}
 
       - name: Install Python dependencies
         run: |
