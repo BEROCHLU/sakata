@@ -5,7 +5,7 @@ jobs:
     outputs:
       cache-key: ${{ steps.idcache-keys.outputs.key }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Generate cache key for Python dependencies
         id: idcache-keys
@@ -15,10 +15,10 @@ jobs:
     needs: setup-build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Cache Python dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
