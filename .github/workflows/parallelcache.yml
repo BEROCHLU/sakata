@@ -97,16 +97,10 @@ jobs:
           path: ./result/sakata-batch.log
 
   merge_artifacts:
-    needs: [main_job, sakata_job]
+    needs: [setup-build, main_job, sakata_job]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Use Python cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
@@ -115,6 +109,12 @@ jobs:
         run: ls -R
       - run: mv ./main-artifacts/nbatch.log ./result/nbatch.log
       - run: mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
+
+      - name: Use Python cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install Python dependencies
         run: |
