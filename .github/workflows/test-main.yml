@@ -16,6 +16,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          npm cache clean --force
           npm install --omit=dev
           npm list --depth=0
           npm run main
