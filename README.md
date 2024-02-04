@@ -42,7 +42,7 @@ To use this program, follow these steps:
 
 3. **Run scripts**:
    - `npm run cooking` to presumably prepare the data.
-   - `npm run main+add` to run main.js and append the results.
+   - `npm run main` to run main.js and append the results.
    - `npm run plot-single` to visualize the results.
 
 4. **If you succeed optional install, you can try this**

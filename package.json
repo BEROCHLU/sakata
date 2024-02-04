@@ -8,7 +8,7 @@
     "plot-single": "python ./util/plot-single.py",
     "sakata": "node ./nodejs/braindevice.js >> ./result/sakata.txt",
     "sakata+batch": "node ./nodejs/braindevice-batch.js > ./result/sakata-batch.log",
-    "main+add": "node ./nodejs/main.js >> ./result/nlog.txt",
+    "main": "node ./nodejs/main.js >> ./result/nlog.txt",
     "main+batch": "node ./nodejs/main-batch.js > ./result/nbatch.log",
     "py+add": "python ./python/pyndevice.py >> ./result/plog.txt",
     "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logformatter.py",

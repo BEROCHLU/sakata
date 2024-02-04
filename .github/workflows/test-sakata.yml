@@ -1,4 +1,4 @@
-name: test-node
+name: test-sakata
 
 on: [push]
 
