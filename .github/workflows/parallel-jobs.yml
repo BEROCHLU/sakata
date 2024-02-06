@@ -13,7 +13,7 @@ jobs:
 
       - name: Generate cache key for Python dependencies
         id: idcache-key
-        run: echo "::set-output name=key::${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        run: echo "key=${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}" >> $GITHUB_OUTPUT
 
   main_job:
     needs: setup-build
