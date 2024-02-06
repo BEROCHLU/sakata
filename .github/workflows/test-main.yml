@@ -25,4 +25,4 @@ jobs:
         with:
           name: output artifacts
           path: |
-            ./result/nlog.txt
+            ./result/main.txt

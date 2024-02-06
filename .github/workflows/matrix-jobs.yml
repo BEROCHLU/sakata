@@ -70,7 +70,7 @@ jobs:
 
       - name: Confirm the directory and move files
         run: ls -R
-      - run: mv ./main-artifacts/nbatch.log ./result/nbatch.log
+      - run: mv ./main-artifacts/main-batch.log ./result/main-batch.log
       - run: mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
 
       - name: Use Python cache
@@ -89,8 +89,8 @@ jobs:
       - name: Archive all artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: result-artifacts
+          name: output-artifacts
           path: |
-            ./result/nbatch.log
+            ./result/main-batch.log
             ./result/sakata-batch.log
             ./result/plot-multi.png

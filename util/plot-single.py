@@ -3,7 +3,7 @@ import datetime
 import matplotlib.pyplot as plt
 
 # ファイルを読み込む
-file_path = "./result/nbatch.log"
+file_path = "./result/main-batch.log"
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を読み込む

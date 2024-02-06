@@ -63,6 +63,6 @@ jobs:
         with:
           name: output artifacts
           path: |
-            ./result/nbatch.log
+            ./result/main-batch.log
             ./result/sakata-batch.log
             ./result/plot-multi.png
