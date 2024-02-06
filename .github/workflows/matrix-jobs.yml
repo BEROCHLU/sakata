@@ -1,4 +1,4 @@
-name: parallel-jobs
+name: matrix-jobs
 on:
   push:
     branches: [master]
