@@ -27,6 +27,10 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
+def dotProduct(vec1, vec2):
+    return sum(x * y for x, y in zip(vec1, vec2))
+
+
 def main():
     f = open("./json/seikika.json", "r")
     dc_raw = json.load(f)
@@ -61,17 +65,13 @@ class ONN:  # Out of date Neural Network
 
     def updateHidOut(self, n, x, v, w, hid, out):
         for i in range(HID_NODE):
-            dot_h = 0.0
-            for j in range(IN_NODE):
-                dot_h += x[n][j] * v[i][j]
+            dot_h = dotProduct(x[n], v[i])
             hid[i] = self.sigmoid(dot_h)
 
         hid[HID_NODE - 1] = frandBias()
 
         for i in range(OUT_NODE):
-            dot_o = 0.0
-            for j in range(HID_NODE):
-                dot_o += w[i][j] * hid[j]
+            dot_o = dotProduct(w[i], hid)
             out[i] = self.sigmoid(dot_o)
 
     def updateAcc(self, presum, current):
