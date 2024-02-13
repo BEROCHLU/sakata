@@ -38,7 +38,7 @@ To use this program, follow these steps:
 
 2. **Install packages**:
    - `pip install -r requirements.txt` to install Python dependencies.
-   - `npm install --omit=dev --no-audit` to install Node.js dependencies without the development packages.
+   - `npm install lodash` to install Node.js dependencies without the development packages.
 
 3. **Run scripts**:
    - `npm run cooking` to presumably prepare the data.
@@ -52,4 +52,4 @@ To use this program, follow these steps:
 
 # Note
 
-Despite its vulnerabilities, the matrix multiplication (dot) function of math.js@6.6.5 is used because of its high speed. For the same reason, Node.js 16 is recommended.  
+By replacing the mathjs 'dot' function with the standard 'reduce' function, I achieved faster dot product calculations. Consequently, the learning speed is now faster than with brain.js.
