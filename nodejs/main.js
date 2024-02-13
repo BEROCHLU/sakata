@@ -28,6 +28,8 @@ let w = []; //w[OUT_NODE][HID_NODE]
 let timeStart;
 let timeEnd;
 
+let errorLSM; //最小二乗法の誤差
+
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 //乱数生成
@@ -101,7 +103,6 @@ function printResult(arrHsh, DIV_T, errorLSM) {
     const hshData = JSON.parse(strJson);
     const arrHsh = hshData["listdc"];
     const DIV_T = hshData["div"];
-    let errorLSM;
 
     x = _.map(arrHsh, hsh => {
         let arrBuf = hsh.input;

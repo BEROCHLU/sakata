@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const _ = require('lodash');
-const math = require('mathjs');
 const { performance } = require('perf_hooks');
 
 let IN_NODE; //入力ノード数（バイアス含む）
@@ -149,7 +148,7 @@ function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
                 [hid, out] = [ret[0], ret[1]];
 
                 for (let k = 0; k < OUT_NODE; k++) {
-                    errorLSM += 0.5 * Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
+                    errorLSM += 0.5 * Math.pow((t[n][k] - out[k]), 2); //最小二乗法
                     // Δw
                     delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
                 }
