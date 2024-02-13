@@ -108,7 +108,7 @@ class ONN:  # Out of date Neural Network
 
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
         arrPrint.append(f"Min: {round(self.acc_min, 2)} Max: {round(self.acc_max, 2)} Mid: {round(acc_mid, 2)}")
-        arrPrint.append(f"Epoch: {epoch} Days: {DAYS} MSE: {round(fError, 5)}")
+        arrPrint.append(f"Epoch: {epoch} Days: {DAYS} finalMSE: {round(fError, 5)}")
         arrPrint.append(f"Norm: {round(acc_norm, 2)}")
         arrPrint.append("")
 

@@ -36,28 +36,25 @@ let timeEnd;
 //const frandWeight = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
+const dotProduct = (vec1, vec2) => {
+    return vec1.reduce((acc, current, index) => acc + current * vec2[index], 0);
+}
+
 
 function calculateNode(n) {
     for (let i = 0; i < HID_NODE; i++) {
-        hid[i] = sigmoid(math.dot(x[n], v[i]));
+        hid[i] = sigmoid(dotProduct(x[n], v[i]));
     }
 
     hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
-        out[i] = sigmoid(math.dot(w[i], hid));
+        out[i] = sigmoid(dotProduct(w[i], hid));
     }
 }
 
-function mseArray(arrArr) {
-    const MSE_AVE = _.meanBy(arrArr, arr => {
-        return _.mean(arr);
-    });
-    return MSE_AVE;
-}
 
-
-function printResult(arrHsh, DIV_T, arrMSE) {
+function printResult(arrHsh, DIV_T, errorLSM) {
 
     let arrErate = [];
     let accumulator;
@@ -92,11 +89,10 @@ function printResult(arrHsh, DIV_T, arrMSE) {
 
     const accumulatorMid = (accumulatorMin + accumulatorMax) / 2;
     const accumulatorNom = (accumulator - accumulatorMin) * 100 / (accumulatorMax - accumulatorMin);
-    const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
-    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} MSE_AVE: ${MSE_AVE.toFixed(6)}`);
+    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} FinalMSE: ${errorLSM.toFixed(5)}`);
     console.log(`Norm: ${accumulatorNom.toFixed(2)}`);
     console.log(`Time: ${timeSec.toFixed(2)}sec.\n`);
 }
@@ -107,8 +103,7 @@ function printResult(arrHsh, DIV_T, arrMSE) {
     const hshData = JSON.parse(strJson);
     const arrHsh = hshData["listdc"];
     const DIV_T = hshData["div"];
-
-    let arrMSE = [];
+    let errorLSM;
 
     x = _.map(arrHsh, hsh => {
         let arrBuf = hsh.input;
@@ -146,13 +141,13 @@ function printResult(arrHsh, DIV_T, arrMSE) {
     console.log(strDate.toLocaleString());
 
     for (epoch = 0; epoch < THRESH; epoch++) {
+        errorLSM = 0;
 
         for (let n = 0; n < DATA_LEN; n++) {
-            let arrDiff = [];
             calculateNode(n);
 
             for (let k = 0; k < OUT_NODE; k++) {
-                arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
+                errorLSM += 0.5 * Math.pow((t[n][k] - out[k]), 2); //最小二乗法
                 // Δw
                 delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
             }
@@ -178,14 +173,13 @@ function printResult(arrHsh, DIV_T, arrMSE) {
                     v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                 }
             }
-            arrMSE[n] = arrDiff;
         } // for DATA_LEN
         if (epoch % 100 === 0) { //logging
             const s = epoch + '';
-            //console.log(`${s.padStart(5)}: ${mseArray(arrMSE)}`);
+            //console.log(`${errorLSM.toFixed(5)}`);
         }
     } //for epoch
     //計測終了
     timeEnd = performance.now();
-    printResult(arrHsh, DIV_T, arrMSE);
+    printResult(arrHsh, DIV_T, errorLSM);
 }
