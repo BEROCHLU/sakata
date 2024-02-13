@@ -55,10 +55,10 @@ jobs:
       # Install Node.js dependencies and system packages required for building
       - name: Install Node.js dependencies
         run: |
+          sudo apt update
+          sudo apt install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm ci --no-audit
           npm list --depth=0
-          sudo apt-get update
-          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
 
       # Run npm scripts for cooking and batch processing based on the job matrix
       - name: run npm script

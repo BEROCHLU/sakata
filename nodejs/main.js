@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const _ = require('lodash');
-const math = require('mathjs');
 const { performance } = require('perf_hooks');
 
 let IN_NODE; //入力ノード数（バイアス含む）
@@ -14,9 +13,6 @@ const THRESH = 500000;
 
 let epoch; //学習回数
 let DATA_LEN; //学習データ数
-
-const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
-const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 
 let hid = []; //隠れノード
 let out = []; //出力ノード
@@ -32,10 +28,12 @@ let w = []; //w[OUT_NODE][HID_NODE]
 let timeStart;
 let timeEnd;
 
+const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
+const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 //乱数生成
-//const frandWeight = () => math.random(0.5, 1.0); // 0.5 <= x < 1.0
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
+//内積計算
 const dotProduct = (vec1, vec2) => {
     return vec1.reduce((acc, current, index) => acc + current * vec2[index], 0);
 }
@@ -92,7 +90,7 @@ function printResult(arrHsh, DIV_T, errorLSM) {
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
-    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} FinalMSE: ${errorLSM.toFixed(5)}`);
+    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} FinalLSM: ${errorLSM.toFixed(5)}`);
     console.log(`Norm: ${accumulatorNom.toFixed(2)}`);
     console.log(`Time: ${timeSec.toFixed(2)}sec.\n`);
 }

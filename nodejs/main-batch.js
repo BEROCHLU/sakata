@@ -20,31 +20,28 @@ const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 //乱数生成
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
+//内積計算
+const dotProduct = (vec1, vec2) => {
+    return vec1.reduce((acc, current, index) => acc + current * vec2[index], 0);
+}
+
 
 function calculateNode(n, hid, out, x, v, w) {
     for (let i = 0; i < HID_NODE; i++) {
-        const fDot = math.dot(x[n], v[i]);
-        hid[i] = sigmoid(fDot);
+        hid[i] = sigmoid(dotProduct(x[n], v[i]));
     }
 
     hid[HID_NODE - 1] = frandBias(); //配列最後にバイアス
 
     for (let i = 0; i < OUT_NODE; i++) {
-        const fDot = math.dot(w[i], hid);
-        out[i] = sigmoid(fDot);
+        out[i] = sigmoid(dotProduct(w[i], hid));
     }
 
     return [hid, out];
 }
 
-function mseArray(arrArr) {
-    const MSE_AVE = _.meanBy(arrArr, arr => {
-        return _.mean(arr);
-    });
-    return MSE_AVE;
-}
 
-function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
+function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
 
     let arrErate = [];
     let accumulator;
@@ -79,11 +76,10 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
 
     const accumulatorMid = (accumulatorMin + accumulatorMax) / 2;
     const accumulatorNom = (accumulator - accumulatorMin) * 100 / (accumulatorMax - accumulatorMin);
-    const MSE_AVE = mseArray(arrMSE);
 
     console.log(`Average error: ${averageError}%`);
     console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
-    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} MSE_AVE: ${MSE_AVE.toFixed(6)}`);
+    console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} FinalLSM: ${errorLSM.toFixed(5)}`);
     console.log(`Norm: ${accumulatorNom.toFixed(2)}\n`);
 }
 
@@ -108,7 +104,7 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
         let t = undefined;
         let v = []; //v[HID_NODE][IN_NODE]
         let w = []; //w[OUT_NODE][HID_NODE]
-        let arrMSE = [];
+        let errorLSM; //最小二乗法の誤差
 
         const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
@@ -146,14 +142,14 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
         }
 
         for (epoch = 0; epoch < THRESH; epoch++) {
+            errorLSM = 0;
 
             for (let n = 0; n < DATA_LEN; n++) {
-                let arrDiff = [];
                 const ret = calculateNode(n, hid, out, x, v, w);
                 [hid, out] = [ret[0], ret[1]];
 
                 for (let k = 0; k < OUT_NODE; k++) {
-                    arrDiff[k] = Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
+                    errorLSM += 0.5 * Math.pow((t[n][k] - out[k]), 2); //平均二乗誤差
                     // Δw
                     delta_out[k] = (t[n][k] - out[k]) * out[k] * (1 - out[k]); //δ=(t-o)*f'(net); net=Σwo; δo/δnet=f'(net);
                 }
@@ -179,10 +175,9 @@ function printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w) {
                         v[i][j] += ETA * delta_hid[i] * x[n][j]; //Δu=ηH(1-H)XΣδw
                     }
                 }
-                arrMSE[n] = arrDiff;
             } //for DATA_LEN
         } //for epoch
-        printResult(arrHsh, DIV_T, arrMSE, epoch, t, hid, out, x, v, w);
+        printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w);
     }); // _.forEach
     //計測終了
     const timeEnd = performance.now();
