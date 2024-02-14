@@ -45,18 +45,17 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip list
 
-      # Set up Node.js version 16 and cache npm dependencies
-      - name: Set up Node.js 18
+      # Set up Node.js and cache npm dependencies
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "14"
           cache: "npm"
 
       # Install Node.js dependencies and system packages required for building
       - name: Install Node.js dependencies
         run: |
-          sudo apt update
-          sudo apt install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm ci --no-audit
           npm list --depth=0
 

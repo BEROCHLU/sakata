@@ -16,10 +16,9 @@ const BATCH_PATH = './batch';
 const sigmoid = x => 1 / (1 + Math.exp(-x)); //シグモイド関数
 const dsigmoid = x => x * (1 - x); //シグモイド関数微分
 
-//乱数生成
 const frandWeight = () => 0.5; //  0 <= x < 1.0, Math.random()
 const frandBias = () => -1;
-//内積計算
+//超高速内積計算
 const dotProduct = (vec1, vec2) => {
     return vec1.reduce((acc, current, index) => acc + current * vec2[index], 0);
 }
