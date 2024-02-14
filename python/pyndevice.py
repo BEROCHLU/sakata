@@ -27,8 +27,9 @@ def addBias(hsh: dict) -> dict:
     return arrInput
 
 
-def dotProduct(vec1, vec2):
-    return sum(x * y for x, y in zip(vec1, vec2))
+# 使わない方が速い
+def dotProduct(vec1, vec2):  # sum(x * y for x, y in zip(vec1, vec2))
+    return reduce(lambda acc, x: acc + x[0] * x[1], zip(vec1, vec2), 0)
 
 
 def main():
@@ -58,20 +59,21 @@ class ONN:  # Out of date Neural Network
         DAYS = len(x)
 
     def sigmoid(self, a: float) -> float:
-        if a < 0:
-            return math.exp(a) / (1 + math.exp(a))
-        else:
-            return 1 / (1 + math.exp(-a))
+        return 1 / (1 + math.exp(-a))
 
     def updateHidOut(self, n, x, v, w, hid, out):
         for i in range(HID_NODE):
-            dot_h = dotProduct(x[n], v[i])
+            dot_h = 0.0
+            for j in range(IN_NODE):
+                dot_h += x[n][j] * v[i][j]
             hid[i] = self.sigmoid(dot_h)
 
         hid[HID_NODE - 1] = frandBias()
 
         for i in range(OUT_NODE):
-            dot_o = dotProduct(w[i], hid)
+            dot_o = 0.0
+            for j in range(HID_NODE):
+                dot_o += w[i][j] * hid[j]
             out[i] = self.sigmoid(dot_o)
 
     def updateAcc(self, presum, current):
