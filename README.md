@@ -32,24 +32,25 @@ To use this program, follow these steps:
 1. **Install prerequisites**:
    - Python 3
    - Node.js 16
-   - MinGW-w64 (optional): For users who want to use GCC with MinGW.  
-      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.
-   - brain.js (optional): A GPU accelerated library for Neural Networks written in JavaScript.
 
 2. **Install packages**:
    - `pip install -r requirements.txt` to install Python dependencies.
-   - `npm install lodash` to install Node.js dependencies without the development packages.
+   - `npm install --omit=dev` to install Node.js dependencies without the development packages.
 
 3. **Run scripts**:
    - `npm run cooking` to presumably prepare the data.
    - `npm run main` to run main.js and append the results.
    - `npm run plot-single` to visualize the results.
 
-4. **If you succeed optional install, you can try this**
-   - `npm run O2+add` to run cdevice.c and append the results.
-   - `npm install brain.js gpu.js@^2.16.0 --no-audit`
-   - `npm run sakata` to run braindevide.js which depend on brain.js.
+**Optional install**
+   - MinGW-w64 (optional): For users who want to use GCC with MinGW.  
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.
+      - `npm run O2+add` to run cdevice.c and append the results.
+   - brain.js (optional): A GPU accelerated library for Neural Networks written in JavaScript.  
+      `npm install --no-audit`  
+      Installation takes 18 minutes on Raspberry Pi.  
+      - `npm run sakata` to run braindevide.js which depend on brain.js.
 
 # Note
 
-By replacing the mathjs 'dot' function with the standard 'reduce' function, I achieved faster dot product calculations. Consequently, the learning speed is now faster than with brain.js.
+By replacing the mathjs 'dot' function with the standard 'reduce' function, I achieved faster dot product calculations. Consequently, the learning speed is now faster than with brain.js. Despite its vulnerabilities, Node.js 16 is used because of its high speed.
