@@ -30,8 +30,9 @@ for section in sections:
         if date_match:
             # 日付を解析しリストに追加
             date_str = date_match.group()
-            date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
-            dates.append(date)
+            date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+            # dates.append(date_str)
+            dates.append(date.strftime("%b%d"))
             break
 
     # Normの値を検索
@@ -41,11 +42,11 @@ for section in sections:
         norm_values.append(norm_value)
 
 # グラフを描画
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(15, 8))
 plt.plot(dates, norm_values, marker="o")
-plt.title("The Sakata Index")
-# plt.xticks(rotation=45)
-plt.tight_layout()
+plt.title("The Sakata Index", fontsize=10)
+plt.xticks(fontsize=8)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid()
-plt.savefig("./result/plot-single.png")  # showの前でないと保存されない
+plt.tight_layout()
+plt.savefig("./result/plot-single.png")  # showの前でないと機能しない
 plt.show()
