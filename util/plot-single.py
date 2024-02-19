@@ -1,6 +1,7 @@
 import re
 import datetime
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 
 # ファイルを読み込む
 file_path = "./result/main-batch.log"
@@ -42,11 +43,19 @@ for section in sections:
         norm_values.append(norm_value)
 
 # グラフを描画
-plt.figure(figsize=(15, 8))
-plt.plot(dates, norm_values, marker="o")
+plt.figure(figsize=(14, 7))
+plt.plot(dates, norm_values, marker="o", markersize=4)
+
+# X軸の範囲を調整
+if dates:
+    plt.xlim([dates[0], dates[-1]])
+# Y軸の補助メモリを2ずつに設定
+# plt.minorticks_on()
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+
 plt.title("The Sakata Index", fontsize=10)
-plt.xticks(fontsize=8)  # X軸の目盛りのフォントサイズを8に設定
-plt.grid()
+plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
+plt.grid(which="both")
 plt.tight_layout()
 plt.savefig("./result/plot-single.png")  # showの前でないと機能しない
 plt.show()

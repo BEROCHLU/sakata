@@ -34,25 +34,28 @@ To use this program, follow these steps:
    - Node.js 16
 
 2. **Install packages**:
-   - `pip install -r requirements.txt` to install Python dependencies.
-   - `npm install --omit=dev` to install Node.js dependencies without the development packages.
+   - `pip install -r requirements.txt`
+   - `npm install --omit=dev`
 
 3. **Run scripts**:
-   - `npm run cooking` to presumably prepare the data.
-   - `npm run main` to run main.js and append the results.
-   - `npm run plot-single` to visualize the results.
+   - `npm run cooking`  
+   Normalize raw data and split by batch size.
+   - `npm run main`  
+   To run main.js and append the results.
+   - `npm run plot-single`  
+   To visualize the results.
 
 **Optional install**
    - MinGW-w64: For users who want to use GCC with MinGW.  
       [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
-      - Compile: `gcc -O2 cdevice.c -lm`  
-      - Execute: `a.exe` or `./a.out`  
+      - `gcc -O2 cdevice.c -lm`  
+      - `a.exe` or `./a.out`  
 
    - brain.js: A GPU accelerated library for Neural Networks written in JavaScript.  
-      Installation takes approximately 15 minutes on Raspberry Pi 4.  
       - `npm install --no-audit`  
+      On a Raspberry Pi 4, installation typically takes about 15 minutes.  
+      - `npm run sakata`  
       To run npm script which depend on brain.js.
-      - `npm run sakata` 
 
 # Note
 
