@@ -44,11 +44,15 @@ To use this program, follow these steps:
 
 **Optional install**
    - MinGW-w64: For users who want to use GCC with MinGW.  
-      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.
-      - `npm run O2+add` to run cdevice.c and append the results.
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
+      - Compile: `gcc -O2 cdevice.c -lm`  
+      - Execute: `a.exe` or `./a.out`  
+
    - brain.js: A GPU accelerated library for Neural Networks written in JavaScript.  
-      - `npm install --no-audit` the installation takes approximately 18 minutes on Raspberry Pi 4.  
-      - `npm run sakata` to run braindevide.js which depend on brain.js.
+      Installation takes approximately 15 minutes on Raspberry Pi 4.  
+      - `npm install --no-audit`  
+      To run npm script which depend on brain.js.
+      - `npm run sakata` 
 
 # Note
 

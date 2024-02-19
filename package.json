@@ -12,7 +12,7 @@
     "main+batch": "node ./nodejs/main-batch.js > ./result/main-batch.log",
     "py+add": "python ./python/pyndevice.py >> ./result/plog.txt",
     "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logformatter.py",
-    "O2+add": "npx mkdirp result & gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
+    "O2+add": "gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
     "wincmd": "if not exist result mkdir result"
   },
   "keywords": [],
