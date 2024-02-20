@@ -10,7 +10,6 @@ from multiprocessing import Manager
 from pprint import pprint
 from time import time
 
-import matplotlib
 from matplotlib import pyplot as plt
 
 # lambda
@@ -107,7 +106,9 @@ class ONN:  # Out of date Neural Network
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
         # for plot
-        lst_c1.append((arrHsh[i]["date"], acc_nom))
+        dtDate = datetime.strptime(arrHsh[i]["date"], "%Y-%m-%d") #plotのために日付型として取得
+        # strShortDate = dtDate.strftime("%b%d") #日付型をショート形式のフォーマットに変換してstring型に格納
+        lst_c1.append((dtDate, acc_nom))
 
         arrPrint.append(f"Average error: {round(fMean, 2)}%")
         arrPrint.append(f"Min: {round(self.acc_min, 2)} Max: {round(self.acc_max, 2)} Mid: {round(acc_mid, 2)}")
@@ -199,12 +200,14 @@ if __name__ == "__main__":
     lst_mg1 = sorted(lst_mg1)
 
     # plot
+    plt.figure(figsize=(14, 7))
+    # 上部plot
     plt.subplot(2, 1, 1)
     plt.plot(lst_mg0)
+    # 下部plot
     plt.subplot(2, 1, 2)
-    plt.plot(*zip(*lst_mg1))
+    plt.plot(*zip(*lst_mg1),marker="o", markersize=4)
     # show or print
-    egg = matplotlib.get_backend()
-    matplotlib.use(egg)
+    plt.tight_layout()
     plt.savefig("./result/plot-py.png")
     plt.show()

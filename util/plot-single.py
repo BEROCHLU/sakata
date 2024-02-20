@@ -1,6 +1,6 @@
 import re
-import datetime
 import matplotlib.pyplot as plt
+from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
 
 # ファイルを読み込む
@@ -31,7 +31,7 @@ for section in sections:
         if date_match:
             # 日付を解析しリストに追加
             date_str = date_match.group()
-            date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+            date = datetime.strptime(date_str, "%Y-%m-%d")
             # dates.append(date_str)
             dates.append(date.strftime("%b%d"))
             break
@@ -49,10 +49,9 @@ plt.plot(dates, norm_values, marker="o", markersize=4)
 # X軸の範囲を調整
 if dates:
     plt.xlim([dates[0], dates[-1]])
-# Y軸の補助メモリを2ずつに設定
-# plt.minorticks_on()
-plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
 
+# Y軸の補助メモリを2ずつに設定
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
 plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid(which="both")

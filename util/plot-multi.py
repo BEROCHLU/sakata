@@ -1,6 +1,6 @@
 import re
-import datetime
 import matplotlib.pyplot as plt
+from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
 
 file_paths = ["./result/main-batch.log", "./result/sakata-batch.log"]
@@ -23,7 +23,7 @@ for file_path in file_paths:
             date_match = date_pattern.search(line)
             if date_match:
                 date_str = date_match.group()
-                date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+                date = datetime.strptime(date_str, "%Y-%m-%d").date()
                 # dates.append(date)
                 dates.append(date.strftime("%b%d"))
                 break
@@ -42,15 +42,10 @@ for norm_values in norm_values_list:
 # X軸の範囲を調整
 if dates:
     plt.xlim([dates[0], dates[-1]])
-# Y軸の補助メモリを2ずつに設定
-# plt.minorticks_on()
-plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
 
-# 主目盛線の太さを設定
-# plt.tick_params(axis="both", which="major", width=2)  # X軸とY軸の主目盛線の太さを2に設定
-
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2)) # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
-plt.xticks(fontsize=8)  # X軸の目盛りのフォントサイズを8に設定
+plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid(which="both")
 plt.tight_layout()
 plt.savefig("./result/plot-multi.png")  # showの前でないと保存されない
