@@ -35,7 +35,7 @@ To use this program, follow these steps:
 
 2. **Install packages**:
    - `pip install -r requirements.txt`
-   - `npm install --omit=dev`
+   - `npm install --omit=optional`
 
 3. **Run scripts**:
    - `npm run cooking`  
@@ -52,7 +52,7 @@ To use this program, follow these steps:
       - `a.exe` or `./a.out`  
 
    - brain.js: A GPU accelerated library for Neural Networks written in JavaScript.  
-      - `npm install --no-audit`  
+      - `npm install --include=optional --no-audit`  
       On a Raspberry Pi 4, installation typically takes about 15 minutes.  
       - `npm run sakata`  
       To run npm script which depend on brain.js.

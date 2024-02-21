@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Node.js dependencies without optional
         run: |
-          npm ci --no-optional --no-audit
+          npm ci --omit=optional --no-audit
           npm list --depth=0
 
       - name: run npm script

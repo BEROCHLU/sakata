@@ -16,7 +16,7 @@ jobs:
 
       - name: Install dependencies without optional
         run: |
-          npm ci --no-optional --no-audit
+          npm ci --omit=optional --no-audit
           npm list --depth=0
           npm run main
 
