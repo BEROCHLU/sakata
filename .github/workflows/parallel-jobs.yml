@@ -39,10 +39,9 @@ jobs:
           node-version: "16"
           cache: "npm"
 
-      - name: Install Node.js dependencies
+      - name: Install Node.js dependencies without dev
         run: |
-          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
-          npm ci --no-audit
+          npm ci --omit=dev --no-audit
           npm list --depth=0
 
       - name: run npm script
@@ -82,9 +81,9 @@ jobs:
 
       - name: Install Node.js dependencies
         run: |
+          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm ci --no-audit
           npm list --depth=0
-          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
 
       - name: run sakata+batch
         run: |

@@ -188,8 +188,11 @@ if __name__ == "__main__":
     plt.plot(arrPlotError)
     plt.subplot(2, 1, 2)
     plt.plot(arrPlotAcc)
-    # show or print
+    
     egg = matplotlib.get_backend()
     matplotlib.use(egg)
+    # show or print
+    plt.grid()
+    plt.tight_layout()
     plt.savefig("./result/norm_value_by_date.png")
     plt.show()
