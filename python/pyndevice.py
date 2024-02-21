@@ -1,4 +1,3 @@
-import datetime
 import json
 import math
 import statistics
@@ -6,9 +5,11 @@ import sys
 import time
 from functools import reduce
 from pprint import pprint
+from datetime import datetime
 
 import matplotlib
 from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
 
 # lambda
 dsigmoid = lambda a: a * (1 - a)
@@ -99,7 +100,8 @@ class ONN:  # Out of date Neural Network
             pad_erate = str(round(arrErate[i], 2)).rjust(5)
             pad_acc = str(round(acc, 2)).rjust(5)
 
-            arrPlotAcc.append(acc)  # plot
+            dtDate = datetime.strptime(arrHsh[i]["date"], "%Y-%m-%d")  # plotのために日付型として取得
+            arrPlotAcc.append((dtDate, acc))  # for plot
             arrPrint.append(f"{arrHsh[i]['date']} {pad_out} True: {pad_teacher} {pad_erate}% {pad_acc}")
 
         acc_mid = (self.acc_max + self.acc_min) / 2
@@ -175,7 +177,7 @@ if __name__ == "__main__":
     arrPlotAcc, arrPlotError = [], []
 
     TIME_START = time.time()
-    date_now = datetime.datetime.now()
+    date_now = datetime.now()
     print(date_now.strftime("%F %T"))
     main()
     # measure time
@@ -184,13 +186,18 @@ if __name__ == "__main__":
     nMinute = int(nSec / 60) if 60 <= nSec else 0
     print(f"Time: {nMinute} min {nSec % 60} sec.\n")
     # plot
+    plt.figure(figsize=(14, 7))
+    # 上段plot
     plt.subplot(2, 1, 1)
     plt.plot(arrPlotError)
+    # 下段plot
     plt.subplot(2, 1, 2)
-    plt.plot(arrPlotAcc)
-    
-    egg = matplotlib.get_backend()
-    matplotlib.use(egg)
+    plt.plot(*zip(*arrPlotAcc), marker="o", markersize=4)
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(bymonthday=None, interval=7, tz=None))
+    # plt.gcf().autofmt_xdate()  # X軸の日付ラベルを斜めにする
+
+    # egg = matplotlib.get_backend()
+    # matplotlib.use(egg)
     # show or print
     plt.grid()
     plt.tight_layout()

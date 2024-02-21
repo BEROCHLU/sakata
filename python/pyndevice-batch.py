@@ -106,7 +106,7 @@ class ONN:  # Out of date Neural Network
         lst_abs = list(map(lambda fErate: abs(fErate), arrErate))
         fMean = statistics.mean(lst_abs)
         # for plot
-        dtDate = datetime.strptime(arrHsh[i]["date"], "%Y-%m-%d") #plotのために日付型として取得
+        dtDate = datetime.strptime(arrHsh[i]["date"], "%Y-%m-%d")  # plotのために日付型として取得
         # strShortDate = dtDate.strftime("%b%d") #日付型をショート形式のフォーマットに変換してstring型に格納
         lst_c1.append((dtDate, acc_nom))
 
@@ -206,7 +206,7 @@ if __name__ == "__main__":
     plt.plot(lst_mg0)
     # 下部plot
     plt.subplot(2, 1, 2)
-    plt.plot(*zip(*lst_mg1),marker="o", markersize=4)
+    plt.plot(*zip(*lst_mg1), marker="o", markersize=4)
     # show or print
     plt.grid()
     plt.tight_layout()
