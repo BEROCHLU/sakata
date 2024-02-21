@@ -39,9 +39,9 @@ jobs:
           node-version: "16"
           cache: "npm"
 
-      - name: Install Node.js dependencies without dev
+      - name: Install Node.js dependencies without optional
         run: |
-          npm ci --omit=dev --no-audit
+          npm ci --no-optional --no-audit
           npm list --depth=0
 
       - name: run npm script
