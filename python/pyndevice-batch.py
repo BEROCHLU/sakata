@@ -208,6 +208,7 @@ if __name__ == "__main__":
     plt.subplot(2, 1, 2)
     plt.plot(*zip(*lst_mg1),marker="o", markersize=4)
     # show or print
+    plt.grid()
     plt.tight_layout()
     plt.savefig("./result/plot-py.png")
     plt.show()
