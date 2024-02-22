@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
 import matplotlib.dates as mdates
+import numpy as np
 
 # ファイルを読み込む
 file_path = "./result/main-batch.log"
@@ -34,7 +35,7 @@ for section in sections:
             date_str = date_match.group()
             date = datetime.strptime(date_str, "%Y-%m-%d")
             dates.append(date)
-            #dates.append(date.strftime("%b%d"))
+            # dates.append(date.strftime("%b%d"))
             break
 
     # Normの値を検索
@@ -44,20 +45,34 @@ for section in sections:
         norm_values.append(norm_value)
 
 # グラフを描画
-plt.figure(figsize=(14, 7))
-plt.plot_date(dates, norm_values, marker="o", markersize=4, linestyle='-')
+# plt.figure(figsize=(14, 7))
+# 日付を0から始まる連続したインデックスに変換
+dates_as_numbers = np.arange(len(dates))
 
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# インデックスを使用してプロット
+ax.plot(dates_as_numbers, norm_values, marker="o", markersize=4)
+# X軸のラベルをインデックスに設定
+ax.set_xticks(dates_as_numbers)
+# インデックスをstring日付に置き換える
+ax.set_xticklabels([date.strftime("%b%d") for date in dates], rotation=45, ha="right")
 # X軸の範囲を調整
-if dates:
-    plt.xlim([dates[0], dates[-1]])
-    pass
+ax.set_xlim([0, len(dates) - 1])
 
-plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b%d'))
-plt.gca().xaxis.set_major_locator(mdates.DayLocator(bymonthday=None, interval=1, tz=None))
-plt.gcf().autofmt_xdate() # X軸の日付ラベルを斜めにして重なりを防ぐ
-plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2)) # Y軸の補助メモリを2ずつに設定
+"""
+    if dates:
+        plt.xlim([dates[0], dates[-1]])
+        pass
+"""
+
+# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b%d'))
+# plt.gca().xaxis.set_major_locator(mdates.DayLocator(bymonthday=None, interval=1, tz=None))
+
+# plt.gcf().autofmt_xdate()  # X軸の日付ラベルを斜めにして重なりを防ぐ
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))  # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
-plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
+plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを設定
 plt.grid(which="both")
 plt.tight_layout()
 plt.savefig("./result/plot-single.png")  # showの前でないと機能しない
