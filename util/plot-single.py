@@ -2,6 +2,7 @@ import re
 import matplotlib.pyplot as plt
 from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
+import matplotlib.dates as mdates
 
 # ファイルを読み込む
 file_path = "./result/main-batch.log"
@@ -32,8 +33,8 @@ for section in sections:
             # 日付を解析しリストに追加
             date_str = date_match.group()
             date = datetime.strptime(date_str, "%Y-%m-%d")
-            # dates.append(date_str)
-            dates.append(date.strftime("%b%d"))
+            dates.append(date)
+            #dates.append(date.strftime("%b%d"))
             break
 
     # Normの値を検索
@@ -44,14 +45,17 @@ for section in sections:
 
 # グラフを描画
 plt.figure(figsize=(14, 7))
-plt.plot(dates, norm_values, marker="o", markersize=4)
+plt.plot_date(dates, norm_values, marker="o", markersize=4, linestyle='-')
 
 # X軸の範囲を調整
 if dates:
     plt.xlim([dates[0], dates[-1]])
+    pass
 
-# Y軸の補助メモリを2ずつに設定
-plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b%d'))
+plt.gca().xaxis.set_major_locator(mdates.DayLocator(bymonthday=None, interval=1, tz=None))
+plt.gcf().autofmt_xdate() # X軸の日付ラベルを斜めにして重なりを防ぐ
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2)) # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid(which="both")

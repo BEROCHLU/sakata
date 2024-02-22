@@ -102,7 +102,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          pip install matplotlib
+          pip install matplotlib numpy
 
       # Run a custom npm script to generate plots from the batch logs
       - run: npm run plot-multi
