@@ -60,9 +60,6 @@ const TRAIN_OPT = {
     for (let i = 0; i < DATA_LEN; i++) {
         arrErate[i] = (arrTrainT[i][0] - arrOut[i]) / arrTrainT[i][0] * 100;
 
-        /*acc += arrErate[i];
-        acc_min = (acc < acc_min) ? acc : acc_min;
-        acc_max = (acc_max < acc) ? acc : acc_max;*/
         acc = _.reduce(arrErate, (presum, current) => {
             acc_min = Math.min(acc_min, presum); //前回の蓄積結果で最小値を更新
             acc_max = Math.max(acc_max, presum); //前回の蓄積結果で最大値を更新
@@ -91,5 +88,5 @@ const TRAIN_OPT = {
     //計測終了
     const timeEnd = performance.now();
     const timeSec = (timeEnd - timeStart) / 1000;
-    console.log(`Time: ${timeSec.toFixed(2)}sec.`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec.\n`);
 }

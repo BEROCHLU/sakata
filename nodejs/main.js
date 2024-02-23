@@ -94,7 +94,7 @@ function printResult(arrHsh, DIV_T, errorLSM) {
     console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
     console.log(`Epoch: ${epoch} DATA_LEN: ${DATA_LEN} FinalLSM: ${errorLSM.toFixed(5)}`);
     console.log(`Norm: ${accumulatorNom.toFixed(2)}`);
-    console.log(`Time: ${timeSec.toFixed(2)}sec.\n`);
+    console.log(`Time: ${timeSec.toFixed(2)}sec.`);
 }
 
 //main
