@@ -1,5 +1,6 @@
 import re
 import matplotlib.pyplot as plt
+import numpy as np
 from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
 
@@ -12,7 +13,7 @@ for file_path in file_paths:
         content = file.read()
 
     sections = content.split("\n\n")
-    dates = []
+    lstDt = []
     norm_values = []
 
     for section in sections:
@@ -22,10 +23,9 @@ for file_path in file_paths:
         for line in reversed(lines):
             date_match = date_pattern.search(line)
             if date_match:
-                date_str = date_match.group()
-                date = datetime.strptime(date_str, "%Y-%m-%d").date()
-                # dates.append(date)
-                dates.append(date.strftime("%b%d"))
+                strDate = date_match.group()
+                dtDate = datetime.strptime(strDate, "%Y-%m-%d").date()
+                lstDt.append(dtDate)
                 break
 
         norm_line = [line for line in lines if line.startswith("Norm:")]
@@ -35,14 +35,23 @@ for file_path in file_paths:
 
     norm_values_list.append(norm_values)
 
-plt.figure(figsize=(14, 7))
+# グラフを描画
+# 日付を0から始まる連続したインデックスに変換
+arrInt = np.arange(len(lstDt))
+
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# インデックスを使用してプロット
 for norm_values in norm_values_list:
-    plt.plot(dates, norm_values, marker="o", markersize=4)
-
+    ax.plot(arrInt, norm_values, marker="o", markersize=4)
+# X軸のラベルをインデックスに設定
+ax.set_xticks(arrInt)
+# インデックスをstring日付に置き換える
+ax.set_xticklabels([date.strftime("%b%d") for date in lstDt])
 # X軸の範囲を調整
-if dates:
-    plt.xlim([dates[0], dates[-1]])
+ax.set_xlim([0, len(lstDt) - 1])
 
+plt.gcf().autofmt_xdate()  # X軸の日付ラベルを斜めにして重なりを防ぐ
 plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2)) # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
