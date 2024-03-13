@@ -51,11 +51,18 @@ To use this program, follow these steps:
       - `gcc -O2 cdevice.c -lm`  
       - `a.exe` or `./a.out`  
 
-   - brain.js: A GPU accelerated library for Neural Networks written in JavaScript.  
-      - `npm install --include=optional --no-audit`  
-      On a Raspberry Pi 4, installation typically takes about 15 minutes.  
-      - `npm run sakata`  
-      To run npm script which depend on brain.js.
+   - [brain.js](https://github.com/BrainJS/brain.js): A GPU accelerated library for Neural Networks written in JavaScript.
+      - ###### on Linux
+         1. `sudo apt-get install -y build-essential libglew-dev libglu1-mesa-dev libxi-dev pkg-config` 
+         2. `npm install --include=optional --no-audit`
+            - On a Raspberry Pi 4, it takes approximately 12 minutes.
+         3. `npm run sakata`
+      - ###### on Windows
+         1. Install [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or later.
+         2. Install `Desktop development with C++` workload from Visual Studio Community.
+         3. `npm install --include=optional --no-audit`
+         4. `npm run sakata`
+      - #### When using brain.js, Node.js 16 is required to avoid node-gyp ERR, regardless of the operating system.
 
 # Note
 

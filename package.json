@@ -1,9 +1,9 @@
 {
   "name": "sakata",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "",
   "scripts": {
-    "cooking": "npx mkdirp result & python ./util/pdnormalize.py && python ./util/slicebatch.py",
+    "cooking": "python ./util/pdnormalize.py && python ./util/slicebatch.py",
     "plot-multi": "python ./util/plot-multi.py",
     "plot-single": "python ./util/plot-single.py",
     "sakata": "node ./nodejs/braindevice.js >> ./result/sakata.txt",
@@ -12,8 +12,7 @@
     "main+batch": "node ./nodejs/main-batch.js > ./result/main-batch.log",
     "py": "python ./python/pyndevice.py >> ./result/plog.txt",
     "py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./util/logformatter.py",
-    "O2+add": "gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
-    "wincmd": "if not exist result mkdir result"
+    "O2+add": "gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt"
   },
   "keywords": [],
   "author": "",
