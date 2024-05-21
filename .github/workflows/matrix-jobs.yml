@@ -31,7 +31,7 @@ jobs:
 
       # Use the generated cache key to cache Python dependencies
       - name: Use Python cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup.outputs.cache-key }}
@@ -49,7 +49,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "npm"
 
       # Install Node.js dependencies and system packages required for building
@@ -91,7 +91,7 @@ jobs:
 
       # Reuse the Python cache and install matplotlib for plotting
       - name: Use Python cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup.outputs.cache-key }}
