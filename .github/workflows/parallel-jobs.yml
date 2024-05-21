@@ -11,27 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
       - name: Generate cache key for Python dependencies
         id: idcache-key
         run: echo "key=${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}" >> $GITHUB_OUTPUT
-
-  main_job:
-    needs: setup-build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Python cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ needs.setup-build.outputs.cache-key }}
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip list
 
       - name: Set up Node.js 16
         uses: actions/setup-node@v4
@@ -39,12 +31,27 @@ jobs:
           node-version: "16"
           cache: "npm"
 
-      - name: Install Node.js dependencies without optional
-        run: |
-          npm ci --omit=optional --no-audit
-          npm list --depth=0
+      - name: Install Node.js dependencies
+        run: npm ci --omit=optional --no-audit
 
-      - name: run npm script
+  main_job:
+    needs: setup-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Use Python cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup-build.outputs.cache-key }}
+
+      - name: Run npm script
         run: |
           npm run cooking
           npm run main+batch
@@ -61,31 +68,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
       - name: Use Python cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip list
+      - name: Install additional dependencies for sakata+batch
+        run: sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
 
-      - name: Set up Node.js 16
-        uses: actions/setup-node@v4
-        with:
-          node-version: "16"
-          cache: "npm"
-
-      - name: Install Node.js dependencies
-        run: |
-          sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
-          npm ci --no-audit
-          npm list --depth=0
-
-      - name: run sakata+batch
+      - name: Run sakata+batch
         run: |
           npm run cooking
           npm run sakata+batch
@@ -97,18 +94,30 @@ jobs:
           path: ./result/sakata-batch.log
 
   merge_artifacts:
-    needs: [setup-build, main_job, sakata_job]
+    needs: [main_job, sakata_job]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
+        with:
+          name: main-artifacts
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sakata-artifacts
 
       - name: Confirm the directory and move files
-        run: ls -R
-      - run: mv ./main-artifacts/main-batch.log ./result/main-batch.log
-      - run: mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
+        run: |
+          ls -R
+          mv ./main-artifacts/main-batch.log ./result/main-batch.log
+          mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
       - name: Use Python cache
         uses: actions/cache@v3
@@ -121,7 +130,8 @@ jobs:
           python -m pip install --upgrade pip setuptools
           pip install matplotlib numpy
 
-      - run: npm run plot-multi
+      - name: Run plot-multi
+        run: npm run plot-multi
 
       - name: Archive all artifacts
         uses: actions/upload-artifact@v4
