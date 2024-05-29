@@ -30,7 +30,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip list
     - name: run app
-      run: python ./webscraping.py
+      run: npm run getdata
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
