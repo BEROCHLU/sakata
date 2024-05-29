@@ -1,7 +1,6 @@
 name: parallel-jobs
 on:
-  push:
-    branches: [master]
+  workflow_dispatch:
 
 jobs:
   setup-build:
