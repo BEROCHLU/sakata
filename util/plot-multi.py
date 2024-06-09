@@ -47,7 +47,7 @@ for norm_values in norm_values_list:
 # X軸のラベルをインデックスに設定
 ax.set_xticks(arrInt)
 # インデックスをstring日付に置き換える
-ax.set_xticklabels([date.strftime("%b%d") for date in lstDt])
+ax.set_xticklabels([date.strftime("%m%d") for date in lstDt])
 # X軸の範囲を調整
 ax.set_xlim([0, len(lstDt) - 1])
 
