@@ -12,7 +12,7 @@ for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.read()
 
-    sections = content.split("\n\n")
+    sections = content.split("===")
     lstDt = []
     norm_values = []
 
@@ -57,5 +57,5 @@ plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid(which="both")
 plt.tight_layout()
-plt.savefig("./result/plot-multi.png")  # showの前でないと保存されない
+plt.savefig("./result/plot-double.png")  # showの前でないと保存されない
 plt.show()

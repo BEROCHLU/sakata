@@ -14,7 +14,7 @@ with open(file_path, "r", encoding="utf-8") as file:
     content = file.read()
 
 # セクションを分割
-sections = content.split("\n\n")
+sections = content.split("===")
 
 # セクションごとの最後の日付とNormの値を抽出
 lstDt = []
@@ -69,5 +69,5 @@ plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを設定
 plt.grid(which="both")
 plt.tight_layout()
-plt.savefig("./result/plot-single.png")  # showの前でないと機能しない
+plt.savefig("./result/plot-batch.png")  # showの前でないと機能しない
 plt.show()
