@@ -11,9 +11,9 @@
     "main+batch": "node ./src/nodejs/main-batch.js > ./result/main-batch.log",
     "plot-batch": "python ./src/python/plot-batch.py",
     "plot-double": "python ./src/python/plot-double.py",
-    "valid-c": "gcc -O2 cdevice.c -lm && a.exe >> ./result/clog.txt",
-    "valid-py": "python ./python/pyndevice.py >> ./result/plog.txt",
-    "valid-py+batch": "python ./python/pyndevice-batch.py > ./result/pbatch.log && python ./utils/logformatter.py"
+    "valid-c": "gcc -O2 ./valid/cdevice.c -lm && a.exe >> ./result/clog.txt",
+    "valid-py": "python ./valid/python/pyndevice.py >> ./result/plog.txt",
+    "valid-py+batch": "python ./valid/python/pyndevice-batch.py > ./result/pbatch.log && python ./utils/logformatter.py"
   },
   "keywords": [],
   "author": "",
