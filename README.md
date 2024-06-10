@@ -62,7 +62,7 @@ To use this program, follow these steps:
          2. Install `Desktop development with C++` workload from Visual Studio Community.
          3. `npm install --include=optional --no-audit`
          4. `npm run sakata`
-      - #### When installing brain.js on Linux, Node.js 16 is required to avoid node-gyp ERR, regardless of the operating system.
+      - #### When installing brain.js on Linux, Node.js 16 is required to avoid node-gyp ERR.
 
 # Note
 
