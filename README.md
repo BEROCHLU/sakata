@@ -31,7 +31,7 @@ To use this program, follow these steps:
 
 1. **Install prerequisites**:
    - Python 3
-   - Node.js 16
+   - Node.js 16 or 20
 
 2. **Install packages**:
    - `pip install -r requirements.txt`
@@ -62,7 +62,7 @@ To use this program, follow these steps:
          2. Install `Desktop development with C++` workload from Visual Studio Community.
          3. `npm install --include=optional --no-audit`
          4. `npm run sakata`
-      - #### When installing brain.js on Linux, Node.js 16 is required to avoid node-gyp ERR.
+      - #### When installing brain.js on Ubuntu 22 linux-x64, Node.js 16 is required to avoid node-gyp ERR.
 
 # Note
 
