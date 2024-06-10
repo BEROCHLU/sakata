@@ -9,7 +9,7 @@
     "sakata+batch": "node ./src/nodejs/braindevice-batch.js > ./result/sakata-batch.log",
     "main": "node ./src/nodejs/main.js > ./result/main.txt",
     "main+batch": "node ./src/nodejs/main-batch.js > ./result/main-batch.log",
-    "plot-batch": "python ./src/python/plot-batch.py",
+    "plot-batch": "python ./src/python/plot-batch.py ./result/output.log",
     "plot-double": "python ./src/python/plot-double.py",
     "valid-c": "gcc -O2 ./valid/cdevice.c -lm && a.exe >> ./result/clog.txt",
     "valid-py": "python ./valid/python/pyndevice.py >> ./result/plog.txt",

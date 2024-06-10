@@ -1,13 +1,17 @@
 import re
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.dates as mdates
 from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
+import argparse
 
+# コマンドライン引数を解析する
+parser = argparse.ArgumentParser(description="Process log file and plot data.")
+parser.add_argument("file_path", type=str, help="Path to the log file")
+args = parser.parse_args()
 
 # ファイルを読み込む
-file_path = "./result/main-batch.log"
+file_path = args.file_path
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を読み込む
@@ -45,8 +49,6 @@ for section in sections:
         norm_values.append(norm_value)
 
 # グラフを描画
-# plt.figure(figsize=(14, 7))
-# 日付を0から始まる連続したインデックスに変換
 arrInt = np.arange(len(lstDt))
 
 fig, ax = plt.subplots(figsize=(12, 6))
@@ -59,10 +61,6 @@ ax.set_xticks(arrInt)
 ax.set_xticklabels([date.strftime("%m%d") for date in lstDt], rotation=45, ha="right")
 # X軸の範囲を調整
 ax.set_xlim([0, len(lstDt) - 1])
-
-# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b%d'))
-# plt.gca().xaxis.set_major_locator(mdates.DayLocator(bymonthday=None, interval=1, tz=None))
-# plt.gcf().autofmt_xdate()  # X軸の日付ラベルを斜めにして重なりを防ぐ
 
 plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))  # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
