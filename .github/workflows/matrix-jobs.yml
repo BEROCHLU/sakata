@@ -1,9 +1,6 @@
 name: matrix-jobs
-
-# Trigger the workflow on push events but only for the master branch
 on:
-  push:
-    branches: [master]
+  workflow_dispatch:
 
 jobs:
   # This job sets up the build environment and generates a cache key for Python dependencies
@@ -49,7 +46,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       # Install Node.js dependencies and system packages required for building

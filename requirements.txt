@@ -1,6 +1,4 @@
 pandas
 matplotlib
-numpy>=1.23.5
-lxml
-requests
+numpy>=1.24.4
 tensorflow

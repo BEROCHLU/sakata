@@ -1,5 +1,4 @@
 name: test-main
-
 on: [push]
 
 jobs:

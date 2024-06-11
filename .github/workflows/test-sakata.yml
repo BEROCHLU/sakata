@@ -1,5 +1,4 @@
 name: test-sakata
-
 on: [push]
 
 jobs:
