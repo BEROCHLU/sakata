@@ -102,7 +102,7 @@ jobs:
           pip install matplotlib numpy
 
       # Run a custom npm script to generate plots from the batch logs
-      - run: npm run plot-multi
+      - run: npm run plot-double
 
       # Archive the final output including logs and plots
       - name: Archive all artifacts
@@ -112,4 +112,4 @@ jobs:
           path: |
             ./result/main-batch.log
             ./result/sakata-batch.log
-            ./result/plot-multi.png
+            ./result/plot-double.png

@@ -51,7 +51,7 @@ jobs:
         run: |
           npm run cooking
           npm run main+batch
-          npm run plot-single
+          npm run plot-batch
 
       # Archives the specified artifacts (logs and images) from the workflow
       - name: Archive production artifacts
@@ -60,4 +60,4 @@ jobs:
           name: output-artifacts
           path: |
             ./result/main-batch.log
-            ./result/plot-single.png
+            ./result/plot-batch.png
