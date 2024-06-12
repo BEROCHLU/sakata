@@ -71,8 +71,8 @@ class FinalPredictionCallback(keras.callbacks.Callback):
         differences_percentage = ((y - scaled_predictions) / scaled_predictions) * 100
         differences_percentage = np.round(differences_percentage, 2)
 
-        dfPrint["Predict"] = np.round(scaled_predictions * DIV, 2)
-        dfPrint["True"] = np.round(y * DIV, 2)
+        dfPrint["prediction"] = np.round(scaled_predictions * DIV, 2)
+        dfPrint["actual"] = np.round(y * DIV, 2)
 
 # EarlyStoppingコールバックの設定
 early_stopping = keras.callbacks.EarlyStopping(
