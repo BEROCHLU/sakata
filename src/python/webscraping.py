@@ -13,7 +13,7 @@ from dateutil import tz
 str_k = b"aHR0cHM6Ly9rYWJ1dGFuLmpwL3N0b2NrL2thYnVrYT9jb2RlPTEzMjEmYXNoaT1kYXkmcGFnZT0="
 str_m = b"aHR0cHM6Ly9meC5taW5rYWJ1LmpwL2FwaS92Mi9iYXIvVVNESlBZL2RhaWx5Lmpzb24="
 # str_m = b"aHR0cHM6Ly9meC5taW5rYWJ1LmpwL2FwaS92Mi9iYXIvRVVSVVNEL2RhaWx5Lmpzb24="
-str_ua = b"TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNy4wLjAuMCBTYWZhcmkvNTM3LjM2"
+str_ua = b"TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyNS4wLjAuMCBTYWZhcmkvNTM3LjM="
 # path
 output_folder = "./csv"
 # set timezone
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)  # サブフォルダも同時に再帰的に作成
 
-    download_path = os.path.join(output_folder, "datexyt.csv")
-    df_merge.to_csv(download_path, header=False, index=False, lineterminator="\n")  # for C
+    # download_path = os.path.join(output_folder, "datexyt.csv")
+    # df_merge.to_csv(download_path, header=False, index=False, lineterminator="\n")  # for C
     download_path = os.path.join(output_folder, "hdatexyt.csv")
-    df_merge.to_csv(download_path, header=True, index=False, lineterminator="\n")  # for Python Node.js
+    df_merge.to_csv(download_path, header=True, index=False, lineterminator="\n")  # for Python, Node.js
