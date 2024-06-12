@@ -61,7 +61,7 @@ To use this program, follow these steps:
          1. Install [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or later.
          2. Install `Desktop development with C++` workload from Visual Studio Community.
          3. `npm install --include=optional --no-audit`
-         4. `npm run sakata`
+         4. `npm run sakata+batch`
       - #### When installing brain.js on Ubuntu 22 linux-x64, Node.js 16 is required to avoid node-gyp ERR.
 
 # Note
