@@ -8,13 +8,13 @@ import numpy as np
 from matplotlib.ticker import AutoMinorLocator
 
 # コマンドライン引数を解析する
-#parser = argparse.ArgumentParser(description="Process log file and plot data.")
-#parser.add_argument("file_path", type=str, help="Path to the log file")
-#args = parser.parse_args()
+parser = argparse.ArgumentParser(description="Process log file and plot data.")
+parser.add_argument("file_path", type=str, help="Path to the log file")
+args = parser.parse_args()
 
 # ファイルを読み込む
-#file_path = args.file_path  # .\\result\\main-batch.log
-file_path = ".\\result\\output.log" # for testing
+file_path = args.file_path  # ./result/main-batch.log
+# file_path = "./result/output.log" # for testing
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を読み込む
@@ -72,5 +72,5 @@ plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを設定
 plt.grid(which="both")
 plt.tight_layout()
-plt.savefig(f".\\result\\plot-{filename}")  # showの前でないと機能しない
+plt.savefig(f"./result/plot-{filename}")  # showの前でないと機能しない
 plt.show()
