@@ -1,17 +1,20 @@
+import argparse
+import os
 import re
+from datetime import datetime
+
 import matplotlib.pyplot as plt
 import numpy as np
-from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
-import argparse
 
 # コマンドライン引数を解析する
-parser = argparse.ArgumentParser(description="Process log file and plot data.")
-parser.add_argument("file_path", type=str, help="Path to the log file")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser(description="Process log file and plot data.")
+#parser.add_argument("file_path", type=str, help="Path to the log file")
+#args = parser.parse_args()
 
 # ファイルを読み込む
-file_path = args.file_path
+#file_path = args.file_path  # .\\result\\main-batch.log
+file_path = ".\\result\\output.log" # for testing
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を読み込む
@@ -48,8 +51,10 @@ for section in sections:
         norm_value = float(norm_line[0].split(":")[1].strip())
         norm_values.append(norm_value)
 
-# グラフを描画
+# インデックスに変換
 arrInt = np.arange(len(lstDt))
+# ファイル名を取得して拡張子をpngに変更
+filename = os.path.basename(file_path).replace(".log", ".png")
 
 fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -67,5 +72,5 @@ plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを設定
 plt.grid(which="both")
 plt.tight_layout()
-plt.savefig("./result/plot-batch.png")  # showの前でないと機能しない
+plt.savefig(f".\\result\\plot-{filename}")  # showの前でないと機能しない
 plt.show()
