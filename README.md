@@ -38,11 +38,13 @@ To use this program, follow these steps:
    - `npm install --omit=optional`
 
 3. **Run scripts**:
+   - `npm run getdata`  
+   Get latest data.
    - `npm run cooking`  
    Normalize raw data and split by batch size.
-   - `npm run main+batch`  
-   To run main.js and append the results.
-   - `npm run plot-batch1`  
+   - `npm run mainb`  
+   To run mainb.js and append the results.
+   - `npm run plot-output1`  
    To visualize the results.
 
 **Optional install**

@@ -96,3 +96,6 @@ The main block of the script performs the following actions:
 3. **Saving Data:**
    - Ensures the output directory exists and creates it if necessary.
    - Saves the final merged DataFrame to a CSV file with appropriate headers.
+
+### Note
+If even one data item is missing, for example a public holiday, the date will be skipped.
