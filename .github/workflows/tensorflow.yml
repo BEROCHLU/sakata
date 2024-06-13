@@ -22,30 +22,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-tf.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
       # Installs Python dependencies from requirements.txt if it exists
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements.txt ]; then pip install -r requirements-tf.txt; fi
           pip list
-
-      # Sets up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
 
       # Runs a series of npm scripts defined in package.json
       - name: run app
         run: |
-          npm run cooking
+          python ./utils/slicebatch.py
           chmod 755 run_Linux.sh
           ./run_Linux.sh
-          npm run plot-output3
+          python ./src/python/plot-batch.py ./result/output3.log
 
       # Archives the specified artifacts (logs and images) from the workflow
       - name: Archive production artifacts
@@ -53,5 +46,5 @@ jobs:
         with:
           name: output-artifacts
           path: |
-            ./result/main-batch.log
-            ./result/plot-batch.png
+            ./result/output3.log
+            ./result/plot-output3.png
