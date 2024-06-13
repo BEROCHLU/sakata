@@ -36,7 +36,7 @@ jobs:
       - name: run app
         run: |
           python ./utils/slicebatch.py
-          python ./src/python/sakata3b.py
+          python ./src/python/sakata3b.py > ./result/output3.log
           python ./src/python/plot-batch.py ./result/output3.log
 
       # Archives the specified artifacts (logs and images) from the workflow
