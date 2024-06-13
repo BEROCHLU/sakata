@@ -22,22 +22,21 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-tf.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-t.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
       # Installs Python dependencies from requirements.txt if it exists
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          if [ -f requirements.txt ]; then pip install -r requirements-tf.txt; fi
+          pip install -r requirements-t.txt
           pip list
 
       # Runs a series of npm scripts defined in package.json
       - name: run app
         run: |
           python ./utils/slicebatch.py
-          chmod 755 run_Linux.sh
-          ./run_Linux.sh
+          python ./src/python/sakata3b.py
           python ./src/python/plot-batch.py ./result/output3.log
 
       # Archives the specified artifacts (logs and images) from the workflow
