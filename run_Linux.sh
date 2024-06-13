@@ -32,4 +32,4 @@ minutes=$((elapsed_time / 60))
 seconds=$((elapsed_time % 60))
 
 # 経過時間をログファイルに追記
-echo "Time: $minutes min :$seconds sec." >> "$LOG_FILE"
+echo "Time: $minutes min $seconds sec." >> "$LOG_FILE"
