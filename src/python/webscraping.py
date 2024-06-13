@@ -12,7 +12,6 @@ from dateutil import tz
 # hash
 str_k = b"aHR0cHM6Ly9rYWJ1dGFuLmpwL3N0b2NrL2thYnVrYT9jb2RlPTEzMjEmYXNoaT1kYXkmcGFnZT0="
 str_m = b"aHR0cHM6Ly9meC5taW5rYWJ1LmpwL2FwaS92Mi9iYXIvVVNESlBZL2RhaWx5Lmpzb24="
-# str_m = b"aHR0cHM6Ly9meC5taW5rYWJ1LmpwL2FwaS92Mi9iYXIvRVVSVVNEL2RhaWx5Lmpzb24="
 str_ua = b"TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyNS4wLjAuMCBTYWZhcmkvNTM3LjM="
 # path
 output_folder = "./csv"
@@ -97,6 +96,9 @@ if __name__ == "__main__":
     df_merge = pd.merge(df_merge, df_concat, left_on="date", right_on="日付")
     df_merge = df_merge[["date", "close_x", "close_y", "始値"]]
     df_merge.rename(columns={"始値": "open_t"}, inplace=True)
+
+    if not len(df_merge) > 80:
+        print(f"warning: {len(df_merge)}")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)  # サブフォルダも同時に再帰的に作成
