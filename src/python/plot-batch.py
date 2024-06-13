@@ -13,7 +13,7 @@ parser.add_argument("file_path", type=str, help="Path to the log file")
 args = parser.parse_args()
 
 # ファイルを読み込む
-file_path = args.file_path  # ./result/main-batch.log
+file_path = args.file_path
 # file_path = "./result/output.log" # for testing
 
 with open(file_path, "r", encoding="utf-8") as file:

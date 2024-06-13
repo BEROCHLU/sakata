@@ -4,7 +4,7 @@ import numpy as np
 from datetime import datetime
 from matplotlib.ticker import AutoMinorLocator
 
-file_paths = ["./result/main-batch.log", "./result/sakata-batch.log"]
+file_paths = ["./result/output1.log", "./result/output2.log"]
 norm_values_list = []
 date_pattern = re.compile(r"\d{4}-\d{2}-\d{2}")
 

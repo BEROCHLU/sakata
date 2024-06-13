@@ -83,8 +83,8 @@ jobs:
       # Confirm the directory structure and move log files to the result directory
       - name: Confirm the directory and move files
         run: ls -R
-      - run: mv ./main-artifacts/main-batch.log ./result/main-batch.log
-      - run: mv ./sakata-artifacts/sakata-batch.log ./result/sakata-batch.log
+      - run: mv ./main-artifacts/output1.log ./result/output1.log
+      - run: mv ./sakata-artifacts/output2.log ./result/output2.log
 
       # Reuse the Python cache and install matplotlib for plotting
       - name: Use Python cache
@@ -110,6 +110,6 @@ jobs:
         with:
           name: output-artifacts
           path: |
-            ./result/main-batch.log
-            ./result/sakata-batch.log
+            ./result/output1.log
+            ./result/output2.log
             ./result/plot-double.png
