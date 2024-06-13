@@ -110,7 +110,7 @@ jobs:
       - run: mv ./sakata-artifacts/output2.log ./result/output2.log
 
       - name: Use Python cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
