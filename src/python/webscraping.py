@@ -11,6 +11,7 @@ from dateutil import tz
 
 # hash
 str_k = b"aHR0cHM6Ly9rYWJ1dGFuLmpwL3N0b2NrL2thYnVrYT9jb2RlPTEzMjEmYXNoaT1kYXkmcGFnZT0="
+str_us = b"aHR0cHM6Ly91cy5rYWJ1dGFuLmpwL3N0b2Nrcy9ESUEvaGlzdG9yaWNhbF9wcmljZXMvZGFpbHk/cGFnZT0="
 str_m = b"aHR0cHM6Ly9meC5taW5rYWJ1LmpwL2FwaS92Mi9iYXIvVVNESlBZL2RhaWx5Lmpzb24="
 str_ua = b"TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyNS4wLjAuMCBTYWZhcmkvNTM3LjM="
 # path
@@ -43,7 +44,7 @@ def getDataFrame1():
 
     df_concat["日付"] = pd.to_datetime(df_concat["日付"], format="%y/%m/%d")  # 日付のフォーマット指定変換 yy/mm/dd => yyyy-mm-dd
     df_concat["日付"] = df_concat["日付"].map(f1)  # 月曜日だったら先週の金曜日、それ以外は前日
-    df_concat["日付"] = df_concat["日付"].dt.strftime("%Y-%m-%d")  # キャスト datetime64 to string
+    df_concat["date"] = df_concat["日付"].dt.strftime("%Y-%m-%d")  # キャスト datetime64 to string
 
     print("Done NK")
     return df_concat
@@ -52,7 +53,7 @@ def getDataFrame1():
 def getDataFrame2():
     lst_page = []
     lst_df = None
-    page = "https://us.kabutan.jp/stocks/DIA/historical_prices/daily?page="
+    page = base64.b64decode(str_us).decode()
 
     for i in range(3):
         url = f"{page}{i+1}"
@@ -68,7 +69,7 @@ def getDataFrame2():
     df_concat.reset_index(inplace=True)  # 日付がindexになってるので振り直し
 
     df_concat["日付"] = pd.to_datetime(df_concat["日付"], format="%y/%m/%d")  # 日付のフォーマット指定変換 yy/mm/dd => yyyy-mm-dd
-    df_concat["日付"] = df_concat["日付"].dt.strftime("%Y-%m-%d")  # キャスト datetime64 to string
+    df_concat["date"] = df_concat["日付"].dt.strftime("%Y-%m-%d")  # キャスト datetime64 to string
 
     print("Done DIA")
     return df_concat
@@ -116,10 +117,12 @@ if __name__ == "__main__":
     # vlookup
     [df_concat, df_quote, df_eusd] = [getDataFrame1(), getDataFrame2(), getDataFrame3()]
 
-    df_merge = pd.merge(df_concat, df_quote, on="日付")  # dateをstringで統一することでマージしやすくなる
-    df_merge = pd.merge(df_merge, df_eusd, left_on="日付", right_on="date")
-    df_merge = df_merge[["日付", "始値_x", "終値_y", "close"]]
-    df_merge.rename(columns={"日付": "date", "始値_x": "open_t", "終値_y": "close_x", "close": "close_y"}, inplace=True)
+    # df_merge = pd.merge(df_concat, df_quote, on="日付")  # dateをstringで統一することでマージしやすくなる
+    # df_merge = pd.merge(df_merge, df_eusd, left_on="日付", right_on="date")
+    df_merge = pd.merge(df_concat, df_quote, on="date")  # dateをstringで統一することでマージしやすくなる
+    df_merge = pd.merge(df_merge, df_eusd, on="date")
+    df_merge = df_merge[["date", "始値_x", "終値_y", "close"]]
+    df_merge.rename(columns={"始値_x": "open_t", "終値_y": "close_x", "close": "close_y"}, inplace=True)
 
     if not len(df_merge) > 80:
         print(f"warning: {len(df_merge)}")
