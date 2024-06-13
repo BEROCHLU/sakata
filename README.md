@@ -58,15 +58,26 @@ To use this program, follow these steps:
          1. `sudo apt-get install -y build-essential libglew-dev libglu1-mesa-dev libxi-dev pkg-config` 
          2. `npm install --include=optional --no-audit`
             - On a Raspberry Pi 4, it takes approximately 12 minutes.
-         3. `npm run braindeviceb`
-         4. `npm run plot-output2`
+         3. `npm run cooking`
+         4. `npm run braindeviceb`
+         5. `npm run plot-output2`
       - ###### on Windows
          1. Install [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or later.
          2. Install `Desktop development with C++` workload from Visual Studio Community.
          3. `npm install --include=optional --no-audit`
-         4. `npm run braindeviceb`
-         5. `npm run plot-output2`
+         4. `npm run cooking`
+         5. `npm run braindeviceb`
+         6. `npm run plot-output2`
       - #### When installing brain.js on Ubuntu 22 linux-x64, Node.js 16 is required to avoid node-gyp ERR.
+
+   - TensorFlow: For users who need TensorFlow for Python-based neural network operations.
+      - ###### on Linux
+         1. `pip install requirements-t.txt`
+            - On a Raspberry Pi OS, type the following command:
+            `sudo apt-get install libhdf5-dev`
+         2. `chmod 755 run_Linux.sh`
+         3. `./run_Linux.sh`
+      - ###### on Windows
 
 # Note
 
