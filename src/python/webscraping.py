@@ -50,6 +50,29 @@ def getDataFrame1():
 
 
 def getDataFrame2():
+    lst_page = []
+    lst_df = None
+    page = "https://us.kabutan.jp/stocks/DIA/historical_prices/daily?page="
+
+    for i in range(3):
+        url = f"{page}{i+1}"
+        lst_df = pd.read_html(url, header=0, index_col=0)
+        df_page = lst_df[1]
+        lst_page.append(df_page)
+
+    lst_df[0].index.name = "日付"
+    lst_page.append(lst_df[0])
+
+    df_concat = pd.concat(lst_page)  # page結合
+    df_concat.sort_values(by="日付", inplace=True)  # 下が最新になるようにソート
+    df_concat.reset_index(inplace=True)  # 日付がindexになってるので振り直し
+
+    df_concat["日付"] = pd.to_datetime(df_concat["日付"], format="%y/%m/%d")  # 日付のフォーマット指定変換 yy/mm/dd => yyyy-mm-dd
+    df_concat["日付"] = df_concat["日付"].dt.strftime("%Y-%m-%d")  # キャスト datetime64 to string
+
+    print("Done DIA")
+    return df_concat
+    '''
     ticker = "^DJI" # ^DJI | ^IXIC
     strRange = "6mo"
 
@@ -72,6 +95,7 @@ def getDataFrame2():
 
     print(f"Done {ticker}")
     return df_quote
+    '''
 
 
 def getDataFrame3():
@@ -92,10 +116,10 @@ if __name__ == "__main__":
     # vlookup
     [df_concat, df_quote, df_eusd] = [getDataFrame1(), getDataFrame2(), getDataFrame3()]
 
-    df_merge = pd.merge(df_quote, df_eusd, on="date")  # dateをstringで統一することでマージしやすくなる
-    df_merge = pd.merge(df_merge, df_concat, left_on="date", right_on="日付")
-    df_merge = df_merge[["date", "close_x", "close_y", "始値"]]
-    df_merge.rename(columns={"始値": "open_t"}, inplace=True)
+    df_merge = pd.merge(df_concat, df_quote, on="日付")  # dateをstringで統一することでマージしやすくなる
+    df_merge = pd.merge(df_merge, df_eusd, left_on="日付", right_on="date")
+    df_merge = df_merge[["日付", "始値_x", "終値_y", "close"]]
+    df_merge.rename(columns={"日付": "date", "始値_x": "open_t", "終値_y": "close_x", "close": "close_y"}, inplace=True)
 
     if not len(df_merge) > 80:
         print(f"warning: {len(df_merge)}")
