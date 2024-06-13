@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use Python cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use Python cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ needs.setup-build.outputs.cache-key }}
