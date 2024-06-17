@@ -42,8 +42,10 @@ arrInt = np.arange(len(lstDt))
 fig, ax = plt.subplots(figsize=(12, 6))
 
 # インデックスを使用してプロット
-for i, norm_values in enumerate(norm_values_list):
-    ax.plot(arrInt, norm_values, marker="o", markersize=4, label=f"out{i+1}")
+for norm_values, legend_name in zip(
+    norm_values_list, ["original", "brain.js", "tensorflow"]
+):
+    ax.plot(arrInt, norm_values, marker="o", markersize=4, label=legend_name)
 # X軸のラベルをインデックスに設定
 ax.set_xticks(arrInt)
 # インデックスをstring日付に置き換える
@@ -52,7 +54,7 @@ ax.set_xticklabels([date.strftime("%m%d") for date in lstDt])
 ax.set_xlim([0, len(lstDt) - 1])
 
 plt.gcf().autofmt_xdate()  # X軸の日付ラベルを斜めにして重なりを防ぐ
-plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2)) # Y軸の補助メモリを2ずつに設定
+plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))  # Y軸の補助メモリを2ずつに設定
 plt.title("The Sakata Index", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを8に設定
 plt.grid(which="both")
