@@ -48,11 +48,6 @@ To use this program, follow these steps:
    To visualize the results.
 
 **Optional install**
-   - MinGW-w64: For users who want to use GCC with MinGW.  
-      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
-      - `gcc -O2 ./valid/cdevice.c -lm`  
-      - `a.exe` or `./a.out`  
-
    - [brain.js](https://github.com/BrainJS/brain.js): A GPU accelerated library for Neural Networks written in JavaScript.
       - ###### on Linux
          1. `sudo apt-get install -y build-essential libglew-dev libglu1-mesa-dev libxi-dev pkg-config` 
@@ -70,16 +65,21 @@ To use this program, follow these steps:
          6. `npm run plot-output2`
       - #### When installing brain.js on Ubuntu 22 linux-x64, Node.js 16 is required to avoid node-gyp ERR.
 
-   - TensorFlow: For users who need TensorFlow for Python-based neural network operations.
+   - [TensorFlow](https://www.tensorflow.org): For users who need TensorFlow for Python-based neural network operations.
       - ###### on Linux
          1. `pip install requirements-t.txt`
-            - On a Raspberry Pi OS, type the following command:
+            - On Raspberry Pi OS, type the following command as an additional install:  
             `sudo apt-get install libhdf5-dev`
          2. `chmod 755 run_Linux.sh`
          3. `./run_Linux.sh`
       - ###### on Windows
          1. `pip install requirements-t.txt`
-         2. `./run_Windows.sh`
+         2. `./run_Windows.ps1`
+
+   - MinGW-w64: For users who want to use GCC with MinGW.  
+      [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
+      - `gcc -O2 ./valid/cdevice.c -lm`  
+      - `a.exe` or `./a.out`  
 
 # Note
 
