@@ -1,4 +1,4 @@
-pandas
 lxml
-requests
+pandas
 python-dateutil
+requests

@@ -68,7 +68,7 @@ To use this program, follow these steps:
    - [TensorFlow](https://www.tensorflow.org): For users who need TensorFlow for Python-based neural network operations.
       - ###### on Linux
          1. `pip install requirements-t.txt`
-            - On Raspberry Pi OS, type the following command to install h5py:  
+            - On Raspberry Pi OS, type the following command to install h5py before installing TensorFlow:  
             `sudo apt-get install libhdf5-dev`
          2. `chmod 755 run_Linux.sh`
          3. `./run_Linux.sh`
