@@ -83,4 +83,4 @@ To use this program, follow these steps:
 
 # Note
 
-Despite its vulnerabilities, Node.js 16 is chosen for its high speed. In this repository, I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
+In this repository, I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
