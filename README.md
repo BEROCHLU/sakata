@@ -12,6 +12,7 @@ The Sakata Index is a value that is normalized by the most recent 'Accumulator' 
 
 The important aspect of the Sakata index is not bringing 'Prediction' close to 'Actual', but accumulating the difference obtained by subtracting 'Prediction' from 'Actual'. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
+The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 # A Custom Implementation of a Simple Neural Network
 
 This section outlines the configuration of a simple neural network used to calculate the Sakata Index:
