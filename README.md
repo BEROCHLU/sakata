@@ -13,18 +13,38 @@ The Sakata Index is a value that is normalized by the most recent 'Accumulator' 
 The important aspect of the Sakata index is not bringing 'Prediction' close to 'Actual', but accumulating the difference obtained by subtracting 'Prediction' from 'Actual'. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
-# A Custom Implementation of a Simple Neural Network
 
-This section outlines the configuration of a simple neural network used to calculate the Sakata Index:
+# Result
 
-- **Loss function**: Uses the least-squares method to measure the difference between the predicted and actual values.
-- **Activation function**: Employs the sigmoid function, which maps any input into a value between 0 and 1.
-- **Learning rate**: Set at 0.5, which determines how much the weights are updated during training.
-- **Weight**: Initially set at 0.5.
-- **Biases**: Starts with a bias of -1 for the nodes.
-- **Epoch**: The number of iterations for which the neural network will be trained, set at 500,000.
-- **Layer configuration**: The neural network has three layers with the following number of nodes: [3 (Input), 4 (Hidden), 1 (Output)]. All layers except the Output layer include biases.
-- **Training data**: The same dataset is used for both training and testing the model.
+- `output1.log`  
+  This is a log of the results obtained by using a custom-implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
+  - Input: 3 layers (including bias)
+  - Hidden: 4 layers (including bias)
+  - Output: 1 layer
+  - Initial weight: 0.5
+  - Maximum training iterations: 500000
+  - Activation function: Sigmoid
+  - Loss function: least-squares method
+  - Learning rate: 0.5
+  - Biases: -1
+  - Training data: The same dataset is used for both training and testing the model.
+
+- `output2.log`  
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters is same output1.log.
+
+- `output3.log`  
+  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as follows:
+  - Input: 2 layers
+  - Hidden: 16 layers
+  - Output: 1 layer
+  - Optimization: Adam
+  - Initial weight: 0.5
+  - Maximum training iterations: 1000
+  - Activation function: Sigmoid
+  - Learning rate: 0.001
+
+- `plot-triple.png`  
+  An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
 
 # Usage
 
@@ -84,28 +104,6 @@ To use this program, follow these steps:
       2. delete header in csv
       3. `gcc -O2 ./valid/cdevice.c -lm` 
       4. `a.exe` or `./a.out`  
-
-# Result
-
-- `output1.log`  
-  This is a log of the results obtained by using a custom-implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
-
-- `output2.log`  
-  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
-
-- `output3.log`  
-  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as follows:
-  - Input: 2 layers
-  - Hidden: 16 layers
-  - Output: 1 layer
-  - Optimization: Adam
-  - Initial weight: 0.5
-  - Maximum training iterations: 1000
-  - Activation function: Sigmoid
-
-- `plot-triple.png`  
-  An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
-
 
 # Note
 
