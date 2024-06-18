@@ -4,7 +4,7 @@ on:
 
 jobs:
   setup-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       cache-key: ${{ steps.idcache-key.outputs.key }}
     steps:
@@ -16,7 +16,7 @@ jobs:
 
   main_job:
     needs: setup-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -56,7 +56,7 @@ jobs:
 
   brain_job:
     needs: setup-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -97,7 +97,7 @@ jobs:
 
   merge_artifacts:
     needs: [setup-build, main_job, brain_job]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
