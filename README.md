@@ -31,7 +31,7 @@ To use this program, follow these steps:
 
 1. **Install prerequisites**:
    - Python 3
-   - Node.js 16 or 20
+   - Node.js 20 or 16
 
 2. **Install packages**:
    - `pip install -r requirements.txt`
@@ -63,7 +63,7 @@ To use this program, follow these steps:
          4. `npm run cooking`
          5. `npm run braindeviceb`
          6. `npm run plot-output2`
-      - #### When installing brain.js on Ubuntu 22 linux-x64, Node.js 16 is required to avoid node-gyp ERR.
+      - #### If you can't install brain.js on Ubuntu 22 linux-x64 due to node-gyp ERR, downgrade the Node.js version to 16.20.2.
 
    - [TensorFlow](https://www.tensorflow.org): For users who need TensorFlow for Python-based neural network operations.
       - ###### on Linux
