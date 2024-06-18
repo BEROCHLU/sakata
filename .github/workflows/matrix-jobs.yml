@@ -23,6 +23,7 @@ jobs:
     strategy:
       matrix:
         job: ["mainb", "braindeviceb"]
+        log: ["output1", "output2"]
     steps:
       - uses: actions/checkout@v4
 
@@ -67,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.job }}-artifacts
-          path: ./result/${{ matrix.job }}.log
+          path: ./result/${{ matrix.log }}.log
 
   # This job merges all artifacts from the previous jobs and performs additional processing
   merge_artifacts:
