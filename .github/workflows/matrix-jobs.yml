@@ -22,8 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        job: ["mainb", "braindeviceb"]
-        log: ["output1", "output2"]
+        job: ["output1", "output2"]
     steps:
       - uses: actions/checkout@v4
 
@@ -47,7 +46,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "16"
           cache: "npm"
 
       # Install Node.js dependencies and system packages required for building
@@ -68,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.job }}-artifacts
-          path: ./result/${{ matrix.log }}.log
+          path: ./result/${{ matrix.job }}.log
 
   # This job merges all artifacts from the previous jobs and performs additional processing
   merge_artifacts:
@@ -84,8 +83,8 @@ jobs:
       # Confirm the directory structure and move log files to the result directory
       - name: Confirm the directory and move files
         run: ls -R
-      - run: mv ./mainb-artifacts/mainb.log ./result/output1.log
-      - run: mv ./braindeviceb-artifacts/braindeviceb.log ./result/output2.log
+      - run: mv ./output1-artifacts/output1.log ./result/output1.log
+      - run: mv ./output2-artifacts/output2.log ./result/output2.log
 
       # Reuse the Python cache and install matplotlib for plotting
       - name: Use Python cache

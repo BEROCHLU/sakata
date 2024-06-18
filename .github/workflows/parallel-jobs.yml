@@ -35,7 +35,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "16"
           cache: "npm"
 
       - name: Install Node.js dependencies without optional
@@ -46,7 +46,7 @@ jobs:
       - name: run npm script
         run: |
           npm run cooking
-          npm run mainb
+          npm run output1
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -54,7 +54,7 @@ jobs:
           name: main-artifacts
           path: ./result/output1.log
 
-  sakata_job:
+  brain_job:
     needs: setup-build
     runs-on: ubuntu-latest
     steps:
@@ -75,7 +75,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "16"
           cache: "npm"
 
       - name: Install Node.js dependencies
@@ -87,16 +87,16 @@ jobs:
       - name: run npm script
         run: |
           npm run cooking
-          npm run braindeviceb
+          npm run output2
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sakata-artifacts
+          name: brain-artifacts
           path: ./result/output2.log
 
   merge_artifacts:
-    needs: [setup-build, main_job, sakata_job]
+    needs: [setup-build, main_job, brain_job]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
       - name: Confirm the directory and move files
         run: ls -R
       - run: mv ./main-artifacts/output1.log ./result/output1.log
-      - run: mv ./sakata-artifacts/output2.log ./result/output2.log
+      - run: mv ./brain-artifacts/output2.log ./result/output2.log
 
       - name: Use Python cache
         uses: actions/cache@v4
