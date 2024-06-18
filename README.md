@@ -77,10 +77,35 @@ To use this program, follow these steps:
          1. `pip install requirements-t.txt`
          2. `./run_Windows.ps1`
 
+**Validation**
    - MinGW-w64: For users who want to use GCC with MinGW.  
       [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
-      - `gcc -O2 ./valid/cdevice.c -lm`  
-      - `a.exe` or `./a.out`  
+      1. rename `hdatexyt.csv` to `datexyt.csv`
+      2. delete header in csv
+      3. `gcc -O2 ./valid/cdevice.c -lm` 
+      4. `a.exe` or `./a.out`  
+
+# Result
+
+- `output1.log`  
+  This is a log of the results obtained by using a custom-implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
+
+- `output2.log`  
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
+
+- `output3.log`  
+  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as follows:
+  - Input: 2 layers
+  - Hidden: 16 layers
+  - Output: 1 layer
+  - Optimization: Adam
+  - Initial weight: 0.5
+  - Maximum training iterations: 1000
+  - Activation function: Sigmoid
+
+- `plot-triple.png`  
+  An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
+
 
 # Note
 
