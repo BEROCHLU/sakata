@@ -78,7 +78,7 @@ To use this program, follow these steps:
          2. `./run_Windows.ps1`
 
 **Validation**
-   - MinGW-w64: For users who want to use GCC with MinGW.  
+   - MinGW-w64: For users who want to validate using GCC with MinGW.  
       [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
       1. rename `hdatexyt.csv` to `datexyt.csv`
       2. delete header in csv
