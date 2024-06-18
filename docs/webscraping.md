@@ -19,20 +19,13 @@ This function fetches and processes data from a specific source URL, which is ba
 
 #### `getDataFrame2()`
 
-This function fetches stock market data for a specified ticker (default is "^DJI") from Yahoo Finance API.
+This function retrieves DIA (Dow Jones Industrial Average) stock data and converts it into a DataFrame.
 
-1. **Fetching Data:**
-   - Constructs the API URL with the specified ticker and date range.
-   - Sends an HTTP GET request to fetch the data.
-
-2. **Processing Data:**
-   - Extracts the relevant data (timestamp, open, high, low, close, volume) from the JSON response.
-   - Drops rows with missing OHLC values.
-   - Rounds numerical values to two decimal places.
-   - Converts UNIX timestamps to EDT date strings.
-
-3. **Returns:**
-   - A processed DataFrame containing stock market data.
+1. **Processing Data:**
+   - Decode the URL encoded in str_us to get the page URL.
+   - Retrieve data from 3 pages and append each DataFrame to a list.
+   - Concatenate the data, sort by date, and reset the index.
+   - Convert the date format and convert the date to a string format to create a new column.
 
 #### `getDataFrame3()`
 
