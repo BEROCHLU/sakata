@@ -55,7 +55,7 @@ To use this program, follow these steps:
 
 1. **Install prerequisites**:
    - Python 3
-   - Node.js 20 or 16
+   - Node.js 20
 
 2. **Install packages**:
    - `pip install -r requirements.txt`
