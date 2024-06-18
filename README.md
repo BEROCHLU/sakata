@@ -42,7 +42,7 @@ To use this program, follow these steps:
    Get latest data.
    - `npm run cooking`  
    Normalize raw data and split by batch size.
-   - `npm run mainb`  
+   - `npm run output1`  
    To run mainb.js and append the results.
    - `npm run plot-output1`  
    To visualize the results.
@@ -54,14 +54,14 @@ To use this program, follow these steps:
          2. `npm install --include=optional --no-audit`
             - On a Raspberry Pi 4, it takes approximately 12 minutes.
          3. `npm run cooking`
-         4. `npm run braindeviceb`
+         4. `npm run output2`
          5. `npm run plot-output2`
       - ###### on Windows
          1. Install [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or later.
          2. Install `Desktop development with C++` workload from Visual Studio Community.
          3. `npm install --include=optional --no-audit`
          4. `npm run cooking`
-         5. `npm run braindeviceb`
+         5. `npm run output2`
          6. `npm run plot-output2`
       - #### If you can't install brain.js on Ubuntu 22 linux-x64 due to node-gyp ERR, downgrade the Node.js version to 16.20.2.
 
