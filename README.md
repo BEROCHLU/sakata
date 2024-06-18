@@ -47,7 +47,6 @@ The Sakata Index is not a universal indicator and is weak in identifying trends.
   An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
   When the three log files are trained over the same period, the following command will output a line graph.  
   `npm run plot-triple`
-![plot-triple.png](https://raw.githubusercontent.com/BEROCHLU/sakata/main/result/plot-triple.png "The Sakata Index")
 
 # Usage
 
