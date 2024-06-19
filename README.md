@@ -15,7 +15,7 @@ The important aspect of the Sakata index is not bringing 'Prediction' close to '
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 
 Why Sakata?
-- Named after the Bioneural Device from Sakata Industries featured in Front Mission 2.
+- Named after the Bioneural Device from Sakata Industry featured in Front Mission 2.
 
 # Usage
 
