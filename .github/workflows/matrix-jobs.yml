@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        job: ["output1", "output2"]
+        job: ["output1", "output2", "output3"]
     steps:
       - uses: actions/checkout@v4
 
@@ -39,9 +39,16 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-a.txt ]; then pip install -r requirements-a.txt; fi
           pip list
 
+       # Install tensorflow if matrix.job == 'output3'
+      - name: Install tensorflow
+        if: ${{ matrix.job == 'output3' }}
+        run: |
+          pip install tensorflow
+          pip list
+        
       # Set up Node.js and cache npm dependencies
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -51,6 +58,7 @@ jobs:
 
       # Install Node.js dependencies and system packages required for building
       - name: Install Node.js dependencies
+        if: ${{ matrix.job == 'output2' }}
         run: |
           sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
           npm ci --no-audit
@@ -85,6 +93,7 @@ jobs:
         run: ls -R
       - run: mv ./output1-artifacts/output1.log ./result/output1.log
       - run: mv ./output2-artifacts/output2.log ./result/output2.log
+      - run: mv ./output2-artifacts/output3.log ./result/output3.log
 
       # Reuse the Python cache and install matplotlib for plotting
       - name: Use Python cache
@@ -102,7 +111,7 @@ jobs:
           pip install matplotlib numpy
 
       # Run a custom npm script to generate plots from the batch logs
-      - run: npm run plot-double
+      - run: npm run plot-triple
 
       # Archive the final output including logs and plots
       - name: Archive all artifacts
@@ -112,4 +121,5 @@ jobs:
           path: |
             ./result/output1.log
             ./result/output2.log
-            ./result/plot-double.png
+            ./result/output3.log
+            ./result/plot-triple.png

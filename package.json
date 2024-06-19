@@ -7,6 +7,7 @@
     "cooking": "python ./utils/pdnormalize.py && python ./utils/slicebatch.py",
     "output1": "node ./src/nodejs/output1.js > ./result/output1.log",
     "output2": "node ./src/nodejs/output2.js > ./result/output2.log",
+    "output3": "bash ./run_Linux.sh",
     "output1-spot": "node ./src/nodejs/output1-spot.js > ./result/output1.txt",
     "output2-spot": "node ./src/nodejs/output2-spot.js > ./result/output2.txt",
     "plot-output1": "python ./src/python/plot-batch.py ./result/output1.log",

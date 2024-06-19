@@ -93,8 +93,7 @@ To use this program, follow these steps:
          1. `pip install requirements-t.txt`
             - On Raspberry Pi OS, type the following command to install h5py before installing TensorFlow:  
             `sudo apt-get install libhdf5-dev`
-         2. `chmod 755 run_Linux.sh`
-         3. `./run_Linux.sh`
+         2. `bash ./run_Linux.sh`
       - ###### on Windows
          1. `pip install requirements-t.txt`
          2. `./run_Windows.ps1`
