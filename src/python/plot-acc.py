@@ -6,7 +6,7 @@ from matplotlib.ticker import AutoMinorLocator
 
 
 # ファイルパス
-file_path = "./result/main.txt"
+file_path = "./result/output1.txt"
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を1行ずつ読み込む
@@ -51,5 +51,5 @@ plt.title("acc", fontsize=10)
 plt.xticks(fontsize=9)  # X軸の目盛りのフォントサイズを設定
 plt.grid(which="both")
 plt.tight_layout()
-plt.savefig("./result/latest-acc.png")  # showの前でないと機能しない
+plt.savefig("./result/plot-output1-acc.png")  # showの前でないと機能しない
 plt.show()

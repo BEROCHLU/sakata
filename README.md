@@ -66,7 +66,7 @@ To use this program, follow these steps:
    - `npm run cooking`  
    Normalize raw data and split by batch size.
    - `npm run output1`  
-   To run mainb.js and append the results.
+   To run output1.js and append the results.
    - `npm run plot-output1`  
    To visualize the results.
 
@@ -109,4 +109,4 @@ To use this program, follow these steps:
 
 # Note
 
-Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions. In my original neural network (main.js), I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
+Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions. In my original neural network (output1-spot), I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
