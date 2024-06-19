@@ -52,51 +52,44 @@ The Sakata Index is not a universal indicator and is weak in identifying trends.
 
 To use this program, follow these steps:
 
-1. **Install prerequisites**:
+1. **Prerequisites**:
    - Python 3
    - Node.js 20
 
-2. **Install packages**:
-   - `pip install -r requirements.txt`
-   - `npm install --omit=optional`
-
-3. **Run scripts**:
-   - `npm run getdata`  
-   Get latest data.
-   - `npm run cooking`  
-   Normalize raw data and split by batch size.
-   - `npm run output1`  
-   To run output1.js and append the results.
-   - `npm run plot-output1`  
-   To visualize the results.
-
-**Optional install**
-   - [brain.js](https://github.com/BrainJS/brain.js): A GPU accelerated library for Neural Networks written in JavaScript.
+2. **Install brain.js and tensorlow**:
+   - [brain.js](https://github.com/BrainJS/brain.js):
       - ###### on Linux
          1. `sudo apt-get install -y build-essential libglew-dev libglu1-mesa-dev libxi-dev pkg-config` 
-         2. `npm install --include=optional --no-audit`
+         2. `npm install --no-audit`
             - On a Raspberry Pi 4, it takes approximately 12 minutes.
-         3. `npm run cooking`
-         4. `npm run output2`
-         5. `npm run plot-output2`
       - ###### on Windows
          1. Install [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or later.
          2. Install `Desktop development with C++` workload from Visual Studio Community.
-         3. `npm install --include=optional --no-audit`
-         4. `npm run cooking`
-         5. `npm run output2`
-         6. `npm run plot-output2`
-      - #### If you can't install brain.js on Ubuntu 22 linux-x64 due to node-gyp ERR, downgrade the Node.js version to 16.20.2.
+         3. `npm install --no-audit`
+      - ##### If you can't install brain.js on Ubuntu 22 linux-x64 due to node-gyp ERR, downgrade the Node.js version to 16.20.2.
 
-   - [TensorFlow](https://www.tensorflow.org): For users who need TensorFlow for Python-based neural network operations.
+   - [TensorFlow](https://www.tensorflow.org):
       - ###### on Linux
-         1. `pip install requirements-t.txt`
+         1. `pip install tensorflow`
             - On Raspberry Pi OS, type the following command to install h5py before installing TensorFlow:  
             `sudo apt-get install libhdf5-dev`
-         2. `bash ./run_Linux.sh`
       - ###### on Windows
-         1. `pip install requirements-t.txt`
-         2. `./run_Windows.ps1`
+         1. `pip install tensorflow`
+
+3. **Install other packages**:
+   - `pip install -r requirements.txt`
+
+3. **Run scripts**:
+   - `npm run getdata`  
+   Get latest raw data.
+   - `npm run cooking`  
+   Normalize the raw data and split by batch size.
+   - `npm run output1`  
+   - `npm run output2`  
+   - `npm run output3`  
+   To run scripts and append the results.
+   - `npm run plot-triple`  
+   To visualize the results. All results are stored in the **result** folder.
 
 **Validation**
    - MinGW-w64: For users who want to validate using GCC with MinGW.  
