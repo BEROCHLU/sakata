@@ -80,16 +80,18 @@ To use this program, follow these steps:
    - `pip install -r requirements.txt`
 
 3. **Run scripts**:
-   - `npm run getdata`  
-   Get latest raw data.
-   - `npm run cooking`  
-   Normalize the raw data and split by batch size.
-   - `npm run output1`  
-   - `npm run output2`  
-   - `npm run output3`  
-   To run scripts and append the results.
-   - `npm run plot-triple`  
-   To visualize the results. All results are stored in the **result** folder.
+   1. Get latest raw data.  
+   `npm run getdata`
+   2. Normalize the raw data and split by batch size.  
+   `npm run cooking`
+   3. To run scripts and append the results.  
+   ```bash
+   npm run output1
+   npm run output2
+   npm run output3
+   ```
+   4. To visualize the results. All results are stored in the **result** folder.  
+   `npm run plot-triple`
 
 **Validation**
    - MinGW-w64: For users who want to validate using GCC with MinGW.  

@@ -1,3 +1,0 @@
-pandas
-matplotlib
-tensorflow>=2.6.1
