@@ -93,7 +93,7 @@ jobs:
         run: ls -R
       - run: mv ./output1-artifacts/output1.log ./result/output1.log
       - run: mv ./output2-artifacts/output2.log ./result/output2.log
-      - run: mv ./output2-artifacts/output3.log ./result/output3.log
+      - run: mv ./output3-artifacts/output3.log ./result/output3.log
 
       # Reuse the Python cache and install matplotlib for plotting
       - name: Use Python cache
