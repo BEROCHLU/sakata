@@ -14,60 +14,6 @@ The important aspect of the Sakata index is not bringing 'Prediction' close to '
 
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 
-# Input file
-
-The `hdatexyt.csv` file should have the following columns:
-
-- `date`: This is the label for the date.
-- `close_x`: Closing value of DJI ETF, input_x0
-- `close_y`: Closing value of USD/JPY, input_x1
-- `open_t`: Opening value of N225 ETF, teacher signal
-
-All of the data are based on EDT.
-
-Why DJI ETF?
-- Due to occasional missing data in the Yahoo Finance API's time series, DJI is represented as an ETF based on the available data. Using ^DJI is also acceptable.
-
-Why opening value of N225 ETF?
-- To avoid training on the initial values of the Nikkei 225 Index.
-
-# Normalization
-[slicebatch.md](https://github.com/BEROCHLU/sakata/blob/main/docs/slicebatch.md)
-
-# Output files
-
-- `output1.log`  
-  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as described above.
-  - Input: 3 layers (including bias)
-  - Hidden: 4 layers (including bias)
-  - Output: 1 layer
-  - Initial weight: 0.5
-  - Maximum training iterations: 500000
-  - Activation function: Sigmoid
-  - Loss function: least-squares method
-  - Learning rate: 0.5
-  - Biases: -1
-  - Training data: The same dataset is used for both training and testing the model.
-
-- `output2.log`  
-  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters is same output1.log.
-
-- `output3.log`  
-  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
-  - Input: 2 layers
-  - Hidden: 16 layers
-  - Output: 1 layer
-  - Optimization: Adam
-  - Initial weight: 0.5
-  - Maximum training iterations: 1000
-  - Activation function: Sigmoid
-  - Learning rate: 0.001
-
-- `plot-triple.png`  
-  An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
-  When the three log files are trained over the same period, the following command will output a line graph.  
-  `npm run plot-triple`
-
 # Usage
 
 To use this program, follow these steps:
@@ -120,6 +66,60 @@ To use this program, follow these steps:
       2. delete header in csv
       3. `gcc -O2 ./valid/cdevice.c -lm` 
       4. `a.exe` or `./a.out`  
+
+## Input file
+
+The `hdatexyt.csv` file should have the following columns:
+
+- `date`: This is the label for the date.
+- `close_x`: Closing value of DJI ETF, input_x0
+- `close_y`: Closing value of USD/JPY, input_x1
+- `open_t`: Opening value of N225 ETF, teacher signal
+
+All of the data are based on EDT.
+
+Why DJI ETF?
+- Due to occasional missing data in the Yahoo Finance API's time series, DJI is represented as an ETF based on the available data. Using ^DJI is also acceptable.
+
+Why opening value of N225 ETF?
+- To avoid training on the initial values of the Nikkei 225 Index.
+
+## Normalization
+[slicebatch.md](https://github.com/BEROCHLU/sakata/blob/main/docs/slicebatch.md)
+
+## Output files
+
+- `output1.log`  
+  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as described above.
+  - Input: 3 layers (including bias)
+  - Hidden: 4 layers (including bias)
+  - Output: 1 layer
+  - Initial weight: 0.5
+  - Maximum training iterations: 500000
+  - Activation function: Sigmoid
+  - Loss function: least-squares method
+  - Learning rate: 0.5
+  - Biases: -1
+  - Training data: The same dataset is used for both training and testing the model.
+
+- `output2.log`  
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters is same output1.log.
+
+- `output3.log`  
+  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
+  - Input: 2 layers
+  - Hidden: 16 layers
+  - Output: 1 layer
+  - Optimization: Adam
+  - Initial weight: 0.5
+  - Maximum training iterations: 1000
+  - Activation function: Sigmoid
+  - Learning rate: 0.001
+
+- `plot-triple.png`  
+  An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
+  When the three log files are trained over the same period, the following command will output a line graph.  
+  `npm run plot-triple`
 
 # Note
 

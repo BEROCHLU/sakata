@@ -17,7 +17,7 @@ The `hdatexyt.csv` file should have the following columns:
 - `date`: This is the label for the date.
 - `close_x`: Closing value of DJI ETF, input_x0
 - `close_y`: Closing value of USD/JPY, input_x1
-- `open_t`: Opening value of N225 ETF, teacher
+- `open_t`: Opening value of N225 ETF, teacher signal
 
 All of the data are based on EDT.
 ## Requirements
