@@ -17,7 +17,7 @@ The Sakata Index is not a universal indicator and is weak in identifying trends.
 # Result
 
 - `output1.log`  
-  This is a log of the results obtained by using a custom-implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as described above.
+  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as described above.
   - Input: 3 layers (including bias)
   - Hidden: 4 layers (including bias)
   - Output: 1 layer
@@ -30,10 +30,10 @@ The Sakata Index is not a universal indicator and is weak in identifying trends.
   - Training data: The same dataset is used for both training and testing the model.
 
 - `output2.log`  
-  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters is same output1.log.
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters is same output1.log.
 
 - `output3.log`  
-  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of Norm: for each period corresponds to the Sakata Index. The training parameters are as follows:
+  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
   - Input: 2 layers
   - Hidden: 16 layers
   - Output: 1 layer
