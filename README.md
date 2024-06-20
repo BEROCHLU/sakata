@@ -8,14 +8,14 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 - **Difference**: The difference by subtracting the predicted value from the actual value.
 - **Accumulator**: A running total of the daily differences.
 
-The Sakata Index is a Norm: value that is normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
+The Sakata Index is a *Norm: value* that is normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
 
 The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference obtained by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 
 Why Sakata?
-- Named after the Bioneural Device from Sakata Industry featured in Front Mission 2.
+> Named after the Bioneural Device from Sakata Industry featured in Front Mission 2.
 
 # Usage
 
@@ -80,13 +80,13 @@ The `hdatexyt.csv` file should have the following columns:
 - `close_y`: Closing value of USD/JPY, input_x1
 - `open_t`: Opening value of N225 ETF, teacher signal
 
-All of the data are based on EDT.
+All of the data are based on EDT.　If the Japanese or U.S. market is on a holiday, the date will be skipped.
 
 Why DJI ETF?
-- Due to occasional missing data in the Yahoo Finance API's time series, DJI is represented as an ETF based on the available data. Using ^DJI is also acceptable.
+> Due to occasional missing data in the Yahoo Finance API's time series, DJI is represented as an ETF based on the available data. Using ^DJI is also acceptable.
 
 Why the opening value of N225 ETF?
-- To avoid training on the initial values of the Nikkei 225 Index.
+> To avoid training on the initial values of the Nikkei 225 Index.
 
 ## Normalization
 [slicebatch.md](https://github.com/BEROCHLU/sakata/blob/main/docs/slicebatch.md)
@@ -126,5 +126,4 @@ Why the opening value of N225 ETF?
   `npm run plot-triple`
 
 > [!NOTE]
-> Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions.
-In my original neural network (output1-spot), I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
+> Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions. In my original neural network (output1.js), I improved the speed of dot product calculations by replacing the **dot** function from mathjs with the standard **reduce** function. Consequently, the learning speed is now faster compared to brain.js.
