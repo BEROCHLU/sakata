@@ -41,9 +41,9 @@ Normalization is a crucial part of data preprocessing, especially for machine le
 3. **Normalize the Data**:
    - For each batch, the script normalizes the data by dividing each value by the maximum value in the batch, adjusted by the `DESIRED_ERROR` parameter.
    - The normalization formula used is:
-$$
+```math
 \text{normalized\_value} = \frac{\text{original\_value}}{\text{max\_value} \times (1 + \text{DESIRED\_ERROR})}
-$$
+```
    - This step ensures all values are scaled to a similar range, improving the performance of subsequent analysis or machine learning models.
 
 4. **Store Normalized Data**:
