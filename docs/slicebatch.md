@@ -2,38 +2,7 @@
 
 ## Overview
 
-This project reads data from a CSV file, processes it, and generates normalized JSON files. The goal is to slice the data into batches, normalize it, and save the processed data into JSON files for further analysis or machine learning tasks.
-
-## Files
-
-- `hdatexyt.csv`: The CSV file containing the input data.
-- `slicebatch.py`: The main script that processes the data and generates JSON files.
-- `setting.py`: A settings file that includes the `DESIRED_ERROR` and `PERIOD` parameters.
-- `batch/`: Directory where the generated JSON files will be stored.
-
-## CSV File Format
-The `hdatexyt.csv` file should have the following columns:
-
-- `date`: This is the label for the date.
-- `close_x`: Closing value of DJI ETF, input_x0
-- `close_y`: Closing value of USD/JPY, input_x1
-- `open_t`: Opening value of N225 ETF, teacher signal
-
-All of the data are based on EDT.
-## Requirements
-
-- Python 3.x
-- pandas library
-
-## Usage
-
-1. Place the `hdatexyt.csv` file in the same directory as `slicebatch.py`.
-2. Ensure the `setting.py` file is present in the same directory as `slicebatch.py`.
-3. Run the npm script:
-
-```bash
-npm run cooking
-```
+`slicebatch.py` reads data from a CSV file, processes it, and generates normalized JSON files. The goal is to slice the data into batches, normalize it, and save the processed data into JSON files for further analysis or machine learning tasks.
 
 ## Script Description
 
@@ -72,9 +41,9 @@ Normalization is a crucial part of data preprocessing, especially for machine le
 3. **Normalize the Data**:
    - For each batch, the script normalizes the data by dividing each value by the maximum value in the batch, adjusted by the `DESIRED_ERROR` parameter.
    - The normalization formula used is:
-```math
+$$
 \text{normalized\_value} = \frac{\text{original\_value}}{\text{max\_value} \times (1 + \text{DESIRED\_ERROR})}
-```
+$$
    - This step ensures all values are scaled to a similar range, improving the performance of subsequent analysis or machine learning models.
 
 4. **Store Normalized Data**:
