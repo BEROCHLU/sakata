@@ -93,7 +93,7 @@ Why the opening value of N225 ETF?
 
 [slicebatch.md](https://github.com/BEROCHLU/sakata/blob/main/docs/slicebatch.md)
 
-## Leaning
+## Training
 We will train the same data using three different approaches. It would be good to compare the Norm and the opening price of the Nikkei 225 to find the output with the best performance.
 
 - Train using an original neural network built from scratch
