@@ -8,9 +8,9 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 - **Difference**: The difference by subtracting the predicted value from the actual value.
 - **Accumulator**: A running total of the daily differences.
 
-The Sakata Index is a value that is normalized by the most recent 'Accumulator' for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index.  
+The Sakata Index is a Norm: value that is normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
 
-The important aspect of the Sakata index is not bringing 'Prediction' close to 'Actual', but accumulating the difference obtained by subtracting 'Prediction' from 'Actual'. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
+The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference obtained by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 
@@ -125,6 +125,6 @@ Why the opening value of N225 ETF?
   When the three log files are trained over the same period, the following command will output a line graph.  
   `npm run plot-triple`
 
-# Note
-
-Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions. In my original neural network (output1-spot), I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
+> [!NOTE]
+> Despite its vulnerabilities, Node.js 16 is chosen for its high speed on GitHub Actions.
+In my original neural network (output1-spot), I improved the speed of dot product calculations by replacing the 'dot' function from mathjs with the standard 'reduce' function. Consequently, the learning speed is now faster compared to brain.js.
