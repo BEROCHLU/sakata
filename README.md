@@ -96,12 +96,15 @@ Why the opening value of N225 ETF?
 ## Leaning
 We will train the same data using three different approaches. It would be good to compare the Norm and the opening price of the Nikkei 225 to find the output with the best performance.
 
-- Train using my original neural network
+- Train using an original neural network built from scratch
    `npm run output1`
 - Train using brain.js
    `npm run output2`
 - Train using TensorFlow
    `npm run output3`
+
+Why is there a program that builds a neural network from scratch without using deep learning libraries?
+> I wrote a program for the Sakata Index in C language in 2008. At that time, Python was not as widespread as it is today, neural networks were not given much attention, and there were no libraries available. The output1.js is a rewrite of the code originally written in C language into Node.js.
 
 ## Result files
 
