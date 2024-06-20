@@ -90,7 +90,7 @@ DESIRED_ERROR = 0.001
 PERIOD = 44
 ```
 
-## Output
+## Output json
 
 The script will generate JSON files in the `batch/` directory, named `seikikaXX.json`, where `XX` is a zero-padded index.
 

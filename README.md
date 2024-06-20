@@ -70,8 +70,9 @@ To use this program, follow these steps:
       3. `gcc -O2 ./valid/cdevice.c -lm` 
       4. `a.exe` or `./a.out`  
 
-# Learning
-## Input file
+# Process flow
+
+## get data
 
 The `hdatexyt.csv` file should have the following columns:
 
@@ -89,9 +90,20 @@ Why the opening value of N225 ETF?
 > To avoid training on the initial values of the Nikkei 225 Index.
 
 ## Normalization
+
 [slicebatch.md](https://github.com/BEROCHLU/sakata/blob/main/docs/slicebatch.md)
 
-## Output files
+## Leaning
+We will train the same data using three different approaches. It would be good to compare the Norm and the opening price of the Nikkei 225 to find the output with the best performance.
+
+- Train using my original neural network
+   `npm run output1`
+- Train using brain.js
+   `npm run output2`
+- Train using TensorFlow
+   `npm run output3`
+
+## Result files
 
 - `output1.log`  
   This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as described above.
