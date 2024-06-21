@@ -81,7 +81,7 @@ The `hdatexyt.csv` file should contain the following columns:
 - `close_y`: Closing value of USD/JPY, input_x1
 - `open_t`: Opening value of N225 ETF, teacher signal
 
-All of the data are based on EDT.　If the Japanese or U.S. market is on a holiday, the date will be skipped.
+All of the data are based on EDT. If the Japanese or U.S. market is on a holiday, the date will be skipped.
 
 Why DJI ETF?
 > Due to occasional missing data in the Yahoo Finance API's time series, DJI is represented as an ETF based on the available data. Using ^DJI is also acceptable.
