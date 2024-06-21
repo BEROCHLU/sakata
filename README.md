@@ -8,11 +8,11 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 - **Difference**: The difference by subtracting the predicted value from the actual value.
 - **Accumulator**: A running total of the daily differences.
 
-The Sakata Index is a *Norm: value* for each batch period. The value is the normalized **Accumulator** for each batch period excluding the latest date. The normalization is the min and max values. Because the values are normalized excluding the latest date, they may fall below 0 or exceed 100. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
+The Sakata Index is a *Norm: value* for each batch period. The value is the normalized **Accumulator** for each batch period excluding the latest date. The normalization is the min and max values. Because the values are normalized excluding the latest date, they may fall below 0 or exceed 100. The signal becomes strong to buy as the Sakata Index approaches a negative value; conversely, the signal becomes strong to sell as it approaches over 100. Finally, this program's goal is calculating the Sakata index for each period. 
 
-The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
+The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.
 
-The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
+The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.
 
 Why Sakata?
 > Named after the Bioneural Device from Sakata Industry featured in Front Mission 2.
