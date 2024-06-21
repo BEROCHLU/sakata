@@ -8,9 +8,9 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 - **Difference**: The difference by subtracting the predicted value from the actual value.
 - **Accumulator**: A running total of the daily differences.
 
-The Sakata Index is a *Norm: value* that is normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
+The Sakata Index is a *Norm: value* normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
 
-The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference obtained by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
+The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
 The Sakata Index is not a universal indicator and is weak in identifying trends. When the Nikkei 225 continues to rise, it stays above 80, and when it continues to fall, it stays below 20. In such cases, above 80 does not necessarily mean a sell, and below 20 does not necessarily mean a buy. Additionally, it often exhibits similar characteristics to the RSI.  
 
@@ -65,8 +65,8 @@ To use this program, follow these steps:
 **Validation**
    - MinGW-w64: For users who want to validate using GCC with MinGW.  
       [This link](https://code.visualstudio.com/docs/cpp/config-mingw) is provided for setting up MinGW. However, due to an error with "The file has been downloaded incorrectly" [another link](https://winlibs.com/) is recommended.  
-      1. rename `hdatexyt.csv` to `datexyt.csv`
-      2. delete header in csv
+      1. Rename `hdatexyt.csv` to `datexyt.csv`
+      2. Delete header in csv
       3. `gcc -O2 ./valid/cdevice.c -lm` 
       4. `a.exe` or `./a.out`  
 
@@ -74,7 +74,7 @@ To use this program, follow these steps:
 
 ## get data
 
-The `hdatexyt.csv` file should have the following columns:
+The `hdatexyt.csv` file should contain the following columns:
 
 - `date`: This is the label for the date.
 - `close_x`: Closing value of DJI ETF, input_x0
@@ -96,11 +96,11 @@ Why the opening value of N225 ETF?
 ## Training
 We will train the same data using three different approaches. It would be good to compare the Norm and the opening price of the Nikkei 225 to find the output with the best performance.
 
-- Train using an original neural network built from scratch
+- Train using an original neural network from scratch without using deep learning libraries    
    `npm run output1`
-- Train using brain.js
+- Train using brain.js  
    `npm run output2`
-- Train using TensorFlow
+- Train using TensorFlow  
    `npm run output3`
 
 ## Result files
@@ -111,7 +111,7 @@ We will train the same data using three different approaches. It would be good t
   - Hidden: 4 layers (including bias)
   - Output: 1 layer
   - Initial weight: 0.5
-  - Maximum training iterations: 500000
+  - Training iterations: 500000
   - Activation function: Sigmoid
   - Loss function: least-squares method
   - Learning rate: 0.5
@@ -119,10 +119,10 @@ We will train the same data using three different approaches. It would be good t
   - Training data: The same dataset is used for both training and testing the model.
 
    Why is there a program that builds a neural network from scratch without using deep learning libraries?
-   > I wrote a program for the Sakata Index in C language in 2008. At that time, Python was not as widespread as it is today, neural networks were not given much attention, and there were no libraries available. The output1.js is a rewrite of the code originally written in C language into Node.js.
+   > I wrote a program for the Sakata Index in C in 2008. At that time, Python was not as widespread as it is today, neural networks were not given much attention, and there were no libraries available. The output1.js is a rewrite of the code originally written in C language into Node.js.
 
 - `output2.log`  
-  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters is same output1.log.
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are the almost same as in output1.log.
 
 - `output3.log`  
   This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
@@ -133,7 +133,13 @@ We will train the same data using three different approaches. It would be good t
   - Initial weight: 0.5
   - Maximum training iterations: 1000
   - Activation function: Sigmoid
+  - Loss function: least-squares method
   - Learning rate: 0.001
+
+  - EarlyStopping Parameters:
+    - min_delta: 0.0001
+    - patience: 300
+    - mode: min
 
 - `plot-triple.png`  
   An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
