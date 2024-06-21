@@ -8,7 +8,7 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 - **Difference**: The difference by subtracting the predicted value from the actual value.
 - **Accumulator**: A running total of the daily differences.
 
-The Sakata Index is a *Norm: value* normalized by the most recent **Accumulator** for each period. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
+The Sakata Index is a *Norm: value* for each batch period. The value is the normalized **Accumulator** for each batch period excluding the latest date. The normalization is the min and max values. Because the values are normalized excluding the latest date, they may fall below 0 or exceed 100. The signal becomes strong to buy as the Sakata Index approaches 0; conversely, the signal becomes strong to sell as it approaches 100. Finally, this program's goal is calculating the Sakata index for each period.  
 
 The important aspect of the Sakata index is not bringing **Prediction** close to **Actual**, but accumulating the difference by subtracting **Prediction** from **Actual**. When this accumulated error reaches a certain threshold, it triggers a strong trading signal.  
 
