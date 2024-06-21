@@ -106,7 +106,7 @@ We will train the same data using three different approaches. It would be good t
 ## Result files
 
 - `output1.log`  
-  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as described above.
+  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
   - Input: 3 layers (including bias)
   - Hidden: 4 layers (including bias)
   - Output: 1 layer
@@ -135,11 +135,13 @@ We will train the same data using three different approaches. It would be good t
   - Activation function: Sigmoid
   - Loss function: least-squares method
   - Learning rate: 0.001
-
   - EarlyStopping Parameters:
     - min_delta: 0.0001
     - patience: 300
     - mode: min
+
+   Why is the loss function sigmoid and not ReLU?
+   > ReLU is a fast and effective activation function used in many deep learning models. However, for nonlinear and complex problems such as financial market prediction, sigmoid or other activation functions may be more suitable. This is because the sigmoid function constrains the output to a range between 0 and 1, allowing for probabilistic interpretation, which can be useful in financial market prediction.
 
 - `plot-triple.png`  
   An image that combines the logs from `output1.log`, `output2.log`, and `output3.log` into a single line graph.
