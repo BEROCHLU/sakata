@@ -2,7 +2,7 @@
 
 The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a sample of the output log file:
 
-```json
+```yaml
          date  prediction  actual  diff   acc
 0  2024-02-14  100.019997  101.05  1.03  1.03
 ...
