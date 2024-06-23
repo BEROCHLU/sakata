@@ -9,6 +9,9 @@ The Sakata Index is a technical indicator calculated using a neural network desi
 ...
 42 2024-04-18  100.019997   99.70 -0.32  1.19
 43 2024-04-19  100.040001   98.80 -1.23 -0.04
+Mean Absolute Error: 1.02%
+Epoch: 675, Final Loss: 0.000136
+Norm: -14.44
 ===
          date  prediction  actual  diff   acc
 0  2024-02-15  100.080002  101.54  1.46  1.46
