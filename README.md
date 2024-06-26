@@ -1,6 +1,6 @@
 # Sakata Index
 
-The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a sample of the output3.log file:
+The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a part of the output3.log file:
 
 ```text
          date  prediction  actual  diff   acc
@@ -71,7 +71,7 @@ To use this program, follow these steps:
 3. **Install other packages**:
    - `pip install -r requirements.txt`
 
-3. **Run scripts**:
+4. **Run scripts**:
    1. Get latest raw data.  
    `npm run getdata`
    2. Normalize the raw data and split by batch size.  
