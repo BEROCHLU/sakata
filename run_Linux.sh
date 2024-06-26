@@ -19,7 +19,7 @@ for file in ./batch/*.json; do
 done
 
 # 画像出力
-python ./src/python/plot-batch.py "$LOG_FILE"
+# python ./src/python/plot-batch.py "$LOG_FILE"
 
 # 終了時間の記録
 end_time=$(date +%s)
