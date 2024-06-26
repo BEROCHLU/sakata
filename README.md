@@ -1,27 +1,29 @@
 # Sakata Index
 
-The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a sample of the output log file:
+The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a sample of the output1.log file:
 
 ```text
-         date  prediction  actual  diff   acc
-0  2024-02-14  100.019997  101.05  1.03  1.03
-1  2024-02-15  100.050003  101.54  1.50  2.53
+      date predic actual  diff   acc
+2024-04-17  99.98  97.77 -2.21 -2.21
+2024-04-18 100.00  99.70 -0.30 -2.51
 ...
-42 2024-04-18  100.019997   99.70 -0.32  1.19
-43 2024-04-19  100.040001   98.80 -1.23 -0.04
-Mean Absolute Error: 1.02%
-Epoch: 675, Final Loss: 0.000136
-Norm: -14.44
+2024-06-21  99.94  99.65 -0.28 -0.02
+2024-06-24 100.09 100.75  0.65  0.63
+Mean Absolute Error: 0.74%
+Min: -3.77 Max: 1.92 Mid: -0.93
+Epoch: 500000 BatchSize: 44 FinalLSM: 0.00180
+Norm: 77.39
 ===
-         date  prediction  actual  diff   acc
-0  2024-02-15  100.080002  101.54  1.46  1.46
-1  2024-02-16   99.949997   99.40 -0.55  0.91
+      date predic actual  diff   acc
+2024-04-18 100.09  99.70 -0.39 -0.39
+2024-04-19 100.14  98.80 -1.33 -1.73
 ...
-42 2024-04-19  100.070000   98.80 -1.26 -1.56
-43 2024-04-22  100.110001  101.57  1.46 -0.10
-Mean Absolute Error: 1.01%
-Epoch: 314, Final Loss: 0.000135
-Norm: 17.02
+2024-06-24 100.16 100.75  0.59 -1.11
+2024-06-25 100.00 101.58  1.58  0.47
+Mean Absolute Error: 0.73%
+Min: -1.73 Max: 1.89 Mid: 0.08
+Epoch: 500000 BatchSize: 44 FinalLSM: 0.00172
+Norm: 60.66
 ===
 ```
 
@@ -129,14 +131,14 @@ We will train the same data using three different approaches. It would be good t
 ## Result files
 
 - `output1.log`  
-  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
+  This is a log of the results obtained by using my implemented neural network to learn market data from approximately six months ago to today, segmented into batch-day period intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
   - Input: 3 layers (including bias)
   - Hidden: 4 layers (including bias)
   - Output: 1 layer
   - Initial weight: 0.5
   - Training iterations: 500000
   - Activation function: Sigmoid
-  - Loss function: least-squares method
+  - Loss function: Least Square Method
   - Learning rate: 0.5
   - Biases: -1
   - Training data: The same dataset is used for both training and testing the model.
@@ -145,10 +147,10 @@ We will train the same data using three different approaches. It would be good t
    > I wrote the first program for the Sakata Index in C in 2008. At that time, Python was not as widespread as it is today, neural networks were not given much attention, and there were no libraries available. The output1.js file is a rewrite of the code originally written in C into Node.js. The C code is still alive and well, and I sometimes use it for verification.
 
 - `output2.log`  
-  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are the almost same as in output1.log.
+  This is a log of the results obtained by using brain.js to learn market data from approximately six months ago to today, segmented into batch-day period intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are the almost same as in output1.log.
 
 - `output3.log`  
-  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into 44-day intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
+  This is a log of the results obtained by using TensorFlow to learn market data from approximately six months ago to today, segmented into batch-day period intervals and learned day by day. The value of `Norm:` for each period corresponds to the Sakata Index. The training parameters are as follows:
   - Input: 2 layers
   - Hidden: 16 layers
   - Output: 1 layer
@@ -156,8 +158,9 @@ We will train the same data using three different approaches. It would be good t
   - Initial weight: 0.5
   - Maximum training iterations: 1000
   - Activation function: Sigmoid
-  - Loss function: least-squares method
+  - Loss function: Mean Squared Error
   - Learning rate: 0.001
+  - Batch size: 44
   - EarlyStopping Parameters:
     - min_delta: 0.0001
     - patience: 300
