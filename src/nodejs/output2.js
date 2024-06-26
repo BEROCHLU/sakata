@@ -20,24 +20,23 @@ const TRAIN_OPT = {
 }
 const BATCH_PATH = './batch';
 
-//main
-{
+// Main function to encapsulate the logic
+(async () => {
     //計測開始
     const timeStart = performance.now();
     console.log(new Date().toLocaleString());
 
-    const arrStrFile = fs.readdirSync(BATCH_PATH);
+    const arrStrFile = await fs.promises.readdir(BATCH_PATH);
 
-    _.forEach(arrStrFile, (strFile, idx) => {
-        if (!(0 <= idx && idx <= Number.MAX_SAFE_INTEGER)) return;
+    for (const strFile of arrStrFile) {
+        // バッチファイルの読み込みとJSONへの変換
+        const strJson = await fs.promises.readFile(`${BATCH_PATH}/${strFile}`, 'utf8');
+        const objJson = JSON.parse(strJson);
+        const collection = objJson.listdc;
 
-        const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
-        const hshOut = JSON.parse(strJson);
-        const arrHshOut = hshOut.listdc;
-
-        const arrTrainX = _.map(arrHshOut, hsh => hsh.input);
-        const arrTrainT = _.map(arrHshOut, hsh => hsh.output);
-        const arrDate = _.map(arrHshOut, hsh => hsh.date);
+        const arrTrainX = _.map(collection, obj => obj.input);
+        const arrTrainT = _.map(collection, obj => obj.output);
+        const arrDate = _.map(collection, obj => obj.date);
 
         const arrTrainData = _.zipWith(arrTrainX, arrTrainT, arrDate, (x, t, d) => {
             return {
@@ -74,8 +73,8 @@ const BATCH_PATH = './batch';
                 return presum + current; // 配列最後のreturnは最大最小の更新対象にならない
             });
 
-            const undo_out = arrOut[i] * hshOut.div;
-            const undo_teacher = arrTrainT[i][0] * hshOut.div;
+            const undo_out = arrOut[i] * objJson.div;
+            const undo_teacher = arrTrainT[i][0] * objJson.div;
 
             const pad_out = undo_out.toFixed(2).padStart(6);
             const pad_teacher = undo_teacher.toFixed(2).padStart(6);
@@ -94,10 +93,10 @@ const BATCH_PATH = './batch';
         console.log(`Epoch: ${netrain.iterations} BatchSize: ${DATA_LEN}`);
         console.log(`Norm: ${acc_norm.toFixed(2)}`);
         console.log(`===`);
-    });// _.forEach
+    };// for of
     //計測終了
     const timeEnd = performance.now();
     const timeSec = (timeEnd - timeStart) / 1000;
 
     console.log(`Time: ${Math.floor(timeSec / 60)} min ${Math.floor(timeSec % 60)} sec.\n`);
-}
+})();
