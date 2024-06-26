@@ -63,12 +63,11 @@ const BATCH_PATH = './batch';
 
         const DATA_LEN = arrTrainX.length;
 
+        console.log('      date predic actual  diff   acc'); //header
+
         for (let i = 0; i < DATA_LEN; i++) {
             arrErate[i] = (arrTrainT[i][0] - arrOut[i]) / arrTrainT[i][0] * 100;
 
-            /*acc += arrErate[i];
-            acc_min = (acc < acc_min) ? acc : acc_min;
-            acc_max = (acc_max < acc) ? acc : acc_max;*/
             acc = _.reduce(arrErate, (presum, current) => {
                 acc_min = Math.min(acc_min, presum); //前回の蓄積結果で最小値を更新
                 acc_max = Math.max(acc_max, presum); //前回の蓄積結果で最大値を更新
@@ -83,16 +82,16 @@ const BATCH_PATH = './batch';
             const pad_erate = arrErate[i].toFixed(2).padStart(5);
             const pad_acc = acc.toFixed(2).padStart(5);
 
-            console.log(`${arrDate[i]} ${pad_out} True: ${pad_teacher} ${pad_erate} ${pad_acc}`);
+            console.log(`${arrDate[i]} ${pad_out} ${pad_teacher} ${pad_erate} ${pad_acc}`);
         }
 
         const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
         const acc_mid = (acc_min + acc_max) / 2;
         const acc_norm = (acc - acc_min) * 100 / (acc_max - acc_min);
 
-        console.log(`Average error: ${averageError}%`);
+        console.log(`Mean Absolute Error: ${averageError}%`);
         console.log(`Min: ${acc_min.toFixed(2)} Max: ${acc_max.toFixed(2)} Mid: ${acc_mid.toFixed(2)}`);
-        console.log(`Epoch: ${netrain.iterations} DATA_LEN: ${DATA_LEN}`);
+        console.log(`Epoch: ${netrain.iterations} BatchSize: ${DATA_LEN}`);
         console.log(`Norm: ${acc_norm.toFixed(2)}`);
         console.log(`===`);
     });// _.forEach
