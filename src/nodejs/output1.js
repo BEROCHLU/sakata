@@ -87,13 +87,13 @@ function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
 }
 
 // main関数的な挙動をするブロック
-{
+(async () => {
     //計測開始
     const timeStart = performance.now();
     const strDate = new Date();
     console.log(strDate.toLocaleString());// 現在時刻の表示
     // バッチ処理ファイルの読み込み
-    const arrStrFile = fs.readdirSync(BATCH_PATH);
+    const arrStrFile = await fs.promises.readdir(BATCH_PATH);
 
     for (const strFile of arrStrFile) {
         //各種変数の初期化
@@ -109,7 +109,7 @@ function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
         let errorLSM; //最小二乗法の誤差
 
         // バッチファイルの読み込みとJSONへの変換
-        const strJson = fs.readFileSync(`${BATCH_PATH}/${strFile}`, 'utf8');
+        const strJson = await fs.promises.readFile(`${BATCH_PATH}/${strFile}`, 'utf8');
         const hshData = JSON.parse(strJson);
         const arrHsh = hshData["listdc"];
         const DIV_T = hshData["div"];
@@ -188,4 +188,4 @@ function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
     const timeEnd = performance.now();
     const timeSec = (timeEnd - timeStart) / 1000;
     console.log(`Time: ${Math.floor(timeSec / 60)} min ${Math.floor(timeSec % 60)} sec.\n`);
-}
+})();
