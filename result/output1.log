@@ -1,4 +1,4 @@
-2024/6/28 5:04:45
+2024/6/28 5:27:30
       date predic actual  diff   acc
 2024-02-16  99.66  99.40 -0.26 -0.26
 2024-02-20  99.92  99.40 -0.52 -0.78
@@ -2027,5 +2027,5 @@ Mean Absolute Error: 0.73%
 Epoch: 500000 BatchSize: 47 FinalLSM: 0.00189
 Norm: 101.10
 ===
-Time: 5 min 13 sec.
+Time: 5 min 0 sec.
 
