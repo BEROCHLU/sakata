@@ -25,7 +25,7 @@ const TRAIN_OPT = {
     const timeStart = performance.now();
     console.log(new Date().toLocaleString());
 
-    const strJsonOut = fs.readFileSync('./json/seikika.json', 'utf8');
+    const strJsonOut = fs.readFileSync('./json/spot.json', 'utf8');
     const hshOut = JSON.parse(strJsonOut);
     const arrHshOut = hshOut.listdc;
 

@@ -6,7 +6,6 @@ from pprint import pprint
 
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from keras import layers, models, optimizers
 from tensorflow import keras
 
@@ -30,13 +29,15 @@ class FinalPredictionCallback(keras.callbacks.Callback):
         global differences_percentage, dfPrint
 
         predictions = model.predict(X, verbose=0)
-        scaled_predictions = predictions.flatten()
+        # roundのため予測結果をfloat32からfloat64に変換
+        predictions = predictions.astype(np.float64)
+        narrPrediction = predictions.flatten()
         # 差分をパーセントに直して表示
-        differences_percentage = ((y - scaled_predictions) / scaled_predictions) * 100
+        differences_percentage = ((y - narrPrediction) / narrPrediction) * 100
         differences_percentage = np.round(differences_percentage, 2)
 
-        dfPrint["Predict"] = np.round(scaled_predictions * DIV, 2)
-        dfPrint["True"] = np.round(y * DIV, 2)
+        dfPrint["prediction"] = np.round(narrPrediction * DIV, 2)
+        dfPrint["actual"] = np.round(y * DIV, 2)
         # pprint(differences_percentage)
 
 

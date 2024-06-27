@@ -17,7 +17,7 @@ Get-ChildItem -Path ./batch -Filter *.json | ForEach-Object {
 }
 
 # 画像出力
-python ./src/python/plot-batch.py $logFile
+# python ./src/python/plot-batch.py $logFile
 
 # 終了時間の記録
 $endTime = Get-Date

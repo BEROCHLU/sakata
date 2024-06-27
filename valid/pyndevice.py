@@ -34,7 +34,7 @@ def dotProduct(vec1, vec2):  # sum(x * y for x, y in zip(vec1, vec2))
 
 
 def main():
-    f = open("./json/seikika.json", "r")
+    f = open("./json/spot.json", "r")
     dc_raw = json.load(f)
     arrHsh = dc_raw["listdc"]
     DIV_T = dc_raw["div"]

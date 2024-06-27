@@ -8,6 +8,7 @@
     "output1": "node ./src/nodejs/output1.js > ./result/output1.log",
     "output2": "node ./src/nodejs/output2.js > ./result/output2.log",
     "output3": "bash ./run_Linux.sh",
+    "output3win": "python ./src/python/output3.py > ./result/output3.log",
     "output1-spot": "node ./src/nodejs/output1-spot.js > ./result/output1-spot.log",
     "output2-spot": "node ./src/nodejs/output2-spot.js > ./result/output2-spot.log",
     "output3-spot": "python ./src/python/output3-spot.py > ./result/output3-spot.log",

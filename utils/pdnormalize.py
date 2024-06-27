@@ -11,7 +11,7 @@ import setting
 old_ite = -1
 # path
 R_PATH = "../csv/hdatexyt.csv"
-W_PATH = "../json/seikika.json"
+W_PATH = "../json/spot.json"
 # import parameter
 DESIRED_ERROR = setting.DESIRED_ERROR
 PERIOD = setting.PERIOD

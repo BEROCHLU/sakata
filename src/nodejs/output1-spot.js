@@ -99,7 +99,7 @@ function printResult(arrHsh, DIV_T, errorLSM) {
 
 //main
 {
-    const strJson = fs.readFileSync('./json/seikika.json', 'utf8');
+    const strJson = fs.readFileSync('./json/spot.json', 'utf8');
     const hshData = JSON.parse(strJson);
     const arrHsh = hshData["listdc"];
     const DIV_T = hshData["div"];

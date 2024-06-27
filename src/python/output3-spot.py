@@ -10,7 +10,7 @@ from tensorflow import keras
 
 # JSONファイルを読み込む
 try:
-    with open("./json/seikika.json", "r", encoding="utf-8") as file:
+    with open("./json/spot.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 except FileNotFoundError:
     print("Config file not found.")
