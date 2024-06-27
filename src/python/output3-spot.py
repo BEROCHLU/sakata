@@ -76,8 +76,8 @@ class FinalPredictionCallback(keras.callbacks.Callback):
         differences_percentage = ((y - narrPrediction) / narrPrediction) * 100
         differences_percentage = np.round(differences_percentage, 2)
 
-        dfPrint["Predict"] = np.round(narrPrediction * DIV, 2)
-        dfPrint["True"] = np.round(y * DIV, 2)
+        dfPrint["predic"] = np.round(narrPrediction * DIV, 2)
+        dfPrint["actual"] = np.round(y * DIV, 2)
         # pprint(differences_percentage)
 
 
