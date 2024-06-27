@@ -76,11 +76,11 @@ function printResult(arrHsh, DIV_T, errorLSM, epoch, t, hid, out, x, v, w) {
     // 平均絶対誤差の計算と表示
     const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
     // 累積誤差の中間値、正規化値の計算
-    const accumulatorMid = (accumulatorMin + accumulatorMax) / 2;
+    //const accumulatorMid = (accumulatorMin + accumulatorMax) / 2;
     const accumulatorNom = (accumulator - accumulatorMin) * 100 / (accumulatorMax - accumulatorMin);
     // 追加の統計情報の表示
     console.log(`Mean Absolute Error: ${averageError}%`);
-    console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
+    // console.log(`Min: ${accumulatorMin.toFixed(2)} Max: ${accumulatorMax.toFixed(2)} Mid: ${accumulatorMid.toFixed(2)}`);
     console.log(`Epoch: ${epoch} BatchSize: ${DATA_LEN} FinalLSM: ${errorLSM.toFixed(5)}`);
     console.log(`Norm: ${accumulatorNom.toFixed(2)}`);
     console.log(`===`);

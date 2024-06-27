@@ -3,10 +3,8 @@ from datetime import datetime
 from functools import reduce
 from pprint import pprint
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from keras import layers, models, optimizers
 from tensorflow import keras
 
@@ -71,12 +69,14 @@ class FinalPredictionCallback(keras.callbacks.Callback):
         global differences_percentage, dfPrint
 
         predictions = model.predict(X, verbose=0)
-        scaled_predictions = predictions.flatten()
+        # roundのため予測結果をfloat64に変換
+        predictions = predictions.astype(np.float64)
+        narrPrediction = predictions.flatten()
         # 差分をパーセントに直して表示
-        differences_percentage = ((y - scaled_predictions) / scaled_predictions) * 100
+        differences_percentage = ((y - narrPrediction) / narrPrediction) * 100
         differences_percentage = np.round(differences_percentage, 2)
 
-        dfPrint["Predict"] = np.round(scaled_predictions * DIV, 2)
+        dfPrint["Predict"] = np.round(narrPrediction * DIV, 2)
         dfPrint["True"] = np.round(y * DIV, 2)
         # pprint(differences_percentage)
 
@@ -119,6 +119,7 @@ final_result = reduce(accumulate_and_collect, differences_percentage, 0)
 arrNorm = cumulative_results[:-1]  # 最大最小個超えもあるため最後の値だけを削除
 min_val = min(arrNorm)
 max_val = max(arrNorm)
+mid_val = (max_val + min_val) / 2
 norm = ((final_result - min_val) / (max_val - min_val)) * 100
 strNorm = f"{norm:.2f}"
 
@@ -127,5 +128,6 @@ dfPrint["acc"] = cumulative_results
 
 pprint(dfPrint)
 print(f"Mean Absolute Error: {np.mean(np.abs(differences_percentage)):.2f}%")
+print(f"Min:{min_val}, Max:{max_val}, Mid:{mid_val:.2f}")
 print(f"Epoch: {early_stopping.stopped_epoch}, Final Loss: {strLoss}")
 print(f"Norm: {strNorm}")

@@ -1,6 +1,6 @@
 node_modules/
 __pycache__/
 old/
-result/*.txt
+result/*-spot.log
 batch/
 *.exe

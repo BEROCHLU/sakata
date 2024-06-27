@@ -85,11 +85,11 @@ const BATCH_PATH = './batch';
         }
 
         const averageError = _.chain(arrErate).map(Math.abs).mean().round(2).value();
-        const acc_mid = (acc_min + acc_max) / 2;
+        //const acc_mid = (acc_min + acc_max) / 2;
         const acc_norm = (acc - acc_min) * 100 / (acc_max - acc_min);
 
         console.log(`Mean Absolute Error: ${averageError}%`);
-        console.log(`Min: ${acc_min.toFixed(2)} Max: ${acc_max.toFixed(2)} Mid: ${acc_mid.toFixed(2)}`);
+        //console.log(`Min: ${acc_min.toFixed(2)} Max: ${acc_max.toFixed(2)} Mid: ${acc_mid.toFixed(2)}`);
         console.log(`Epoch: ${netrain.iterations} BatchSize: ${DATA_LEN}`);
         console.log(`Norm: ${acc_norm.toFixed(2)}`);
         console.log(`===`);

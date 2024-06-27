@@ -7,13 +7,12 @@ from pprint import pprint
 
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from keras import layers, models, optimizers
 from tensorflow import keras
 
 # 標準入力からJSONデータを読み込む
 try:
-    input_str = sys.stdin.read() # 標準入力からの文字列を受け取る
+    input_str = sys.stdin.read()  # 標準入力からの文字列を受け取る
     data = json.loads(input_str)  # 文字列をJSONとして解析
 except json.JSONDecodeError:
     print("Error decoding JSON.")
@@ -58,8 +57,8 @@ model.add(layers.Dense(1))
 
 # モデルのコンパイル
 model.compile(optimizer=optimizers.Adam(learning_rate=0.001), loss="mean_squared_error")
-
 differences_percentage = np.array([])
+
 
 # コールバッククラスの定義
 class FinalPredictionCallback(keras.callbacks.Callback):
@@ -67,12 +66,16 @@ class FinalPredictionCallback(keras.callbacks.Callback):
         global differences_percentage, dfPrint
 
         predictions = model.predict(X, verbose=0)
-        scaled_predictions = predictions.flatten()
-        differences_percentage = ((y - scaled_predictions) / scaled_predictions) * 100
+        # roundのため予測結果をfloat32からfloat64に変換
+        predictions = predictions.astype(np.float64)
+        narrPrediction = predictions.flatten()
+
+        differences_percentage = ((y - narrPrediction) / narrPrediction) * 100
         differences_percentage = np.round(differences_percentage, 2)
 
-        dfPrint["prediction"] = np.round(scaled_predictions * DIV, 2)
+        dfPrint["prediction"] = np.round(narrPrediction * DIV, 2)
         dfPrint["actual"] = np.round(y * DIV, 2)
+
 
 # EarlyStoppingコールバックの設定
 early_stopping = keras.callbacks.EarlyStopping(
@@ -96,12 +99,14 @@ strLoss = f"{loss:.6f}"
 # 累積結果を格納するリストを初期化
 cumulative_results = []
 
+
 # reduceを使って蓄積しながら結果をリストに格納する関数
 def accumulate_and_collect(accumulated, current):
     new_accumulated = accumulated + current
     new_accumulated = np.round(new_accumulated, 2)
     cumulative_results.append(new_accumulated)
     return new_accumulated
+
 
 # 初期値0でreduceを実行
 final_result = reduce(accumulate_and_collect, differences_percentage, 0)
