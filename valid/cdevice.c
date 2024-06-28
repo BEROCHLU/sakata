@@ -6,18 +6,15 @@
 #include <string.h>
 
 #define SIZE            1024    //available max line in csv file
-#define DESIRED_ERROR   0.001   //not recommend change
+#define DESIRED_ERROR   0.005
 #define IN_NODE         3       //includes bias
 #define HID_NODE        4
 #define OUT_NODE        1
 #define ETA             0.5
 #define sigmoid(x)      (1.0 / (1.0 + exp(-x)))
 #define dsigmoid(x)     ((x) * (1.0 - (x)))
-#define dfmax(x)        ((x) > 0 ? 1.0 : 0)
-//#define dtanh(x)        (1.0 - tanh(x) * tanh(x))
-#define PERIOD          43  //expected learning period
+#define PERIOD          47      //batch period
 #define THRESH          500000
-#define ACTIVE          0   //0: sigmoid 1: ReLU
 #define DATE_SIZE       12
 
 void updateHidOut(int);
@@ -48,7 +45,7 @@ int main(void){
     clock_t start, end;
     time_t timer;
 
-    if ((fp = fopen("./csv/datexyt.csv", "r")) == NULL) {
+    if ((fp = fopen(".//csv/datexyt.csv", "r")) == NULL) {
         printf("The file doesn't exist!\n"); exit(0);
     }
 
@@ -135,10 +132,7 @@ int main(void){
                     delta_hid[i] += delta_out[k] * w[k][i];//Σδw
                 }
                 //中間ノード
-                if (ACTIVE == 0)
-                    delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
-                else
-                    delta_hid[i] = dfmax(hid[i]) * delta_hid[i];
+                delta_hid[i] = dsigmoid(hid[i]) * delta_hid[i]; //H(1-H)*Σδw
             }
 
             for (i = 0; i < HID_NODE; i++) {                    // Δv
@@ -168,10 +162,7 @@ void updateHidOut(int n){
         for (j = 0; j < IN_NODE; j++)
             y += v[i][j] * x[n][j];
 
-        if (ACTIVE == 0)
-            hid[i] = sigmoid(y);
-        else
-            hid[i] = fmax(0, y);
+        hid[i] = sigmoid(y);
     }
 
     hid[HID_NODE - 1] = frandBias();//配列最後にバイアス
@@ -221,12 +212,6 @@ void printResult(void){
 }
 //fix same seed issue of random number
 float frandWeight(void){
-    int i; float fRand;
-    //乱数を複数回生成して最後の値を使用する(線形合同法)
-    for (i = 0; i < 8; i++)
-        fRand = rand();
-    //fRand = rand() % 5000 / 10000.0 + 0.5;
-    fRand = fRand / (RAND_MAX + 1.0);
     return 0.5;
 }
 

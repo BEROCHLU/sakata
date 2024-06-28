@@ -3,25 +3,25 @@
 The Sakata Index is a technical indicator calculated using a neural network designed for the Nikkei 225. Here is a part of the output3.log file:
 
 ```text
-         date  prediction  actual  diff   acc
-0  2024-02-14  100.019997  101.05  1.03  1.03
-1  2024-02-15  100.050003  101.54  1.50  2.53
+         date  predic  actual  diff   acc
+0  2024-04-15   99.99   99.12 -0.87 -0.87
+1  2024-04-16  100.05   99.85 -0.20 -1.07
 ...
-42 2024-04-18  100.019997   99.70 -0.32  1.19
-43 2024-04-19  100.040001   98.80 -1.23 -0.04
-Mean Absolute Error: 1.02%
-Epoch: 675, Final Loss: 0.000136
-Norm: -14.44
+45 2024-06-24  100.08  100.75  0.67 -1.66
+46 2024-06-25   99.93  101.58  1.66  0.00
+Mean Absolute Error: 0.75%
+Epoch: 299, Final Loss: 0.000084
+Norm: 101.04
 ===
-         date  prediction  actual  diff   acc
-0  2024-02-15  100.080002  101.54  1.46  1.46
-1  2024-02-16   99.949997   99.40 -0.55  0.91
+         date  predic  actual  diff   acc
+0  2024-04-16  100.07   99.85 -0.22 -0.22
+1  2024-04-17  100.00   97.77 -2.23 -2.45
 ...
-42 2024-04-19  100.070000   98.80 -1.26 -1.56
-43 2024-04-22  100.110001  101.57  1.46 -0.10
-Mean Absolute Error: 1.01%
-Epoch: 314, Final Loss: 0.000135
-Norm: 17.02
+45 2024-06-25   99.94  101.58  1.64  0.01
+46 2024-06-26  100.09  100.05 -0.04 -0.03
+Mean Absolute Error: 0.74%
+Epoch: 299, Final Loss: 0.000083
+Norm: 91.86
 ===
 ```
 
