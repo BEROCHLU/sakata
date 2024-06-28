@@ -6,7 +6,7 @@ from matplotlib.ticker import AutoMinorLocator
 
 
 # ファイルパス
-file_path = "./result/output1.txt"
+file_path = "./result/output1-spot.log"
 
 with open(file_path, "r", encoding="utf-8") as file:
     # ファイルの内容を1行ずつ読み込む
