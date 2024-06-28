@@ -77,11 +77,18 @@ To use this program, follow these steps:
    2. Normalize the raw data and split by batch size.  
    `npm run cooking`
    3. To run scripts and append the results.  
-   ```bash
-   npm run output1
-   npm run output2
-   npm run output3
-   ```
+      - ###### on Linux
+         ```bash
+         npm run output1
+         npm run output2
+         npm run output3
+         ```
+      - ###### on Windows
+         ```bash
+         npm run output1
+         npm run output2
+         npm run output3win
+         ```
    4. To visualize the results. All results are stored in the **result** folder.  
    `npm run plot-triple`
 
